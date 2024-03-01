@@ -32,7 +32,7 @@ Route::get('create-acc/{jml}/{username}',[LandingController::class,'createAcc'])
 // Route::get('dashboard-admin',[AdminController::class,'viewOnly']);
 // Route::get('/',[LandingController::class,'index'])->name('home');
 Route::get('/',function(){
-    return redirect('login');
+    return view('counting.index');
 })->name('home');
 
 Route::get('/build',function(){
