@@ -4,7 +4,7 @@ jQuery(document).ready(function() {
     /*
         Background slideshow
     */
-	const asset = 'https://masterplan.co.id';
+	const asset = 'https://goldenvision.co.id';
 	$('.banner-area').backstretch([
 	                     asset+"/assets/counter/images/backgrounds/1.jpg"
 	                   , asset+"/assets/counter/images/backgrounds/2.jpg"
@@ -13,7 +13,6 @@ jQuery(document).ready(function() {
 	
 
 	$("#typed").typed({
-		// strings: ["Typed.js is a <strong>jQuery</strong> plugin.", "It <em>types</em> out sentences.", "And then deletes them.", "Try it out!"],
 		stringsElement: $('#typed-strings'),
 		typeSpeed: 50,
 		backDelay: 1000,
@@ -38,7 +37,7 @@ jQuery(document).ready(function() {
 });
 
 // cowntdown function. Set the date below (December 1, 2016 00:00:00):
-var austDay = new Date("February 5, 2023 00:00:00");
+var austDay = new Date("Mar 5, 2024 00:00:00");
 	$('#countdown').countdown({until: austDay, layout: '<div class="item"><p>{dn}</p> {dl}</div> <div class="item"><p>{hn}</p> {hl}</div> <div class="item"><p>{mn}</p> {ml}</div> <div class="item"><p>{sn}</p> {sl}</div>'});
 	$('#year').text(austDay.getFullYear());
 	
