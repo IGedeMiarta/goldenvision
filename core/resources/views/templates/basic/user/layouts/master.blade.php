@@ -60,6 +60,11 @@
     <script>
         "use strict";
         (function($) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             bkLib.onDomLoaded(function() {
                 $(".nicEdit").each(function(index) {
                     $(this).attr("id", "nicEditor" + index);

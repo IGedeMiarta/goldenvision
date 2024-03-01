@@ -176,6 +176,8 @@ class PlanController extends Controller
                 fnSingleQualified($sponsor->id,$firstUpline->id);
                 fnDelWaitList(Auth::user()->id);
                 
+                deliverPoint(Auth::user()->id,$request->qty*2);
+                
                 DB::commit();
                 $notify[] = ['success', 'Successfully Purchased Plan'];
                 return redirect()->route('user.my.tree')->withNotify($notify);
@@ -265,6 +267,8 @@ class PlanController extends Controller
             }
 
             fnDelWaitList(Auth::user()->id);
+            
+            deliverPoint(Auth::user()->id,$request->qty*2);
             DB::commit();
             $notify[] = ['success', 'Purchased ' . $plan->name . 'and Registered New  '.$registeredUser.' Account Successfully'];
             return redirect()->route('user.my.tree')->withNotify($notify);

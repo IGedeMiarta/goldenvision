@@ -15,7 +15,7 @@
                                     <table class="table mb-0">
                                         <tr>
                                             <th>No</th>
-                                            <th>MP No</th>
+                                            {{-- <th>MP No</th> --}}
                                             <th>Username</th>
                                             <th>Phone</th>
                                             <th>Position <br> (By Upline | By Referral)</th>
@@ -28,9 +28,9 @@
                                             @foreach ($referral as $t)
                                                 <tr>
                                                     <td>{{ $no++ }}</td>
-                                                    <td>
+                                                    {{-- <td>
                                                         {{ $t->no_bro }}
-                                                    </td>
+                                                    </td> --}}
                                                     <td>
                                                         <p class="user-name mb-0">
                                                             {{ strtolower($t->username) }}

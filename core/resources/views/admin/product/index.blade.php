@@ -1,5 +1,7 @@
 @extends('admin.layouts.app')
-
+@push('style')
+    <link rel="stylesheet" href="{{ asset('assets/assets/dropify/css/dropify.min.css') }}">
+@endpush
 @section('panel')
     <div class="row">
         <div class="col-lg-12">
@@ -12,7 +14,6 @@
                                     <th scope="col">@lang('Sl')</th>
                                     <th scope="col">@lang('Image')</th>
                                     <th scope="col">@lang('Name')</th>
-                                    <th scope="col">@lang('Type')</th>
                                     <th scope="col">@lang('Price')</th>
                                     <th scope="col">@lang('Stock')</th>
                                     <th scope="col">@lang('Status')</th>
@@ -24,12 +25,11 @@
                                     <tr>
                                         <td data-label="@lang('Sl')">{{ $key + 1 }}</td>
                                         <td data-label="@lang('Image')">
-                                            <img style="width: 300px"
-                                                src="{{ getImage('assets/images/product/' . $product->image, null, true) }}"
+                                            <img style="width: 300px" src="{{ asset($product->image) }}"
                                                 alt="Image {{ $product->name }}" class="img-fluid">
                                         </td>
                                         <td data-label="@lang('Name')">{{ __($product->name) }}</td>
-                                        <td data-label="@lang('Type')">{{ $product->weight }} Gram</td>
+                                        {{-- <td data-label="@lang('Type')">{{ $product->weight }} Gram</td> --}}
                                         <td data-label="@lang('Price')">{{ getAmount($product->price) }}
                                             {{ $general->cur_text }}
                                         <td data-label="@lang('Stock')">
@@ -50,21 +50,22 @@
                                                     class="text--small badge font-weight-normal badge--danger">@lang('Inactive')</span>
                                             @endif
 
-                                            @if ($product->is_reseller == 1)
+                                            {{-- @if ($product->is_reseller == 1)
                                                 <span
                                                     class="text--small badge font-weight-normal badge--primary">@lang('Reseller')</span>
                                             @else
                                                 <span
                                                     class="text--small badge font-weight-normal badge--warning">@lang('Public')</span>
-                                            @endif
+                                            @endif --}}
                                         </td>
 
                                         <td data-label="@lang('Action')">
                                             <button type="button" class="icon-btn edit" data-toggle="tooltip"
                                                 data-id="{{ $product->id }}" data-name="{{ $product->name }}"
                                                 data-status="{{ $product->status }}" data-weight="{{ $product->weight }}"
-                                                data-image="{{ $product->image }}" data-price="{{ $product->price }}"
-                                                data-stok="{{ $product->stok }}" data-original-title="Edit">
+                                                data-image="{{ asset($product->image) }}"
+                                                data-price="{{ $product->price }}" data-stok="{{ $product->stok }}"
+                                                data-original-title="Edit">
                                                 <i class="la la-pencil"></i>
                                             </button>
                                         </td>
@@ -108,34 +109,28 @@
                             <div class="form-group col">
                                 <label class="font-weight-bold"> @lang('Product Image') <small>(recommended image ratio
                                         9:16)</small></label>
-                                <input class="form-control form-control-lg image" type="file" accept="image/*"
-                                    onchange="loadFile(event)" name="images">
+                                <input type="file" id="editImage" class="form-control" name="images" />
+
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label class="font-weight-bold"> @lang('Name')</label>
-                                <input type="text" class="form-control name" name="name" placeholder="Product ABC"
+                                <input type="text" class="form-control name" name="name" placeholder="Product Name"
                                     required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label class="font-weight-bold"> @lang('Price') </label>
                                 <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text">{{ $general->cur_sym }}
+                                    <div class="input-group-prepend"><span class="input-group-text">POINT
                                         </span></div>
-                                    <input type="text" class="form-control price" placeholder="10000" name="price"
+                                    <input type="text" class="form-control price" placeholder="1" name="price"
                                         required>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group col">
-                                <label class="font-weight-bold">@lang('Type')</label>
-                                <input type="number" class="form-control weight" name="weight" step="0.001"
-                                    placeholder="0.001" required>
-                            </div>
-                        </div>
+
                         <div class="form-row">
                             <div class="form-group col">
                                 <label class="font-weight-bold">@lang('Stock')</label>
@@ -151,14 +146,7 @@
                                     name="status" checked>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col">
-                                <label class="font-weight-bold">@lang('Pricing For')</label>
-                                <input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger"
-                                    data-toggle="toggle" data-on="@lang('Reseller')" data-off="@lang('Public')"
-                                    name="reseller" checked>
-                            </div>
-                        </div>
+
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-block btn--primary">@lang('Update')</button>
@@ -186,33 +174,22 @@
                             <div class="form-group col">
                                 <label class="font-weight-bold"> @lang('Product Image') <small>(recommended image ratio
                                         9:16)</small></label>
-                                <input class="form-control form-control-lg" type="file" accept="image/*"
-                                    onchange="loadFile(event)" name="images" required>
+                                <input type="file" id="input-file-now" class="dropify" name="images" />
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label class="font-weight-bold"> @lang('Name')</label>
-                                <input type="text" class="form-control" name="name" placeholder="Product ABC"
+                                <input type="text" class="form-control" name="name" placeholder="Product Names"
                                     required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label class="font-weight-bold"> @lang('Price') </label>
                                 <div class="input-group">
-                                    <div class="input-group-prepend"><span
-                                            class="input-group-text">{{ $general->cur_sym }}
+                                    <div class="input-group-prepend"><span class="input-group-text">POINT
                                         </span></div>
-                                    <input type="text" class="form-control" placeholder="10000" name="price"
-                                        required>
+                                    <input type="text" class="form-control" placeholder="1" name="price" required>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col">
-                                <label class="font-weight-bold">@lang('Type')</label>
-                                <input type="number" class="form-control" name="weight" step="0.001"
-                                    placeholder="0.001" required>
                             </div>
                         </div>
                         <div class="form-row">
@@ -230,14 +207,6 @@
                                     name="status" checked>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col">
-                                <label class="font-weight-bold">@lang('Pricing For')</label>
-                                <input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger"
-                                    data-toggle="toggle" data-on="@lang('Reseller')" data-off="@lang('Public')"
-                                    name="reseller" checked>
-                            </div>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn-block btn btn--primary">@lang('Submit')</button>
@@ -249,25 +218,28 @@
     </div>
 @endsection
 
-{{-- @push('breadcrumb-plugins')
-<a href="javascript:void(0)" class="btn btn-sm btn--success add-product"><i class="fa fa-fw fa-plus"></i>@lang('Add
-    New')</a>
-@endpush --}}
+@push('breadcrumb-plugins')
+    <a href="javascript:void(0)" class="btn btn-sm btn--success add-product"><i
+            class="fa fa-fw fa-plus"></i>@lang('Add
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            New')</a>
+@endpush
 
 @push('script')
+    <script src="{{ asset('assets/assets/dropify/js/dropify.min.js') }}"></script>
     <script>
         "use strict";
         (function($) {
+            $('.dropify').dropify();
+
             $('.edit').on('click', function() {
-                console.log($(this).data('image'));
                 var modal = $('#edit-product');
                 modal.find('.name').val($(this).data('name'));
                 modal.find('.price').val($(this).data('price'));
                 modal.find('.stok').val($(this).data('stok'));
                 modal.find('.weight').val($(this).data('weight'));
                 var input = modal.find('.image');
-                // input.setAttribute("value", "http://localhost/microgold/assets/images/avatar.png");
-
+                var image = $(this).data('image');
+                $('#editImage').attr('data-default-file', image).dropify();
                 if ($(this).data('status')) {
                     modal.find('.toggle').removeClass('btn--danger off').addClass('btn--success');
                     modal.find('input[name="status"]').prop('checked', true);

@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\UserExtra;
 use App\Models\UserLogin;
 use App\Models\UserPin;
+use App\Models\UserPoint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Tree\TreeService;
@@ -554,6 +555,11 @@ class SponsorRegisterController extends Controller
             return response()->json(['status'=>404,'msg'=>"Can't Send Pin To Yourself!"]);
         }
         return response()->json(['status'=>200,'msg'=>'Username Correct: `'.$find->username.' - '.$find->no_bro.'`','data'=>$find]);
+    }
+    public function userPoint(){
+        $data['page_title'] = "POINT User";
+        $data['log'] = UserPoint::where('user_id',auth()->user()->id)->orderByDesc('id')->get();
+        return view($this->activeTemplate . 'user.point', $data);
     }
 
 }

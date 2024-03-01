@@ -42,20 +42,16 @@ class ProductController extends Controller
         if ($request->hasFile('images')) {
             $image = $request->file('images');
             $filename = time() . '_image_' . strtolower(str_replace(" ", "",$prod->name)) . '.jpg';
-            $location = 'assets/images/product/' . $filename;
-            $prod->image = $filename;
-
             $path = './assets/images/product/';
+            $imageSave = $path . $filename;
 
-            $link = $path . $prod->image;
-            if (file_exists($link)) {
-                @unlink($link);
+            $prod->image = '/assets/images/product/'.$filename;
+
+            if (file_exists($imageSave)) {
+                @unlink($imageSave);
             }
-            // $size = imagePath()['product']['size'];
-            $image = Image::make($image);
-            // $size = explode('x', strtolower($size));
-            // $image->crop($size[0], $size[1]);
-            $image->save($location);
+
+            $image->move($path,$filename);
         }
 
         // dd($request->file('images'));
@@ -75,23 +71,18 @@ class ProductController extends Controller
         if ($request->hasFile('images')) {
             $image = $request->file('images');
             $filename = time() . '_image_' . strtolower(str_replace(" ", "",$prod->name)) . '.jpg';
-            $location = 'assets/images/product/' . $filename;
-            $prod->image = $filename;
-
             $path = './assets/images/product/';
 
-            $link = $path . $prod->image;
-            if (file_exists($link)) {
-                @unlink($link);
-            }
-            // $size = imagePath()['product']['size'];
-            $image = Image::make($image);
-            // $size = explode('x', strtolower($size));
-            // $image->crop($size[0], $size[1]);
-            $image->save($location);
-        }
+            $imageSave = '/assets/images/product/'.$filename;
 
-        // dd($request->file('images'));
+            $prod->image = $imageSave;
+            if (file_exists($imageSave)) {
+                @unlink($imageSave);
+            }
+
+            $image->move($path,$filename);
+        }
+        
         $prod->price            = $request->price;
         $prod->weight           = $request->weight;
         $prod->stok           = $request->stok;

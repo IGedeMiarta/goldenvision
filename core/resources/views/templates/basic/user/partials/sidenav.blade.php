@@ -23,22 +23,27 @@
                     </a>
                 </li>
 
-                {{-- <li class="sidebar-menu-item sidebar-dropdown">
+                <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class=" my-2">
                         <i class="menu-icon  las la-tag"></i>
                         <span class="menu-title">@lang('Product')</span>
                     </a>
-                    <div class="sidebar-submenu  ">
+                    <div class="sidebar-submenu">
                         <ul>
-
-                            <li class="sidebar-menu-item  ">
-                                <a href="#" class="nav-link ">
+                            <li class="sidebar-menu-item {{ menuActive('user.pins.view') }} ">
+                                <a href="{{ route('user.point.view') }}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('Point')</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item">
+                                <a href="{{ route('user.product.index') }}" class="nav-link ">
                                     <i class="menu-icon las la-dot-circle"></i>
                                     <span class="menu-title">@lang('Reedem Product')</span>
                                 </a>
                             </li>
                             <li class="sidebar-menu-item  ">
-                                <a href="#" class="nav-link ">
+                                <a href="{{ route('user.product.inv') }}" class="nav-link ">
                                     <i class="menu-icon las la-dot-circle"></i>
                                     <span class="menu-title">@lang('Invoice')</span>
                                 </a>
@@ -51,7 +56,7 @@
                             </li>
                         </ul>
                     </div>
-                </li> --}}
+                </li>
                 @if (auth()->user()->plan_id == 1)
                     <li class="sidebar-menu-item sidebar-dropdown">
                         <a href="javascript:void(0)" class="{{ menuActive('user.my*', 2) }} my-2">
@@ -61,24 +66,6 @@
                         </a>
                         <div class="sidebar-submenu {{ menuActive('user.my*', 2) }} ">
                             <ul>
-                                {{-- <li class="sidebar-menu-item  ">
-                                <a href="#" class="nav-link ">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Cycle Happiness')</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item ">
-                                <a href="#" class="nav-link ">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Geneology Tree')</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item ">
-                                <a href="#" class="nav-link ">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Power line')</span>
-                                </a>
-                            </li> --}}
                                 <li class="sidebar-menu-item {{ menuActive('user.my.tree') }} ">
                                     <a href="{{ route('user.my.tree') }}" class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
@@ -106,6 +93,13 @@
                     </a>
                     <div class="sidebar-submenu {{ menuActive('user.pins*', 2) }} ">
                         <ul>
+
+                            <li class="sidebar-menu-item {{ menuActive('user.pins.view') }} ">
+                                <a href="{{ route('user.pins.view') }}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('Request PIN')</span>
+                                </a>
+                            </li>
                             <li class="sidebar-menu-item {{ menuActive('user.pins.view') }} ">
                                 <a href="{{ route('user.pins.view') }}" class="nav-link">
                                     <i class="menu-icon las la-dot-circle"></i>

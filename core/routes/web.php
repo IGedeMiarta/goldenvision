@@ -652,11 +652,15 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::post('/tarik-emas',[ArchivementController::class,'tarikEmasPost'])->name('terikEmas.post');
 
             Route::get('/user-pin',[SponsorRegisterController::class,'userSendPin'])->name('pins.view');
+            Route::get('/user-point',[SponsorRegisterController::class,'userPoint'])->name('point.view');
             Route::get('pin/log', 'UserReportController@PinDeliveriyLog')->name('pins.PinDeliveriyLog');
 
             Route::get('/Product', 'ProductController@productIndex')->name('product.index');
-
-            // Route::post('/plan', 'PlanController@planStore')->name('plan.purchase');
+            Route::post('/Product-purchase', 'ProductController@productPurchase')->name('product.purchase');
+            Route::post('/Product-cart', 'ProductController@productCart')->name('product.cart');
+            Route::post('/Product-cart/{id}', 'ProductController@productCartUpdate')->name('product.cart.update');
+            Route::get('/Product-invoice', 'ProductController@productInvoice')->name('product.inv');
+            
             Route::get('/referral-log', 'UserController@referralCom')->name('referral.log');
 
             // Route::get('/binary-log', 'PlanController@binaryCom')->name('binary.log');
@@ -714,7 +718,6 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::post('/survey/answers', 'UserController@surveyQuestionsAnswers')->name('survey.questions.answers');
 
             Route::get('gold_invest', 'UserController@goldInvest')->name('gold.invest');
-            Route::post('/Product-purchase', 'ProductController@productPurchase')->name('product.purchase');
             Route::post('/Product-custom', 'CorderController@productCustom')->name('product.custom');
             Route::post('/Product-rcustom', 'CorderController@rproductCustom')->name('product.rcustom');
 

@@ -6,9 +6,11 @@ use App\Models\Plan;
 use App\Models\rekening;
 use App\Models\Test;
 use App\Models\User;
+use App\Models\UserChart;
 use App\Models\UserExtra;
 use App\Models\UserLogin;
 use App\Models\UserPin;
+use App\Models\UserPoint;
 use App\Models\WaitList;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -290,4 +292,31 @@ function checkQuali($user_id){
     }
     Test::create(['test'=>$msg,'user_id'=>$user_id,'status'=>$sts]);
     return true;
+}
+function deliverPoint($user_id,$qty)
+{
+    $user = User::find($user_id);
+
+    $log = new UserPoint();
+    $log->user_id = $user->id;
+    $log->point = $qty;
+    $log->type = '+';
+    $log->start_point = $user->point;
+    $log->end_point = $user->point + $qty;
+    $log->desc = 'User subsribe for ' . $qty/2 . ' ID and get '  . $qty  .' POINT';
+    $log->save();
+
+    $user->point += $qty;
+    $user->save();
+
+}
+function checkCart(){
+    $user =  Auth::user();
+    $cart = UserChart::with('product')->where('user_id',$user->id)->get();
+    return $cart->count() > 0 ? true : false;
+}
+function LoopCart(){
+    $user =  Auth::user();
+    $cart = UserChart::with('product')->where('user_id',$user->id)->get();
+    return $cart;
 }
