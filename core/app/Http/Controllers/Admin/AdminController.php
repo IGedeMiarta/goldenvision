@@ -101,8 +101,6 @@ class AdminController extends Controller
         // $registered = userRegiteredChart();
         // dd($registered);
         $registered = registerThisMount();
-        $mem = memberGrow();
-        $lPin = pinLeader();
         $weekleader = sumPinByWeek();
         // dd($weekleader);
 
@@ -154,20 +152,19 @@ class AdminController extends Controller
 
         $latestUser = User::latest()->limit(6)->get();
         $latesLog = LogActivity::with(['user'])->where('subject','like','%Login.%')->orderByDesc('id')->groupBy('user_id')->limit(4)->get();
-        $leader = User::where('is_leader',1)->where('id','!=',115)->get();
 // dd($leader);
         if(auth()->guard('admin')->user()->role == 'su'){
-            return view('admin.dashboard.dashboard', compact('page_title','date','mem','lPin','weekleader',
+            return view('admin.dashboard.dashboard', compact('page_title','date','weekleader',
                 'widget', 'report', 'withdrawals', 'chart','payment',
-                'paymentWithdraw','latestUser', 'bv', 'depositsMonth','latesLog','leader', 'withdrawalMonth','registered'));
+                'paymentWithdraw','latestUser', 'bv', 'depositsMonth','latesLog', 'withdrawalMonth','registered'));
         }elseif(auth()->guard('admin')->user()->role == 'vu'){
-            return view('admin.dashboard.dasboardView', compact('page_title','date','mem','lPin','weekleader',
+            return view('admin.dashboard.dasboardView', compact('page_title','date','lPin','weekleader',
                 'widget', 'report', 'withdrawals', 'chart','payment',
                 'paymentWithdraw','latestUser', 'bv', 'depositsMonth','latesLog','leader', 'withdrawalMonth','registered'));
         }else{
             return view('admin.dashboard.dashboard_ar', compact('page_title','date',
                 'widget', 'report', 'withdrawals', 'chart','payment','weekleader',
-                'paymentWithdraw','latestUser', 'bv','mem','lPin', 'depositsMonth','latesLog','leader', 'withdrawalMonth','registered','bonusr','bonusa','ure','ure2'));
+                'paymentWithdraw','latestUser', 'bv','mem','lPin', 'depositsMonth','latesLog', 'withdrawalMonth','registered','bonusr','bonusa','ure','ure2'));
         }
 
         

@@ -712,54 +712,12 @@
             }
         });
 
-        var options = {
-            series: @json($mem['series']),
-            chart: {
-                height: 350,
-                type: 'line'
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                curve: 'smooth'
-            },
-            xaxis: {
-                type: 'datetime',
-                categories: @json($mem['date'])
-            },
-            tooltip: {
-                x: {
-                    format: 'dd/MM/yy'
-                },
-            },
-        };
+
 
         var chart = new ApexCharts(document.querySelector("#grow-line"), options);
         chart.render();
 
-        var options = {
-            series: @json($lPin['pin']),
-            chart: {
-                height: 350,
-                type: 'area'
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                curve: 'smooth'
-            },
-            xaxis: {
-                type: 'datetime',
-                categories: @json($lPin['date'])
-            },
-            tooltip: {
-                x: {
-                    format: 'dd/MM/yy'
-                },
-            },
-        };
+
 
         var chart = new ApexCharts(document.querySelector("#leaderPin"), options);
         chart.render();

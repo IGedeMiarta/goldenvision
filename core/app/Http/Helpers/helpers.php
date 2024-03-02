@@ -2962,52 +2962,7 @@ function registerThisMount()
    return $response;
 }
 
-function memberGrow(){
-    $mm = User::where('sharing_profit',1)->get();
-    $startDate = Carbon::now()->startOfMonth();
-    $endDate = Carbon::now()->endOfMonth();
-    $user = [];
-    $dates = [];
-    $totals = [];
 
-    // Initialize dates array
-    for ($date = clone $startDate; $date->lte($endDate); $date->addDay()) {
-        $dates[] = $date->format('d');
-    }
-    foreach($mm as $m){
-       
-
-        $dates = [];
-        $totals = [];
-
-        // Initialize dates array
-        for ($date = clone $startDate; $date->lte($endDate); $date->addDay()) {
-            $dates[] = $date->format('d');
-        }
-        $mm2 = MemberGrow::with(['user'])->where('user_id',$m->id)
-            ->selectRaw('DATE(created_at) as date, grow_l as total_left,grow_r as total_right')
-            ->get();
-
-        foreach ($dates as $date) {
-            $totals[$date] = 0;
-        }
-
-        foreach ($mm2 as $userRegistration) {
-            $date = Carbon::parse($userRegistration->date)->format('d');
-            $totals[$date] = $userRegistration->total_left +  $userRegistration->total_right;
-        }
-        $user[] = [
-            'name' => $m->username,
-            'data' => array_values($totals)
-        ];
-    }
-    $month_date = addMonthNames($dates);
-    $response = [
-        'date' => $month_date,
-        'series' => $user
-    ];
-    return $response;
-}
 function memberGrowId($id){
     $mm = User::find($id);
     $startDate = Carbon::now()->startOfMonth();
@@ -3246,57 +3201,7 @@ function goldNum(){
 }
 
 
-function pinLeader(){
-    $mm = User::where('is_leader',1)->where('username', 'not like', "%masterplan%")->get();
-    $startDate = Carbon::now()->startOfMonth();
-    $endDate = Carbon::now()->endOfMonth();
-    $user = [];
-    $dates = [];
-    $totals = [];
 
-    // Initialize dates array
-    for ($date = clone $startDate; $date->lte($endDate); $date->addDay()) {
-        $dates[] = $date->format('d');
-    }
-    foreach($mm as $m){
-       
-
-        $dates = [];
-        $totals = [];
-
-        // Initialize dates array
-        for ($date = clone $startDate; $date->lte($endDate); $date->addDay()) {
-            $dates[] = $date->format('d');
-        }
-        $mm2 = UserPin::select('user_id', DB::raw('DATE(created_at) AS date'), DB::raw('SUM(pin) as pin'))
-                ->where('user_id', $m->id)
-                ->where('ket','like','%Sponsor Send%')
-                ->whereBetween('created_at', [$startDate, $endDate])
-                ->groupBy('user_id', 'date')
-                ->orderBy('date')
-                ->get()
-                ->toArray();
-        foreach ($dates as $date) {
-            $totals[$date] = 0;
-        }
-        // dd($totals);
-        foreach ($mm2 as $ms) {
-            // dd($ms['date']);
-            $date = Carbon::parse($ms['date'])->format('d');
-            $totals[$date] = $ms['pin'];
-        }
-        $user[] = [
-            'name' => $m->username,
-            'data' => array_values($totals)
-        ];
-    }
-    $month_date = addMonthNames($dates);
-    $response = [
-        'date' => $month_date,
-        'pin' => $user
-    ];
-    return $response;
-}
 
 
 function getMonthlyPinTotals($userId=1)
