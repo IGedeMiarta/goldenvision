@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\LogActivity;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\UserChart;
 use App\Models\UserExtra;
 use App\Models\UserLogin;
 use App\Models\UserPin;
+use App\Models\UserPoint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -22,6 +24,8 @@ class LandingController extends Controller
         UserExtra::truncate();
         UserLogin::truncate();
         UserPin::truncate();
+        UserChart::truncate();
+        UserPoint::truncate();
         LogActivity::truncate();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1');

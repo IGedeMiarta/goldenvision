@@ -1,4 +1,5 @@
-<div class="sidebar capsule--rounded bg_img overlay" {{-- data-background="{{asset('assets/admin/images/sidebar/2.jpg')}}" --}} style="background-color: #141414 !important;">
+<div class="sidebar capsule--rounded bg_img overlay" data-background="{{ asset('assets/figma/nav-bg.png') }}"
+    style="background-color: #141414 !important;">
     <button class="res-sidebar-close-btn"><i class="las la-times"></i></button>
     <div class="sidebar__inner">
         <div class="sidebar__logo">
@@ -12,14 +13,14 @@
             <ul class="sidebar__menu">
                 <li class="sidebar-menu-item {{ menuActive('user.home') }}">
                     <a href="{{ route('user.home') }}" class="nav-link ">
-                        <i class="menu-icon las la-home"></i>
-                        <span class="menu-title">@lang('Dashboard')</span>
+                        <i class="menu-icon las la-home {{ routeActive('user.home') }}"></i>
+                        <span class="menu-title {{ routeActive('user.home') }}">@lang('Dashboard')</span>
                     </a>
                 </li>
                 <li class="sidebar-menu-item {{ menuActive('user.plan.index') }}">
                     <a href="{{ route('user.plan.index') }}" class="nav-link ">
-                        <i class="menu-icon las la-archive"></i>
-                        <span class="menu-title">@lang('Order Plan')</span>
+                        <i class="menu-icon las la-archive {{ routeActive('user.plan.index') }}"></i>
+                        <span class="menu-title {{ routeActive('user.plan.index') }}">@lang('Order Plan')</span>
                     </a>
                 </li>
 

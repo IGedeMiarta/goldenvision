@@ -3,6 +3,7 @@
 use App\Models\AdminNotification;
 use App\Models\GeneralSetting;
 use App\Models\Plan;
+use App\Models\Rank;
 use App\Models\rekening;
 use App\Models\Test;
 use App\Models\User;
@@ -319,4 +320,25 @@ function LoopCart(){
     $user =  Auth::user();
     $cart = UserChart::with('product')->where('user_id',$user->id)->get();
     return $cart;
+}
+
+function checkRank($userID){
+    $user = User::with('userExtra')->find($userID);
+    $directSponsor = User::where('ref_id',$userID)->count();
+    $left = $user->userExtra->left;
+    $right = $user->userExtra->right;
+
+    $ranks = Rank::orderByDesc('id')->get();
+
+    foreach ($ranks as $value) {
+        if($directSponsor >= $value->direct_sponsor && $value->direct_sponsor != 0){
+            if(($left >= $value->mark1 && $right >= $value->mark2) || ($left >= $value->mark2 && $right >= $value->mark1)){
+                $user->update([
+                    'rank' => $value->id
+                ]);
+            }
+        }
+    }
+
+    
 }
