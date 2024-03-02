@@ -1926,24 +1926,25 @@ function showSingleUserinTree($resp)
          if($upline){
              
              if ($upline == auth()->user()->no_bro && auth()->user()->userExtra->is_gold || $pos == 2) {
-                $img = getImage($user->ranks->logo);
+                $img = getImage('assets/images/add2.jpg', null, true);
 
                 # code...
                 $addList = 'btnUser';
             }else{
-                $img = getImage($user->ranks->logo);
+                 $img = getImage('assets/images/add2.jpg', null, true);
                 
 
                 $addList = 'noUser';
             }
+           
         }else{
-            $img = getImage($user->ranks->logo);
+             $img = getImage('assets/images/add2.jpg', null, true);
             
             $addList = 'noUser';
         }
         $res .= '<div class="user '.$addList.' " data-upline="'.$bro.'" data-pos="'.$pos.'" data-up="'.$uname.'" type="button">';
         // $res .= '<div class="user btnUser" type="button">';
-        $res .= '<img src="'.$img.'" alt="*"  class="no-user imgUser'.$pos.$bro.'">';
+        $res .= '<img src="'.$img.'" alt="*"  class="no-user imgUser'.$pos.$bro.'" style="border-radius:50%">';
 
 
     }
