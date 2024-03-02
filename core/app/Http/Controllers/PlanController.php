@@ -177,6 +177,7 @@ class PlanController extends Controller
                 fnDelWaitList(Auth::user()->id);
                 
                 deliverPoint(Auth::user()->id,$request->qty*2);
+                leaderCommission(Auth::user()->id);
                 
                 DB::commit();
                 $notify[] = ['success', 'Successfully Purchased Plan'];
@@ -269,6 +270,8 @@ class PlanController extends Controller
             fnDelWaitList(Auth::user()->id);
             
             deliverPoint(Auth::user()->id,$request->qty*2);
+            leaderCommission(Auth::user()->id);
+
             DB::commit();
             $notify[] = ['success', 'Purchased ' . $plan->name . 'and Registered New  '.$registeredUser.' Account Successfully'];
             return redirect()->route('user.my.tree')->withNotify($notify);
