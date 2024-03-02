@@ -85,11 +85,36 @@
 @endpush
 
 @section('panel')
-    <div class="row d-flex justify-content-center">
+    <div class="row">
         @foreach ($plans as $data)
+            <div class="card col-md-3" style="background-color: #000000; border-radius: 15px">
+                <div class="card-body  ">
+                    <div class="text" style="display: flex; justify-content: space-between;">
+                        <h5 class="text-warning">
+                            {{ $data->name }}
+                        </h5>
+                        <i class="fas fa-star text-warning"></i>
+                    </div>
+                    <div class="text-price d-flex">
+                        <h2 class="text-white">Rp {{ nb($data->price) }} <span class="text-small text-white">/
+                                PIN</span>
+                        </h2>
+                    </div>
+                    <div class="text-price-info d-flex mt-n4">
+                        <h2 class="text-white"><span class="text-small secondary">Use Your {{ auth()->user()->pin }}
+                                PIN to
+                                Buy</span>
+                        </h2>
+                    </div>
+                    <div class="preview-info">
+
+                    </div>
+                </div>
+            </div>
+
             <div class="col-xl-4 col-md-6 mb-30">
 
-                <div class="card" style="border-radius: 15px" style="width: 400px">
+                <div class="card" style="border-radius: 15px">
 
                     <div class="card-body pt-5 pb-5 ">
                         <div class="pricing-table text-center mb-4">
@@ -116,8 +141,6 @@
                         @else
                             <a data-toggle="modal"
                                 class="btn w-100 btn-outline--primary  mt-20 py-2 box--shadow1">@lang('Already Subscribe')</a>
-                            {{-- <a href="#confBuyMP{{ $data->id }}" data-toggle="modal"
-                                class="btn  w-100 btn--primary  mt-20 py-2 box--shadow1">@lang('Buy MP')</a> --}}
                         @endif
                     </div>
 

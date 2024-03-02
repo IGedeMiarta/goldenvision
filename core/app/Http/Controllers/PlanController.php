@@ -33,9 +33,9 @@ class PlanController extends Controller
         $data['sponsor'] = $findUser?->userExtra->is_gold?$findUser:false;
         $data['pos'] = $pos;
 
-        $data['page_title'] = "Plans";
+        $data['page_title'] = "Order Plan";
         $data['plans'] = Plan::whereStatus(1)->get();
-        return view($this->activeTemplate . '.user.plan', $data);
+        return view($this->activeTemplate . '.user.new-plan', $data);
     }
     public function repeatOrder(){
         $data['page_title'] = "Reapeat Order";

@@ -24,59 +24,59 @@
                     </a>
                 </li>
 
-                <li class="sidebar-menu-item sidebar-dropdown {{ auth()->user()->point == 0 ? 'd-none' : '' }}">
+                <li
+                    class="sidebar-menu-item sidebar-dropdown {{ menuActive('user.product*', 2) }} {{ auth()->user()->point == 0 ? 'd-none' : '' }}">
                     <a href="javascript:void(0)" class=" my-2">
-                        <i class="menu-icon  las la-tag"></i>
-                        <span class="menu-title">@lang('Product')</span>
+                        <i class="menu-icon  las la-tag {{ menuActive('user.product*', 2) }}"></i>
+                        <span class="menu-title {{ menuActive('user.product*', 2) }}">@lang('Product')</span>
                     </a>
-                    <div class="sidebar-submenu">
+                    <div class="sidebar-submenu {{ menuActive('user.product*', 2) }}">
                         <ul>
-                            <li class="sidebar-menu-item {{ menuActive('user.pins.view') }} ">
-                                <a href="{{ route('user.point.view') }}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Point')</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-menu-item">
+                            <li class="sidebar-menu-item {{ menuActive('user.product.index') }}">
                                 <a href="{{ route('user.product.index') }}" class="nav-link ">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Reedem Product')</span>
+                                    <i class="menu-icon las la-dot-circle {{ routeActive('user.product.index') }}"></i>
+                                    <span
+                                        class="menu-title {{ routeActive('user.product.index') }}">@lang('Reedem Product')</span>
                                 </a>
                             </li>
-                            <li class="sidebar-menu-item  ">
+                            <li class="sidebar-menu-item  {{ menuActive('user.product.inv') }}">
                                 <a href="{{ route('user.product.inv') }}" class="nav-link ">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Invoice')</span>
+                                    <i class="menu-icon las la-dot-circle {{ routeActive('user.product.inv') }}"></i>
+                                    <span
+                                        class="menu-title {{ routeActive('user.product.inv') }}">@lang('Invoice')</span>
                                 </a>
                             </li>
-                            <li class="sidebar-menu-item  ">
+                            {{-- <li class="sidebar-menu-item  ">
                                 <a href="#" class="nav-link ">
                                     <i class="menu-icon las la-dot-circle"></i>
                                     <span class="menu-title">@lang('Tracking Product')</span>
                                 </a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </div>
                 </li>
                 @if (auth()->user()->plan_id == 1)
                     <li class="sidebar-menu-item sidebar-dropdown">
                         <a href="javascript:void(0)" class="{{ menuActive('user.my*', 2) }} my-2">
-                            <i class="menu-icon las la-code-branch"
+                            <i class="menu-icon las la-code-branch {{ menuActive('user.my*', 2) }}"
                                 style="-webkit-transform: rotate(180deg);-moz-transform: rotate(180deg);-ms-transform: rotate(180deg);-o-transform: rotate(180deg);transform: rotate(180deg);"></i>
-                            <span class="menu-title">@lang('My Network')</span>
+                            <span class="menu-title {{ menuActive('user.my*', 2) }}">@lang('My Network')</span>
                         </a>
                         <div class="sidebar-submenu {{ menuActive('user.my*', 2) }} ">
                             <ul>
                                 <li class="sidebar-menu-item {{ menuActive('user.my.tree') }} ">
                                     <a href="{{ route('user.my.tree') }}" class="nav-link">
-                                        <i class="menu-icon las la-dot-circle"></i>
-                                        <span class="menu-title">@lang('Geneology Tree')</span>
+                                        <i class="menu-icon las la-dot-circle {{ routeActive('user.my.tree') }}"></i>
+                                        <span
+                                            class="menu-title {{ routeActive('user.my.tree') }}">@lang('Geneology Tree')</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-menu-item {{ menuActive('user.my.referral') }} ">
                                     <a href="{{ route('user.my.referral') }}" class="nav-link">
-                                        <i class="menu-icon las la-dot-circle"></i>
-                                        <span class="menu-title">@lang('Referals Tree')</span>
+                                        <i
+                                            class="menu-icon las la-dot-circle {{ routeActive('user.my.referral') }}"></i>
+                                        <span
+                                            class="menu-title {{ routeActive('user.my.referral') }}">@lang('Referals Tree')</span>
                                     </a>
                                 </li>
 

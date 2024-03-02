@@ -687,9 +687,9 @@ function getPaginate($paginate = 20)
 function menuActive($routeName, $type = null)
 {
     if ($type == 3) {
-        $class = 'side-menu--open';
+        $class = 'side-menu--open text-warning';
     } elseif ($type == 2) {
-        $class = 'sidebar-submenu__open';
+        $class = 'sidebar-submenu__open text-warning';
     } else {
         $class = 'active text-warning';
     }
