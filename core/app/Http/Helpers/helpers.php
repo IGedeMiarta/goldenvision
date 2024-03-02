@@ -1136,6 +1136,55 @@ function monolegSaving($id, $amount, $username, $type)
 
 }
 
+function leaderCommission($id, $qty)
+{
+    $from = $id;
+    $gnl = GeneralSetting::first();
+    $com = 75000;
+    while ($id != "" || $id != "0") {
+        if (isUserExists($id)) {
+            $refid = getRefId($id);
+            $user = user::find($id);
+            $userRef = user::find($refid);
+            if ($refid == "0") {
+                break;
+            }
+            if ($userRef->rank == 0) {
+                $id = $refid;
+                continue;
+            }
+            if($user->rank == $userRef->rank){
+                break;
+            }
+            $amount = $userRef->ranks->leader_bonus;
+            $com = $com - $userRef->ranks->leader_bonus;
+            if(($com - $userRef->ranks->leader_bonus) <= 0){
+                $amount += $com;
+            }
+
+            if ($userRef->plan_id != 0) {
+                $userRef->balance += $amount * $qty;
+                $userRef->save();
+                $userRef->transactions()->create([
+                    'amount' => $amount * $qty,
+                    'charge' => 0,
+                    'trx_type' => '+',
+                    'details' => 'Paid Leadership Commission ' . $amount * $qty . ' ' . $gnl->cur_text,
+                    'trx' => getTrx(),
+                    'post_balance' => getAmount($userRef->balance),
+                ]);
+            }
+            if ($com <= 0){
+                break;
+            }
+            $id = $refid;
+                
+        } else {
+            break;
+        }
+    }
+}
+
 function findBottomLeg($nodeId)
 {
     $bottomLeg = [];
