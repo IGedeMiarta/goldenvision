@@ -337,6 +337,10 @@ function checkRank($userID){
                     'rank' => $value->id
                 ]);
             }
+        }elseif($directSponsor >= $value->direct_sponsor && $directSponsor < 4){
+            $user->update([
+                'rank' => $value->id
+            ]);
         }
     }
 
