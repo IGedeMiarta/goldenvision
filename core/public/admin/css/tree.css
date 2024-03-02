@@ -299,15 +299,7 @@
     background-color: #ffffff;
     z-index: 2;
 }
-.paid-user {
-    border: 5px solid #2ecc71;
-}
-.free-user {
-    border: 5px solid #101536;
-}
-.no-user {
-    border: 5px solid #ddd;
-}
+
 .user-details-modal-area .modal-body {
     padding: 0;
 }

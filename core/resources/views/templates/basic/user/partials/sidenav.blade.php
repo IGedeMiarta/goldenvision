@@ -24,7 +24,7 @@
                     </a>
                 </li>
 
-                <li class="sidebar-menu-item sidebar-dropdown">
+                <li class="sidebar-menu-item sidebar-dropdown {{ auth()->user()->point == 0 ? 'd-none' : '' }}">
                     <a href="javascript:void(0)" class=" my-2">
                         <i class="menu-icon  las la-tag"></i>
                         <span class="menu-title">@lang('Product')</span>

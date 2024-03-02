@@ -2,16 +2,7 @@
     border: 1px solid #000;
     padding: 15px;
 }
-.bg-pink{
-    background: #FAEF5D;
 
-}
-.bg-silver{
-    background: linear-gradient(#8b8a8b, #fff);
-}
-.bg-gold{
-   background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(0,212,255,1) 0%, rgba(9,9,121,1) 66%);
-}
 
 
 .user{
@@ -29,7 +20,6 @@
 .user img {
     width: 100px;
     height: 100px;
-    border-radius: 50%;
     object-fit: cover;
     position: relative;
     z-index: 99;
@@ -326,27 +316,6 @@
     border-radius: 50%;
     background-color: #ffffff;
     z-index: 2;
-}
-.paid-user {
-    border: 5px solid #6895D2;
-}
-.free-user {
-    border: 5px solid #C0C0C0;
-}
-.gold-user {
-    border: 5px solid #6895D2;
-}
-.silver-user {
-    border: 5px solid #C0C0C0;
-}
-.no-user {
-    border: 5px solid #ddd;
-}
-.select-user {
-    border: 10px solid #00f60e;
-}
-.active-user {
-    border: 12px solid #fb00e5;
 }
 .user-details-modal-area .modal-body {
     padding: 0;

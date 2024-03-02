@@ -267,8 +267,6 @@ class PlanController extends Controller
 
                
             }
-
-            fnDelWaitList(Auth::user()->id);
             
             deliverPoint(Auth::user()->id,$request->qty*2);
             
@@ -287,6 +285,7 @@ class PlanController extends Controller
     }
     function placementFirstAccount($user,$request,$ref_user,$plan,$sponsor)
     {
+
         $gnl = GeneralSetting::first();
         try {
             
@@ -295,29 +294,27 @@ class PlanController extends Controller
             if($pos['position'] == 0){
                 return false;
             }
-            // $wait = fnWaitingList($user->id,$pos['pos_id'],$pos['position']);
-            // if($wait){
-            //     return false;
-            //     sleep(rand(1,6));
-            //     $pos = getPosition($ref_user->id, $request->position);
-            // }
+            $user = User::find($user->id);
             $user->ref_id           = $sponsor->id; // ref id = sponsor
             $user->pos_id           = $pos['pos_id']; //pos id = upline
             $user->position         = $pos['position'];
             $user->position_by_ref  = $ref_user->position;
             $user->plan_id          = $plan->id;
-            $user->pin              -= $request->package;
             $user->total_invest     += ($plan->price * 1);
             $user->save();
 
             $spin = UserPin::create([
                 'user_id' => $user->id,
-                'pin'     => $request->package,
+                'pin'     => $request->qty,
                 'pin_by'  => $user->id,
                 'type'      => "-",
                 'start_pin' => $user->pin,
-                'end_pin'   => $user->pin - ($request->package-1),
-                'ket'       => 'Sponsor Subscibe and Create '.$request->package.'New User'
+                'end_pin'   => $user->pin - ($request->qty),
+                'ket'       => 'Sponsor Subscibe and Create '.$request->qty.' New User'
+            ]);
+
+            $user->update([
+                'pin' => $spin->end_pin
             ]);
 
         

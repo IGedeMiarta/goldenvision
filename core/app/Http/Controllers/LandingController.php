@@ -74,7 +74,7 @@ class LandingController extends Controller
                     'country' => 'Indonesia',
                     'city' => ''
                 ],
-                'pin'       => 25,
+                'pin'       => 10,
                 'status'    => 1,
                 'ev'        => 1,
                 'sv'        => 1,

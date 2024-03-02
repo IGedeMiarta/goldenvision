@@ -61,6 +61,7 @@ function fnRegisterUser($sponsor,$broUpline,$position,$firstname,$lastname,$user
         }
 
         updateCycleNasional($user->id);
+        checkRank($user->id,'single');
 
         sendEmail2($user->id,'sponsor_register',[
             'email' => $user->email,
@@ -322,7 +323,7 @@ function LoopCart(){
     return $cart;
 }
 
-function checkRank($userID){
+function checkRank($userID, $type = null){
     $user = User::with('userExtra')->find($userID);
     $directSponsor = User::where('ref_id',$userID)->count();
     $left = $user->userExtra->left;
@@ -330,18 +331,24 @@ function checkRank($userID){
 
     $ranks = Rank::orderByDesc('id')->get();
 
-    foreach ($ranks as $value) {
-        if($directSponsor >= $value->direct_sponsor && $value->direct_sponsor != 0){
-            if(($left >= $value->mark1 && $right >= $value->mark2) || ($left >= $value->mark2 && $right >= $value->mark1)){
+    if($type == null){
+        foreach ($ranks as $value) {
+            if($directSponsor >= $value->direct_sponsor && $value->direct_sponsor != 0){
+                if(($left >= $value->mark1 && $right >= $value->mark2) || ($left >= $value->mark2 && $right >= $value->mark1)){
+                    $user->update([
+                        'rank' => $value->id
+                    ]);
+                }
+            }elseif($directSponsor >= $value->direct_sponsor && $directSponsor < 4){
                 $user->update([
                     'rank' => $value->id
                 ]);
             }
-        }elseif($directSponsor >= $value->direct_sponsor && $directSponsor < 4){
-            $user->update([
-                'rank' => $value->id
-            ]);
         }
+    }else{
+        $user->update([
+            'rank' => 1
+        ]);
     }
 
     

@@ -1672,7 +1672,7 @@ function getPositionUser($id, $position)
 function showTreePage($id)
 {
     $res = array_fill_keys(array('b', 'c', 'd', 'e', 'f', 'g'), null);
-    $user = User::find($id);
+    $user = User::with('ranks')->find($id);
     $res['left'] = ['user'=>getPositionUser($id, 1),'upline'=>'2','pos'=>1];
     $res['right'] =['user'=>getPositionUser($id, 2),'upline'=>'2','pos'=>1];
 
@@ -1841,15 +1841,6 @@ function showSingleUserinTree($resp)
     $pos = $resp['pos'];
     // dd($user);
     if ($user) {
-        // if ($user->plan_id == 0) {
-        //     $userType = "free-user";
-        //     $stShow = "Free";
-        //     $planName = '';
-        // } else {
-        //     $userType = "paid-user";
-        //     $stShow = "Paid";
-        //     $planName = $user->plan->name;
-        // }
         if($user->userExtra->is_gold){
            
             $userType = "paid-user";
@@ -1867,7 +1858,8 @@ function showSingleUserinTree($resp)
 
         }
 
-        $img = getImage('assets/images/user/profile/'. $user->image, null, true);
+        // $img = getImage('assets/images/user/profile/'. $user->image, null, true);
+        $img = getImage($user->ranks->logo);
 
         $refby = getUserById($user->ref_id)->fullname ?? '';
         $posby = getUserById($user->pos_id)->username ?? '';
@@ -1934,16 +1926,19 @@ function showSingleUserinTree($resp)
          if($upline){
              
              if ($upline == auth()->user()->no_bro && auth()->user()->userExtra->is_gold || $pos == 2) {
-                $img = getImage('assets/images/add2.jpg', null, true);
+                $img = getImage($user->ranks->logo);
+
                 # code...
                 $addList = 'btnUser';
             }else{
-                $img = getImage('assets/images/', null, true);
+                $img = getImage($user->ranks->logo);
+                
 
                 $addList = 'noUser';
             }
         }else{
-            $img = getImage('assets/images/', null, true);
+            $img = getImage($user->ranks->logo);
+            
             $addList = 'noUser';
         }
         $res .= '<div class="user '.$addList.' " data-upline="'.$bro.'" data-pos="'.$pos.'" data-up="'.$uname.'" type="button">';
@@ -1971,7 +1966,6 @@ function showSingleUserNoLine($resp)
 
     }
     $pos = $resp['pos'];
-    // dd($user);
     if ($user) {
         // if ($user->plan_id == 0) {
         //     $userType = "free-user";
@@ -1997,7 +1991,7 @@ function showSingleUserNoLine($resp)
 
         }
 
-        $img = getImage('assets/images/user/profile/'. $user->image, null, true);
+        $img = getImage($user->ranks->logo, null, true);
 
         $refby = getUserById($user->ref_id)->fullname ?? '';
         $posby = getUserById($user->pos_id)->username ?? '';
@@ -2067,13 +2061,12 @@ function showSingleUserNoLine($resp)
                 # code...
                 $addList = 'btnUser';
             }else{
-                $img = getImage('assets/images/', null, true);
-
-                $addList = 'noUser';
+                 $img = getImage('assets/images/add2.jpg', null, true);
+                # code...
+                $addList = 'btnUser';
             }
         $res .= '<div class="user '.$addList.' " data-upline="'.$upline.'" data-pos="'.$pos.'" data-up="'.$uname.'" type="button">';
-        // $res .= '<div class="user btnUser" type="button">';
-        $res .= '<img src="'.$img.'" alt="*"  class="no-user imgUser'.$pos.$upline.'">';
+        $res .= '<img src="'.$img.'" alt="*"  class="no-user imgUser'.$pos.$upline.'" style="border-radius:50%">';
 
 
     }
