@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\LogActivity;
+use App\Models\ProductOrder;
+use App\Models\ProductOrderDetail;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserChart;
@@ -23,6 +25,8 @@ class LandingController extends Controller
         User::truncate();
         UserExtra::truncate();
         UserLogin::truncate();
+        ProductOrder::truncate();
+        ProductOrderDetail::truncate();
         UserPin::truncate();
         UserChart::truncate();
         UserPoint::truncate();

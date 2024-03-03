@@ -11,6 +11,6 @@
 @endpush
 
 @section('panel')
-    {{-- @include($activeTemplate . 'user.dashboard.newcard') --}}
-    @include($activeTemplate . 'user.dashboard.cardInfo')
+    @include($activeTemplate . 'user.dashboard.newcard')
+    {{-- @include($activeTemplate . 'user.dashboard.cardInfo') --}}
 @endsection
