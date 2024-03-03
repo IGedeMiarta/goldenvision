@@ -193,26 +193,29 @@
         </div>
     </div>
     <div class="col-md-4 mb-30 text-center">
-
-        <div class="row" style="max-height: 200px; margin-top: 25px;">
-            <div class="col-md-12 mb-3">
-                <div class="card"
-                    style="height: 90px; border-radius: 20px; background-color: #0A0A0A; background-image: url('{{ asset('assets/figma/nav-bg2.png') }}') !important;  
+        @if (auth()->user()->rank != 0)
+            <div class="row" style="max-height: 200px; margin-top: 25px;">
+                <div class="col-md-12 mb-3">
+                    <div class="card"
+                        style="height: 90px; border-radius: 20px; background-color: #0A0A0A; background-image: url('{{ asset('assets/figma/nav-bg2.png') }}') !important;  
                 background-position: end;
                 background-repeat: no-repeat;
                 background-size: cover;">
-                    <div class="card-body" style="display: flex; justify-content: start;">
-                        <div class="text-icon" style="display: flex; align-items: center;">
-                            <img src="{{ asset(auth()->user()->ranks->logo) }}" alt="logo" style="max-width: 80px">
-                        </div>
-                        <div style="display: block; text-align: start;" class="mb-3">
-                            <span style="color: #E6CD78">My Rank</span>
-                            <h4 style="color: white;">{{ auth()->user()->ranks->name }}</h4>
+                        <div class="card-body" style="display: flex; justify-content: start;">
+                            <div class="text-icon" style="display: flex; align-items: center;">
+                                <img src="{{ asset(auth()->user()->ranks->logo) }}" alt="logo"
+                                    style="max-width: 80px">
+                            </div>
+                            <div style="display: block; text-align: start;" class="mb-3">
+                                <span style="color: #E6CD78">My Rank</span>
+                                <h4 style="color: white;">{{ auth()->user()->ranks->name }}</h4>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
+
     </div>
     <div class="col-md-4 mb-30">
         <p style="color: black">Refferal Link</p>
