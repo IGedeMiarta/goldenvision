@@ -52,11 +52,12 @@ function fnRegisterUser($sponsor,$broUpline,$position,$firstname,$lastname,$user
             'acc_number' => $acc_number,
         ];
         
-        $user = fnCreateNewUser($data);  //register user
+        $user = fnCreateNewUser($data);
+
+        updateLimit($user->group); //update limit RO
+
         $plan = fnPlanStore($data,$user);
         if(!$plan){
-            // dd($plan,'false_plan');
-
             return false;
         }
 
@@ -157,6 +158,7 @@ function fnCreateNewUser(array $data)
             'new_ps'    => 1,
 
         ]);
+
         UserExtra::create([
             'user_id' => $user->id
         ]);
@@ -175,7 +177,7 @@ function fnCreateNewUser(array $data)
         $adminNotification->title = 'New member registered By Sponsor: '.$data['sponsor']->username;
         $adminNotification->click_url = route('admin.users.detail', $user->id);
         $adminNotification->save();
-
+    
        return $user;
     } catch (\Throwable $th) {
         return $th->getMessage();
@@ -350,6 +352,9 @@ function checkRank($userID, $type = null){
             'rank' => 1
         ]);
     }
-
-    
+}
+function updateLimit($userID){
+    $user = User::find($userID);
+    $user->limit_ro += 2500000;
+    $user->save();
 }

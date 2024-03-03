@@ -175,6 +175,20 @@ class UserController extends Controller
             'data'      => $rek
         ]);
     }
+    public function checkUser($username){
+        $user = User::where('username',$username)->first();
+        if($user){
+            return response()->json([
+                'status'=>true,
+                'username' => $user->username,
+                'fullname'  => $user->fullname
+            ]);
+        }else{
+            return response()->json([
+                'status'=>false
+            ]);
+        }
+    }
     public function goldRates(){
         $gold  = DailyGold::all()->take(-7);
         $data = [];

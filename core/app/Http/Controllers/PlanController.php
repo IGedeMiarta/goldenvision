@@ -106,12 +106,6 @@ class PlanController extends Controller
         ]);
         $checkloop  = $request->qty > 1  ? true:false;
         $checkBankAcc = rekening::where('user_id',auth()->user()->id)->first();
-        // if ($checkloop) {
-        //     if(!$checkBankAcc){
-        //         $notify[] = ['error', 'Please Field your bank acc before subscibe more than 1 account'];
-        //         return redirect()->intended('/user/profile-setting')->withNotify($notify);
-        //     }
-        // }
         $waitlistUserID = [];
         DB::beginTransaction();
         try {
@@ -157,14 +151,9 @@ class PlanController extends Controller
                 return back()->withNotify($notify);
             }
             
-            // if ($user->pos_id == 0) {
-            //     monolegTree($sponsor->id, $request->qty,$request['position']);
-            //     // dd('adsad');
-            // }else{
-            //     monolegTree(auth()->user()->id, $request->qty,$request['position']);
-            // }
 
             $firstUpline = $this->placementFirstAccount($user,$request,$ref_user,$plan,$sponsor);
+            updateLimit($firstUpline->id);
             
             if($firstUpline == false){
                 $notify[] = ['error', 'Invalid On First Placement, Rollback'];
