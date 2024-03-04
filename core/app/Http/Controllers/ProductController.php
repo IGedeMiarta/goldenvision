@@ -110,7 +110,7 @@ class ProductController extends Controller
             DB::commit();
 
             $notify[] = ['success', 'Purchased Product Successfully'];
-            return redirect()->route('user.home')->withNotify($notify);
+            return redirect()->route('user.product.inv')->withNotify($notify);
         } catch (\Throwable $th) {
            DB::rollBack();
             $notify[] = ['success', 'Error:' . $th->getMessage() ];
@@ -120,8 +120,21 @@ class ProductController extends Controller
         
     }
     public function productInvoice(){
-        $data['page_title'] = "All Invoice";
+        $data['page_title'] = "Invoice";
         $data['inv'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->get();
+        $data['wait'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',1)->count();
+        $data['deliver'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',2)->count();
+        $data['accept'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',3)->count();
+        $data['reject'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',4)->count();
         return view('templates.basic.user.product.inv',$data);
+    }
+    public function productTracking(){
+        $data['page_title'] = "Tracking Product";
+        $data['inv'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->get();
+        $data['wait'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',1)->count();
+        $data['deliver'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',2)->count();
+        $data['accept'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',3)->count();
+        $data['reject'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',4)->count();
+        return view('templates.basic.user.product.tracking',$data);
     }
 }

@@ -46,12 +46,12 @@
                                         class="menu-title {{ routeActive('user.product.inv') }}">@lang('Invoice')</span>
                                 </a>
                             </li>
-                            {{-- <li class="sidebar-menu-item  ">
-                                <a href="#" class="nav-link ">
+                            <li class="sidebar-menu-item  ">
+                                <a href="{{ route('user.product.tracking') }}" class="nav-link ">
                                     <i class="menu-icon las la-dot-circle"></i>
                                     <span class="menu-title">@lang('Tracking Product')</span>
                                 </a>
-                            </li> --}}
+                            </li>
                         </ul>
                     </div>
                 </li>

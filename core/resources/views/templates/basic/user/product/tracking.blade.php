@@ -88,8 +88,8 @@
 @endpush
 @section('panel')
     <div class="mb-3">
-        <button class=" btn btn-warning mr-2 mt-2">Waiting Approve: {{ $wait }}</button>
-        <button class=" btn btn-success  mr-2 mt-2">Accepted : {{ $accept }}</button>
+        <button class=" btn btn-warning mr-2 mt-2">On Delivery: {{ $deliver }}</button>
+        <button class=" btn btn-success  mr-2 mt-2">Completed : {{ $accept }}</button>
         <button class=" btn btn-danger mt-2">Rejected : {{ $reject }}</button>
     </div>
     <div class="table-responsive">
@@ -97,11 +97,12 @@
             <thead style="background-color: #E8BC00">
                 <tr>
                     <th>No</th>
-                    <th>Invoice</th>
+                    <th>Invoice No</th>
                     <th>Date</th>
                     <th>Status</th>
-                    <th>Amount</th>
-                    <th>Action</th>
+                    <th>Receipt Number</th>
+                    <th>Agent</th>
+                    <th>Tracking</th>
                 </tr>
             </thead>
             <tbody style="background-color: white">
@@ -122,16 +123,19 @@
                             @elseif($item->status == 2)
                                 <span class="badge badge-warning">On Delivery</span>
                             @elseif($item->status == 3)
-                                <span class="badge badge-success">Accepted</span>
+                                <span class="badge badge-success">Completed</span>
                             @else
                                 <span class="badge badge-danger">Rejected</span>
                             @endif
                         </td>
                         <td>
-                            {{ $item->total_order }} RP
+                            {{ $item->resi }}
+                        </td>
+                        <td>
+                            {{ $item->agen }}
                         </td>
                         <td style="white-space:nowrap;">
-                            <a href="#" style="color: #8C8C8C;text-decoration: underline;">View Invoice</a>
+                            <a href="#" style="color: #8C8C8C;text-decoration: underline;">Check Agent</a>
                         </td>
 
                     </tr>

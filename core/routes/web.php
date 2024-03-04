@@ -660,6 +660,7 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::post('/Product-cart', 'ProductController@productCart')->name('product.cart');
             Route::post('/Product-cart/{id}', 'ProductController@productCartUpdate')->name('product.cart.update');
             Route::get('/Product-invoice', 'ProductController@productInvoice')->name('product.inv');
+            Route::get('/Product-tracking', 'ProductController@productTracking')->name('product.tracking');
             
             Route::get('/referral-log', 'UserController@referralCom')->name('referral.log');
 
