@@ -167,7 +167,7 @@ class PlanController extends Controller
                 
                 
                 deliverPoint(Auth::user()->id,$request->qty*2);
-                leaderCommission(Auth::user()->id,$request->qty);
+                // leaderCommission(Auth::user()->id,$request->qty);
                 checkRank($user->id);
                 DB::commit();
                 $notify[] = ['success', 'Successfully Purchased Plan'];
@@ -258,7 +258,7 @@ class PlanController extends Controller
             }
             
             deliverPoint(Auth::user()->id,$request->qty*2);
-            leaderCommission(Auth::user()->id,$registeredUser);
+            // leaderCommission(118,5);
             checkRank($user->id);
             DB::commit();
             $notify[] = ['success', 'Purchased ' . $plan->name . 'and Registered New  '.$registeredUser.' Account Successfully'];
@@ -330,7 +330,7 @@ class PlanController extends Controller
             $details = Auth::user()->username . ' Subscribed to ' . $plan->name . ' plan.';
 
             referralCommission2($user->id, $details);
-            
+            leaderCommission($user->id,$request->qty);
             updatePaidCount2($user->id);
 
             return $user;
