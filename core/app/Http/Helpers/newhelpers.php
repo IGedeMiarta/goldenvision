@@ -54,7 +54,7 @@ function fnRegisterUser($sponsor,$broUpline,$position,$firstname,$lastname,$user
         
         $user = fnCreateNewUser($data);
 
-        updateLimit($user->group); //update limit RO
+        updateLimit($user->id); //update limit RO
 
         $plan = fnPlanStore($data,$user);
         if(!$plan){

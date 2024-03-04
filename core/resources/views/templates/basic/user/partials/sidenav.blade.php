@@ -190,11 +190,3 @@
         </div>
     </div>
 </div>
-@push('style')
-    <style>
-        .logout-menu-item {
-            position: absolute;
-            bottom: 50px;
-        }
-    </style>
-@endpush

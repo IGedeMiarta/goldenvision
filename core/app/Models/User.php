@@ -310,5 +310,7 @@ class User extends Authenticatable
             return 'Kanan';
         }
     }
-
+    public function order(){
+        return $this->hasMany(ProductOrder::class);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\brodev;
 use App\Http\Controllers\Controller;
+use App\Models\ProductOrder;
 use Illuminate\Http\Request;
 
 class BrodevController extends Controller
@@ -89,7 +90,9 @@ class BrodevController extends Controller
         $empty_message = "MP Package Delivery Request Not Found!";
         $items = brodev::orderBy('created_at','DESC')
         ->paginate(getPaginate());
-        return view('admin.delivery.BroDelivery',compact('page_title','items','empty_message'));
+        $order = ProductOrder::with('user','detail','detail.product')->orderBy('created_at','DESC')
+        ->paginate(getPaginate());
+        return view('admin.delivery.BroDelivery',compact('page_title','items','order','empty_message'));
     }
 
     public function delivery(Request $request){

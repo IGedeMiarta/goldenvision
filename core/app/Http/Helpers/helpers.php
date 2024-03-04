@@ -1037,12 +1037,9 @@ function updatePaidCount2($id)
             $extra = UserExtra::where('user_id', $posid)->first();
 
             if ($position == 1) {
-                // $extra->free_left -= 1;
                 $extra->paid_left += 1;
                 $extra->left += 1;
                 $extra->p_left += 1;
-                // check rank
-                
                
             } else {
                 // $extra->free_right -= 1;
