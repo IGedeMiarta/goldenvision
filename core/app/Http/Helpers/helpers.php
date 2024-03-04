@@ -1627,7 +1627,7 @@ function referralCommission2($user_id, $details)
                 $amount = $plan->ref_com;
             }
 
-            $refer->balance += $amount;
+            $refer->b_balance += $amount;
             $refer->total_ref_com += $amount;
             $refer->save();
 
@@ -1638,7 +1638,7 @@ function referralCommission2($user_id, $details)
                 'details' => $details,
                 'remark' => 'referral_commission',
                 'trx' => getTrx(),
-                'post_balance' => getAmount($refer->balance),
+                'post_balance' => getAmount($refer->b_balance),
 
             ]);
 
@@ -1649,7 +1649,7 @@ function referralCommission2($user_id, $details)
                 'amount' => getAmount($amount),
                 'currency' => $gnl->cur_text,
                 'username' => $user->username,
-                'post_balance' => getAmount($refer->balance),
+                'post_balance' => getAmount($refer->b_balance),
             ]);
 
         }

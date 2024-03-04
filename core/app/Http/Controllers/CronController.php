@@ -67,7 +67,7 @@ class CronController extends Controller
 
                 $bonus = intval(($pairID) * ($user_plan->tree_com * 2));
                 $payment = User::find($ux->user_id);
-                $payment->balance += $bonus;
+                $payment->b_balance += $bonus;
                 $payment->total_binary_com += $bonus;
                 $payment->save();
 
@@ -76,7 +76,7 @@ class CronController extends Controller
                 $trx->amount = $bonus;
                 $trx->charge = 0;
                 $trx->trx_type = '+';
-                $trx->post_balance = $payment->balance;
+                $trx->post_balance = $payment->b_balance;
                 $trx->remark = 'binary_commission';
                 $trx->trx = getTrx();
                 $trx->details = 'Paid Flush Out ' . $bonus . ' ' . $gnl->cur_text . ' For ' . $pairID * 2 . ' MP.';
