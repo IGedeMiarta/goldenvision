@@ -1146,9 +1146,6 @@ function  leaderCommission($id, $qty)
             $refid = getRefId($id);
             $user = user::find($id);
             $userRef = user::find($refid);
-            if ($refid == "0") {
-                break;
-            }
             if ($userRef->rank == 0) {
                 $id = $refid;
                 continue;
@@ -1175,6 +1172,9 @@ function  leaderCommission($id, $qty)
                     'trx' => getTrx(),
                     'post_balance' => getAmount($userRef->b_balance),
                 ]);
+            }
+            if ($refid == "0") {
+                break;
             }
             if ($com <= 0){
                 break;
