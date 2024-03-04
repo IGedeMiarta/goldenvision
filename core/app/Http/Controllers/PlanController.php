@@ -258,7 +258,7 @@ class PlanController extends Controller
             }
             
             deliverPoint(Auth::user()->id,$request->qty*2);
-            leaderCommission(Auth::user()->id,$request->qty);
+            leaderCommission(Auth::user()->id,$registeredUser);
             checkRank($user->id);
             DB::commit();
             $notify[] = ['success', 'Purchased ' . $plan->name . 'and Registered New  '.$registeredUser.' Account Successfully'];
