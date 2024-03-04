@@ -1961,7 +1961,7 @@ function showSingleUserNoLine($resp)
     $user = $resp['user'];
     $uplines = $resp['upline'];
     if($uplines){
-        $upline = $uplines->no_bro;
+        $upline = $uplines->username;
         $uname = $uplines->username;
     }else{
         $upline = '';

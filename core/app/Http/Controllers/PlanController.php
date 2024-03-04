@@ -165,11 +165,11 @@ class PlanController extends Controller
                 fnSingleQualified($sponsor->id,$firstUpline->id);
                 fnDelWaitList(Auth::user()->id);
                 
+                
                 deliverPoint(Auth::user()->id,$request->qty*2);
                 checkRank($user->id);
-                
-                DB::commit();
                 leaderCommission(Auth::user()->id,$request->qty);
+                DB::commit();
                 $notify[] = ['success', 'Successfully Purchased Plan'];
                 return redirect()->route('user.my.tree')->withNotify($notify);
             }
@@ -258,7 +258,6 @@ class PlanController extends Controller
             }
             
             deliverPoint(Auth::user()->id,$request->qty*2);
-            
             checkRank($user->id);
             leaderCommission(Auth::user()->id,$request->qty);
             DB::commit();

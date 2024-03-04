@@ -42,12 +42,10 @@ class SponsorRegisterController extends Controller
     }
 
     public function index(){
-        // dd(session()->get('SponsorSet')['url']);
-        // dd(session()->get('SponsorSet')['upline']);
         $data['page_title'] = "Register By Sponsor";
         $data['user'] = Auth::user();
         $data['bank'] = bank::all();
-        $data['upline'] = User::where('no_bro',session()->get('SponsorSet')['upline'])->orWhere('id',session()->get('SponsorSet')['upline'])->first();
+        $data['upline'] = User::where('username',session()->get('SponsorSet')['upline'])->orWhere('id',session()->get('SponsorSet')['upline'])->first();
         return view($this->activeTemplate . 'user.registerSponsor', $data);
     }
     
@@ -92,30 +90,6 @@ class SponsorRegisterController extends Controller
                             ->where('no_rek','like','%'.$request->acc_number.'%')
                                 ->first();
                                 
-            // if($cekbank){
-            //     $rek = new rekening();  
-            //     $rek->user_id = $user->id;
-            //     $rek->nama_bank = $cekbank->bank_name??$request->bank_name;
-            //     $rek->nama_akun = $cekbank->acc_name??$request->acc_name;
-            //     $rek->no_rek = $cekbank->acc_number??$request->acc_number;
-            //     $rek->kota_cabang = $cekbank->kota_cabang??$request->kota_cabang;
-            //     $rek->save();
-            // }else{
-            //     $rek = new rekening();  
-            //     $rek->user_id = $user->id;
-            //     $rek->nama_bank = $request->bank_name;
-            //     $rek->nama_akun = $request->acc_name;
-            //     $rek->no_rek = $request->acc_number;
-            //     $rek->kota_cabang = $request->kota_cabang;
-            //     $rek->save();
-            // }
-            // $pin = $this->addPin($request->pin,$user->id); //send pin to user
-
-            // if($pin['error']){
-            //     $notify[] = ['error',$pin['msg']];
-            //     return redirect()->route('user.my.tree')->withNotify($notify);
-            // }
-            monolegTree(auth()->user()->id, $request->pin , $request->position);
             $newUser = $this->placementFirstAccount($request->all());  //register user
             if($newUser == false){
                 $notify[] = ['success', 'Invalid On First Placement, Rollback'];
@@ -148,11 +122,13 @@ class SponsorRegisterController extends Controller
                 $notify[] = ['success', 'Invalid On Subscibe Plan, Rollback'];
                 return redirect()->back()->withNotify($notify);
             }
-            updateCycleNasional($newUser->id);            
+            // updateCycleNasional($newUser->id);            
             $checkloop = $request->pin > 1  ? true:false;
 
             if(!$checkloop){
-                fnsingleQualified($sponsor->id,$newUser->id);
+                deliverPoint(Auth::user()->id,$request->pin*2);
+                checkRank($newUser->id);
+                leaderCommission(Auth::user()->id,$request->pin);
                 DB::commit();
                 addToLog('Created '.$request->pin.' User & Purchased Plan');
                 $notify[] = ['success', 'Created User & Purchased Plan Successfully'];
@@ -161,40 +137,35 @@ class SponsorRegisterController extends Controller
                 $registeredUser = $request->pin;
                 $firstUpline = $newUser;
                 $position = 2;
-                // monolegTree(auth()->user()->id, $request->pin);
                 for ($i=1; $i < $registeredUser; $i++) { 
                     if($i <= 4){
                     $sponsor = $firstUpline;
-                    $mark = true;
-                    // 02: 2,3,4,5
                     }
-                    if ($i >= 5 && $i <= 8) {
-                        $sponsor = User::where('username',$firstUpline .'_'. 2)->first();
-                    
-                        $mark = true;
-                        // 03: 6,7,8,9
+                     if($registeredUser == 3){
+                        if($i== 1){
+                            $position = 1;
+                        }
+                        if($i == 2){
+                            $position = 2;
+                        }
                     }
-                    if ($i >= 9  && $i <= 12) {
-                        $mark = true;
-                        $sponsor = User::where('username',$firstUpline .'_'. 3)->first();
-                        // 04: 10,11,12,13,14
+                    if($registeredUser == 5){
+                        if($i== 1){
+                            $position = 1;
+                        }
+                        if($i == 2){
+                            $position = 1;
+                        }
+                        if($i== 3){
+                            $position = 2;
+                        }
+                        if($i == 4){
+                            $position = 2;
+                        }
                     }
-                    if ($i >= 13 && $i <= 16) {
-                        $mark = true;
-                        $sponsor = User::where('username',$firstUpline .'_'. 4)->first();
-                        // 05: 15,16,17,18,19
-                    }
-                    if ($i >= 17 && $i<= 20) {
-                        $mark = true;
-                        $sponsor = User::where('username',$firstUpline .'_'. 5)->first();
-                        // 06: 20,21,22,13,24
-                    }
-                    if ($i >= 21 && $i<= 24) {
-                        $sponsor = User::where('username',$firstUpline .'_'. 6)->first();
-                        $mark = true;
-                    }
+
                     $firstUpline = User::find($firstUpline->id);
-                    $bro_upline = $firstUpline->no_bro;
+                    $bro_upline = $firstUpline->username;
                     $firstnameNewUser = $firstUpline->firstname;
                     $lastnameNewUser = $firstUpline->lastname;
                     $usernameNewUser = $firstUpline->username .'_'. $i+1;
@@ -234,14 +205,15 @@ class SponsorRegisterController extends Controller
                     $user->save();
                 }
             }
-            
+            deliverPoint(Auth::user()->id,$request->pin*2);
+            checkRank(Auth::user()->id);
+            leaderCommission(Auth::user()->id,$request->pin);
             DB::commit();
             addToLog('Created '.$request->pin.' User & Purchased Plan');
             $notify[] = ['success', 'Success Created '.$request->pin.' User & Purchased Plan Each'];
             return redirect(session()->get('SponsorSet')['url'])->withNotify($notify);
         } catch (\Throwable $th) {
             DB::rollBack();
-            dd($th->getMessage());
             $notify[] = ['error', 'Error on Placement, Rollback!'];
             return redirect()->back()->withNotify($notify);
         }
@@ -345,78 +317,62 @@ class SponsorRegisterController extends Controller
     }
     public function planStore($data)
     {
-        // dd($request->all());
+        // dd($data);
         $plan = Plan::where('id', $data['plan_id'])->where('status', 1)->firstOrFail();
         $gnl = GeneralSetting::first();
 
         $user = User::find($data['user_id']);
-        // $ref_user = null;
-        $ref_user = User::where('no_bro', $data['upline'])->first();
-        if ($ref_user == null && $data['upline']) {
-            return ['error'=>true, 'msg'=>'Invalid Upline MP Number.'];
-        }
-        if ($ref_user) {
-            # code...
-            $cek_pos = User::where('pos_id', $ref_user->id)->where('position',$data['position'])->first();
-    
-            if(!treeFilter($ref_user->id,$ref_user->id)){
-                return ['error'=>true, 'msg'=> 'Refferal and Upline BRO number not in the same tree.'];
-            }
-            
-            if ($cek_pos) {
-                return ['error'=>true, 'msg'=> 'Node you input is already filled.'];
-            }
-        }
-        $sponsor = User::where('no_bro', $data['sponsor'])->first();
-        if (!$sponsor) {
-            return ['error'=>true, 'msg'=> 'Invalid Sponsor MP Number.'];
-        }
-        if($ref_user->no_bro == $user->no_bro){
-            return ['error'=>true, 'msg'=> 'Invalid Input MP Number. You can`t input your own MP number'];
-        }
-        $oldPlan = $user->plan_id;
-
-        $pos = getPosition($ref_user->id, $data['position']);
-        $wait = fnWaitingList($user->id,$ref_user->id,$pos['position']);
-        if($wait){
-            sleep(5);
-            $pos = getPosition($ref_user->id, $data['position']);
-        }
-        try {
-            $user->no_bro           = generateUniqueNoBro();
-            $user->ref_id           = $sponsor->id; // ref id = sponsor
-            $user->pos_id           = $ref_user->id; //pos id = upline
-            $user->position         = $data['position'];
-            $user->position_by_ref  = $ref_user->position;
-            $user->plan_id          = $plan->id;
-            $user->total_invest     += ($plan->price * $data['pin']);
-            $user->save();
-
-            brodev($data['user_id'], $data['pin']);
-
-            $trx = $user->transactions()->create([
-                'amount' => $plan->price * $data['pin'],
-                'trx_type' => '-',
-                'details' => 'Purchased ' . $plan->name . ' For '.$data['pin'].' MP',
-                'remark' => 'purchased_plan',
-                'trx' => getTrx(),
-                'post_balance' => getAmount($user->balance),
-            ]);
-            fnDelWaitList($user->id,$ref_user->id,$pos['position']);
-            
-            updatePaidCount2($user->id);
-            $userSponsor = User::find($data['user_id']);
-            $details = $userSponsor->username. ' Subscribed to ' . $plan->name . ' plan.';
-
-            addToLog('Purchased ' . $plan->name . ' For '.$data['pin'].' MP as Sponsor');
-
-            referralCommission2($user->id, $details);
-            return $trx;
-        } catch (\Throwable $th) {
-            return false;
-        }
-      
+        $ref_user = User::where('username', $data['upline'])->first();
         
+        // if ($ref_user == null && $data['upline']) {
+        //     return ['error'=>true, 'msg'=>'Invalid referals user.'];
+        // }
+        // if ($ref_user) {
+        //     $cek_pos = User::where('pos_id', $ref_user->id)->where('position',$data['position'])->first();
+    
+        //     if(!treeFilter($ref_user->id,$ref_user->id)){
+        //         return ['error'=>true, 'msg'=> 'Refferal and Upline BRO number not in the same tree.'];
+        //     }
+            
+        //     if ($cek_pos) {
+        //         return ['error'=>true, 'msg'=> 'Node you input is already filled.'];
+        //     }
+        // }
+        $sponsor = User::where('username', $data['sponsor'])->first();
+        // if (!$sponsor) {
+        //     return ['error'=>true, 'msg'=> 'Invalid Sponsor username'];
+        // }
+        // if($ref_user->no_bro == $user->no_bro){
+        //     return ['error'=>true, 'msg'=> 'Invalid Input username You can`t input your own username'];
+        // }
+        $user->no_bro           = $user->username;
+        $user->ref_id           = $sponsor->id; // ref id = sponsor
+        $user->pos_id           = $ref_user->id; //pos id = upline
+        $user->position         = $data['position'];
+        $user->position_by_ref  = $ref_user->position;
+        $user->plan_id          = $plan->id;
+        $user->total_invest     += ($plan->price * $data['pin']);
+        $user->save();
+
+        brodev($data['user_id'], $data['pin']);
+
+        $trx = $user->transactions()->create([
+            'amount' => $plan->price * $data['pin'],
+            'trx_type' => '-',
+            'details' => 'Purchased ' . $plan->name . ' For '.$data['pin'].' MP',
+            'remark' => 'purchased_plan',
+            'trx' => getTrx(),
+            'post_balance' => getAmount($user->balance),
+        ]);
+        
+        // updatePaidCount2($user->id);
+        $userSponsor = User::find($data['user_id']);
+        $details = $userSponsor->username. ' Subscribed to ' . $plan->name . ' plan.';
+
+        addToLog('Purchased ' . $plan->name . ' For '.$data['pin'].' MP as Sponsor');
+
+        referralCommission2($user->id, $details);
+        return $trx;  
     }
 
     public function sendPin(Request $request,$id){

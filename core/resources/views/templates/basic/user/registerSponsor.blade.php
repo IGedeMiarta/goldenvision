@@ -10,35 +10,6 @@
 @endpush
 
 @section('panel')
-    {{-- <div class="card mb-4">
-        <div class="card-header">
-            Share Referals
-        </div>
-        <div class="card-body">
-            <div class="form-group row">
-                <label for="kiri" class="col-sm-2 col-form-label">Kiri</label>
-                <div class="col-sm-10 input-group">
-                    <input type="text" class="form-control" id="kiri"
-                        value="{{ url('user/plan?') . 'sponsor=' . auth()->user()->no_bro . '&position=1' }}">
-                    <div class="input-group-append">
-                        <button type="button" class="input-group-text" id="btnKiri"> <i class="fas fa-copy mr-2"></i>
-                            Salin</button>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="kiri" class="col-sm-2 col-form-label">Kanan</label>
-                <div class="col-sm-10 input-group">
-                    <input type="text" class="form-control" id="kanan"
-                        value="{{ url('user/plan?') . 'sponsor=' . auth()->user()->no_bro . '&position=2' }}">
-                    <div class="input-group-append">
-                        <button type="button" class="input-group-text" id="btnKanan"> <i class="fas fa-copy mr-2"></i>
-                            Salin</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
     <form action="{{ route('user.sponsorRegist.post') }}" method="POST">
         @csrf
         <div class="card">
@@ -49,19 +20,15 @@
                 <div class="form-group row">
                     <label for="sponsor" class="col-sm-2 col-form-label">Sponsor</label>
                     <div class="input-group col-sm-10">
-                        <input type="text" class="form-control col-md-2" id="sponsor" name="sponsor"
-                            placeholder="Sponsor" value="{{ $user->no_bro }}" readonly>
-                        <input type="text" class="form-control col-md-10" id="sponsor" placeholder="Username"
-                            value="{{ $user->username }}" readonly>
+                        <input type="text" class="form-control col-md-12" id="sponsor" name="sponsor"
+                            placeholder="Sponsor" value="{{ $user->username }}" readonly>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="sponsor" class="col-sm-2 col-form-label">Upline</label>
                     <div class="input-group col-sm-10">
-                        <input type="text" class="form-control col-md-2" id="upline" name="upline"
+                        <input type="text" class="form-control col-md-12" id="upline" name="upline"
                             placeholder="upline" value="{{ session()->get('SponsorSet')['upline'] ?? '' }}" readonly>
-                        <input type="text" class="form-control col-md-10" id="sponsor" placeholder="Username"
-                            value="{{ $upline->username }}" readonly>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -91,17 +58,14 @@
                             <option value="1" {{ auth()->user()->pin < 1 ? 'disabled' : '' }}
                                 {{ old('pin') == 1 ? 'selected' : '' }} {{ old('pin') == 1 ? 'selected' : '' }}>1 ID
                             </option>
+                            <option value="3"
+                                {{ auth()->user()->pin < 3 ? 'disabled' : '' }}{{ old('pin') == 3 ? 'selected' : '' }}>
+                                3 ID
+                            </option>
                             <option value="5"
                                 {{ auth()->user()->pin < 5 ? 'disabled' : '' }}{{ old('pin') == 5 ? 'selected' : '' }}>
                                 5
-                                ID (1
-                                Qualified)
-                            </option>
-                            <option value="25"
-                                {{ auth()->user()->pin < 25 ? 'disabled' : '' }}{{ old('pin') == 25 ? 'selected' : '' }}>
-                                25
                                 ID
-                                (5 Qualified)
                             </option>
                         </select>
                         @error('pin')
@@ -117,36 +81,6 @@
                 <h3>Registered New Users</h3>
             </div>
             <div class="card-body">
-                {{-- <div class="form-group row">
-                    <label for="email" class="col-sm-2 col-form-label">Email</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
-                            name="email" value="{{ $user->email }}" placeholder="email" readonly>
-                        @error('email')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="phone" class="col-sm-2 col-form-label">Phone No</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}"
-                            value="{{ $user->mobile }}" name="phone" placeholder="phone" readonly>
-                        @error('phone')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="username" class="col-sm-2 col-form-label">Username</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control {{ $errors->has('username') ? 'is-invalid' : '' }}"
-                            value="{{ old('username') }}" name="username" placeholder="username">
-                        @error('username')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div> --}}
                 <div class="form-group row">
 
 
