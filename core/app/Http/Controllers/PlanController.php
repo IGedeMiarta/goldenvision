@@ -333,8 +333,6 @@ class PlanController extends Controller
             
             updatePaidCount2($user->id);
 
-            // updateCycleNasional($user->id);
-
             return $user;
         } catch (\Throwable $th) {
             return false;

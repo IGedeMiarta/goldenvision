@@ -64,15 +64,15 @@ class UserReportController extends Controller
     {
 
         $search = $request->search;
-        // if ($search) {
-        //     $data['page_title'] = "Binary Commissions search : " . $search;
-        //     $data['transactions'] = auth()->user()->transactions()->where('remark', 'binary_commission')->where('trx', 'like', "%$search%")->latest()->paginate(getPaginate());
-        // } else {
+        if ($search) {
+            $data['page_title'] = "Binary Commissions search : " . $search;
+            $data['transactions'] = auth()->user()->transactions()->where('remark', 'binary_commission')->where('trx', 'like', "%$search%")->latest()->paginate(getPaginate());
+        } else {
             $data['page_title'] = 'Binary Commissions';
-        //     $data['transactions'] = auth()->user()->transactions()->where('remark', 'binary_commission')->latest()->paginate(getPaginate());
-        // }
+            $data['transactions'] = auth()->user()->transactions()->where('remark', 'binary_commission')->latest()->paginate(getPaginate());
+        }
         $data['search'] = $search;
-        $data['transactions'] = auth()->user()->transactions()->where('remark', 'referral_commission')->where('trx_type', "-")->latest()->paginate(getPaginate());;
+        // $data['transactions'] = auth()->user()->transactions()->where('remark', 'referral_commission')->where('trx_type', "-")->latest()->paginate(getPaginate());;
         $data['empty_message'] = 'No data found.';
         return view($this->activeTemplate . 'user.transactions', $data);
 
@@ -81,15 +81,15 @@ class UserReportController extends Controller
     public function refCom(Request $request)
     {
         $search = $request->search;
-        // if ($search) {
-        //     $data['page_title'] = "Referral Commissions search : " . $search;
-        //     $data['transactions'] = auth()->user()->transactions()->where('remark', 'referral_commission')->where('trx', 'like', "%$search%")->latest()->paginate(getPaginate());
-        // } else {
+        if ($search) {
+            $data['page_title'] = "Referral Commissions search : " . $search;
+            $data['transactions'] = auth()->user()->transactions()->where('remark', 'referral_commission')->where('trx', 'like', "%$search%")->latest()->paginate(getPaginate());
+        } else {
             $data['page_title'] = 'Referral Commissions';
-        //     $data['transactions'] = auth()->user()->transactions()->where('remark', 'referral_commission')->latest()->paginate(getPaginate());
-        // }
+            $data['transactions'] = auth()->user()->transactions()->where('remark', 'referral_commission')->latest()->paginate(getPaginate());
+        }
         $data['search'] = $search;
-        $data['transactions'] = auth()->user()->transactions()->where('remark', 'referral_commission')->where('trx_type', "-")->latest()->paginate(getPaginate());
+        // $data['transactions'] = auth()->user()->transactions()->where('remark', 'referral_commission')->where('trx_type', "-")->latest()->paginate(getPaginate());
         $data['empty_message'] = 'No data found.';
         return view($this->activeTemplate . 'user.transactions', $data);
 
