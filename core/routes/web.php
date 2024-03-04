@@ -24,11 +24,6 @@ use Illuminate\Support\Facades\URL;
 Route::get('cyc',function(){
     updateCycleNasional(1);
 });
-Route::get('leader',function(){
-    $r = leaderCommission(25,2);
-
-    echo $r;
-});
 
 Route::get('cron-single',[NewCronController::class,'checkSponsor']);
 
