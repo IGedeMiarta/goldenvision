@@ -731,6 +731,8 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::get('report/withdraw/log', 'UserReportController@withdrawLog')->name('report.withdraw');
             Route::get('report/referral/commission', 'UserReportController@refCom')->name('report.refCom');
             Route::get('report/binary/commission', 'UserReportController@binaryCom')->name('report.binaryCom');
+            Route::get('report/leadership/commission', 'UserReportController@leadersComm')->name('report.leadersComm');
+
             Route::get('report/exchange/log', 'UserReportController@exchangeLog')->name('report.exchangeLog');
             Route::get('report/delivery/log', 'UserReportController@deliveryLog')->name('report.deliveryLog');
             Route::get('report/Brodelivery/log', 'UserReportController@BroDeliveryLog')->name('report.BroDeliveryLog');
