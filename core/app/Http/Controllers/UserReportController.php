@@ -78,6 +78,20 @@ class UserReportController extends Controller
 
     }
 
+    public function leadersComm(Request $request){
+        $search = $request->search;
+        if ($search) {
+            $data['page_title'] = "Leadership Commission search : " . $search;
+            $data['transactions'] = auth()->user()->transactions()->where('remark', 'leadership_com')->where('trx', 'like', "%$search%")->latest()->paginate(getPaginate());
+        } else {
+            $data['page_title'] = 'Leadership Commission';
+            $data['transactions'] = auth()->user()->transactions()->where('remark', 'leadership_com')->latest()->paginate(getPaginate());
+        }
+        $data['search'] = $search;
+        $data['empty_message'] = 'No data found.';
+        return view($this->activeTemplate . 'user.transactions', $data);
+    }
+
     public function refCom(Request $request)
     {
         $search = $request->search;

@@ -154,13 +154,19 @@
                             <li class="sidebar-menu-item {{ menuActive('user.report.refCom') }}">
                                 <a href="{{ route('user.report.refCom') }}" class="nav-link">
                                     <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Referral Commissions')</span>
+                                    <span class="menu-title">@lang('Referral Commission')</span>
                                 </a>
                             </li>
                             <li class="sidebar-menu-item {{ menuActive('user.report.binaryCom') }}">
                                 <a href="{{ route('user.report.binaryCom') }}" class="nav-link">
                                     <i class="menu-icon las la-dot-circle"></i>
                                     <span class="menu-title">@lang('Binary Commission')</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item {{ menuActive('user.report.leadersComm') }}">
+                                <a href="{{ route('user.report.leadersComm') }}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('Leadership Commission')</span>
                                 </a>
                             </li>
 
