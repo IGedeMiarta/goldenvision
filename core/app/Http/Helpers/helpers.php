@@ -4166,3 +4166,47 @@ function sendCommision($userID, $amount, $details,$remark)
         ]);
     }
 }
+
+function cekOngkir($kodepos,$berat){
+    
+    $options = [
+        'cache_wsdl'     => WSDL_CACHE_NONE,
+        'trace'          => 1,
+        'stream_context' => stream_context_create(
+            [
+                'ssl' => [
+                    'verify_peer'       => false,
+                    'verify_peer_name'  => false,
+                    'allow_self_signed' => true
+                ]
+            ]
+        )
+    ];
+    $ongkir = 0;
+
+    try {
+    $wsdl="http://api.rpxholding.com/wsdl/rpxwsdl.php?wsdl";
+    libxml_disable_entity_loader(false);
+    $client = new \SoapClient($wsdl,$options);
+    $username = env('USER_RPX');
+    $password  = env('PASS_RPX');
+    $format = 'json';
+
+    $result = $client->getRatesPostalCode($username,$password,env('POSCODE_RPX'),$kodepos,'RGP',$berat/1000,'0',$format);
+    $response = json_decode($result,true);
+    if (!$response) {
+        $notify[] = ['error', 'Invalid destination address'];
+        return redirect()->back()->withNotify($notify);
+    }else{
+        $ongkir = (int)$response['RPX']['DATA']['PRICE'];
+    }
+        
+    }
+    catch ( \Exception $e ) {
+        $notify[] = ['error', $e->getMessage()];
+        return redirect()->back()->withNotify($notify);
+    }
+
+    return $ongkir;
+
+}
