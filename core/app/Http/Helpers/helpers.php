@@ -1136,7 +1136,7 @@ function monolegSaving($id, $amount, $username, $type)
 
 }
 
-function leaderCommission($id, $qty)
+function  leaderCommission($id, $qty)
 {
     $from = $id;
     $gnl = GeneralSetting::first();
@@ -1161,17 +1161,19 @@ function leaderCommission($id, $qty)
             if(($com - $userRef->ranks->leader_bonus) <= 0){
                 $amount += $com;
             }
-
-            if ($userRef->plan_id != 0) {
-                $userRef->balance += $amount * $qty;
+            
+            if ($userRef->plan_id != 0 && $amount != 0) {
+                // $userRef->balance += $amount * $qty;
+                $userRef->b_balance += $amount * $qty;
                 $userRef->save();
                 $userRef->transactions()->create([
                     'amount' => $amount * $qty,
                     'charge' => 0,
                     'trx_type' => '+',
                     'details' => 'Paid Leadership Commission ' . $amount * $qty . ' ' . $gnl->cur_text,
+                    'remark'  => 'leadership_com',
                     'trx' => getTrx(),
-                    'post_balance' => getAmount($userRef->balance),
+                    'post_balance' => getAmount($userRef->b_balance),
                 ]);
             }
             if ($com <= 0){

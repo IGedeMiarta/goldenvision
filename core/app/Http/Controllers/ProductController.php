@@ -20,7 +20,7 @@ class ProductController extends Controller
 {
     //
     public function productIndex(){
-        $data['page_title'] = "Product";
+        $data['page_title'] = "Reedem Product";
         $data['product'] = Product::where('status',1)->get();
         $data['cart'] = UserChart::with('product')->where('user_id',auth()->user()->id)->get();
         return view('templates.basic.user.product.index',$data);
@@ -28,13 +28,13 @@ class ProductController extends Controller
     public function productCart(Request $request){
         $cart = UserChart::where(['product_id'=> $request->product_id,'user_id'=>Auth::user()->id])->first();
         if($cart){
-            $cart->qty += 1;
+            $cart->qty += $request->qty;
             $cart->save();
         }else{
             $cart = new UserChart();
             $cart->user_id = Auth::user()->id;
             $cart->product_id = $request->product_id;
-            $cart->qty = 1;
+            $cart->qty = $request->qty;
             $cart->save();
         }
         $notify[] = ['success', 'Product Add to Cart'];
@@ -50,10 +50,15 @@ class ProductController extends Controller
     }
 
     public function productPurchase(Request $request){
+        $cart = UserChart::where('user_id',auth()->user()->id)->get();
+        $total = 0;
+        foreach ($cart as $value) {
+            $total += $value->product->price  * $value->qty;
+        }
         $gnl = GeneralSetting::first();
 
         $user = User::find(Auth::id());
-        if ($user->point < $request->total) {
+        if ($user->point < $total) {
             $notify[] = ['error', 'Insufficient Point Balance'];
             return back()->withNotify($notify);
         }
@@ -62,40 +67,41 @@ class ProductController extends Controller
             $order = new ProductOrder();
             $order->user_id = $user->id;
             $order->inv = 'INV'.time();
-            $order->total_order =  $request->total;
+            $order->total_order =  $total;
             $order->status = 1;
             $order->admin_feedback = null;
             $order->save();
 
-            foreach ($request->product_id as $i => $value) {
-                $product = product::where('id', $value)->where('status', 1)->firstOrFail();
-                if ($product->stok == 0) {
+            foreach ($cart as $i => $value) {
+                $product = product::where('id', $value->product_id)->where('status', 1)->firstOrFail();
+                if ($product->stok == 0 || ($product->stok - $value->qty) < 1) {
                     $notify[] = ['error', 'Out Of Stock'];
                     return back()->withNotify($notify);
                 }
 
-                if ($product->stok < $request->process_qty[$i]) {
+                if ($product->stok < $value->qty) {
                     $notify[] = ['error', 'the number of qty you input exceeds the available stock'];
                     return back()->withNotify($notify);
                 }
                 $detail = new  ProductOrderDetail();
                 $detail->order_id = $order->id;
                 $detail->product_id = $product->id;
-                $detail->qty        = $request->process_qty[$i];
-                $detail->total      = $product->price * $request->process_qty[$i];
+                $detail->qty        = $value->qty;
+                $detail->total      = $product->price * $value->qty;
                 $detail->save();
+                $product->stock -= $value->qty;
             }
             
             $log = new UserPoint();
             $log->user_id = $user->id;
-            $log->point = $request->total;
+            $log->point = $total;
             $log->type = '-';
             $log->start_point = $user->point;
-            $log->end_point = $user->point - $request->total;
-            $log->desc = 'User Transaction Product with ' . $request->total . ' POINT. Invoice : #'  . $order->inv;
+            $log->end_point = $user->point - $total;
+            $log->desc = 'User Transaction Product with ' . $total . ' POINT. Invoice : #'  . $order->inv;
             $log->save();
             
-            $user->point -= $request->total;
+            $user->point -= $total;
             $user->save();
 
 

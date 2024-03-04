@@ -167,9 +167,9 @@ class PlanController extends Controller
                 
                 deliverPoint(Auth::user()->id,$request->qty*2);
                 checkRank($user->id);
-                leaderCommission(Auth::user()->id,$request->qty);
                 
                 DB::commit();
+                leaderCommission(Auth::user()->id,$request->qty);
                 $notify[] = ['success', 'Successfully Purchased Plan'];
                 return redirect()->route('user.my.tree')->withNotify($notify);
             }
@@ -261,7 +261,6 @@ class PlanController extends Controller
             
             checkRank($user->id);
             leaderCommission(Auth::user()->id,$request->qty);
-
             DB::commit();
             $notify[] = ['success', 'Purchased ' . $plan->name . 'and Registered New  '.$registeredUser.' Account Successfully'];
             return redirect()->route('user.my.tree')->withNotify($notify);

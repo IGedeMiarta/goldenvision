@@ -325,32 +325,68 @@ function LoopCart(){
     return $cart;
 }
 
-function checkRank($userID, $type = null){
-    $user = User::with('userExtra')->find($userID);
-    $directSponsor = User::where('ref_id',$userID)->count();
-    $left = $user->userExtra->left;
-    $right = $user->userExtra->right;
+// function checkRank($userID, $type = null){
+//     $user = User::with('userExtra')->find($userID);
+//     $directSponsor = User::where('ref_id',$userID)->count();
+//     $left = $user->userExtra->left;
+//     $right = $user->userExtra->right;
 
-    $ranks = Rank::orderByDesc('id')->get();
+//     $ranks = Rank::orderByDesc('id')->get();
 
-    if($type == null){
-        foreach ($ranks as $value) {
-            if($directSponsor >= $value->direct_sponsor && $value->direct_sponsor != 0){
-                if(($left >= $value->mark1 && $right >= $value->mark2) || ($left >= $value->mark2 && $right >= $value->mark1)){
-                    $user->update([
-                        'rank' => $value->id
-                    ]);
+//     if($type == null){
+//         foreach ($ranks as $value) {
+//             if($directSponsor >= $value->direct_sponsor && $value->direct_sponsor != 0){
+//                 if(($left >= $value->mark1 && $right >= $value->mark2) || ($left >= $value->mark2 && $right >= $value->mark1)){
+//                     $user->update([
+//                         'rank' => $value->id
+//                     ]);
+//                 }
+//             }elseif($directSponsor >= $value->direct_sponsor && $directSponsor < 4){
+//                 $user->update([
+//                     'rank' => $value->id
+//                 ]);
+//             }
+//         }
+//     }else{
+//         $user->update([
+//             'rank' => 1
+//         ]);
+//     }
+//     checkRankReferals($user->ref_id);
+// }
+function checkRank($userID,$type=null){
+     while ($userID != "" || $userID != "0") {
+         if (isUserExists($userID)) {
+            $user = User::with('userExtra')->find($userID);
+            $directSponsor = User::where('ref_id',$userID)->count();
+            $left = $user->userExtra->left;
+            $right = $user->userExtra->right;
+
+            $ranks = Rank::orderByDesc('id')->get();
+
+            if($type == null){
+                foreach ($ranks as $value) {
+                    if($directSponsor >= $value->direct_sponsor && $value->direct_sponsor != 0){
+                        if(($left >= $value->mark1 && $right >= $value->mark2) || ($left >= $value->mark2 && $right >= $value->mark1)){
+                            $user->update([
+                                'rank' => $value->id
+                            ]);
+                        }
+                    }elseif($directSponsor >= $value->direct_sponsor && $directSponsor < 4){
+                        $user->update([
+                            'rank' => $value->id
+                        ]);
+                    }
                 }
-            }elseif($directSponsor >= $value->direct_sponsor && $directSponsor < 4){
+            }else{
                 $user->update([
-                    'rank' => $value->id
+                    'rank' => 1
                 ]);
             }
+            $userID = $user->ref_id;
+        }else{
+            break;
         }
-    }else{
-        $user->update([
-            'rank' => 1
-        ]);
     }
 }
 function updateLimit($userID){

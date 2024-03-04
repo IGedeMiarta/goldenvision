@@ -20,7 +20,6 @@ class LandingController extends Controller
 {
     public function createAcc($jml,$username){
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
-
         Transaction::truncate();
         User::truncate();
         UserExtra::truncate();
