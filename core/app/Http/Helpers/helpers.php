@@ -1141,8 +1141,8 @@ function  leaderCommission($id, $qty)
     while ($id != "" || $id != "0") {
         if (isUserExists($id)) {
             $refid = getRefId($id);
-            $user = user::find($id);
-            $userRef = user::find($refid);
+            $user = user::where('id',$id)->first();
+            $userRef = user::where('id',$refid)->first();
             if ($userRef->rank == 0) {
                 $id = $refid;
                 continue;
