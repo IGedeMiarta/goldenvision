@@ -93,7 +93,7 @@
                 <div class="card-body" style="display: flex; justify-content: space-between">
                     <div class="col-md-12 col-sm-12" style="text-align: start;">
                         <span class="text-dark" style="font-size: 14px;font-weight: bold">Redemption Point </span>
-                        <h6 class="text-dark" style="font-size: 50px; font-weight: bolder">{{ auth()->user()->point }} RP
+                        <h6 class="text-dark" style="font-size: 50px; font-weight: bolder">{{ auth()->user()->point }} POINT
                         </h6>
                     </div>
 
@@ -167,7 +167,7 @@
             <div class="col-md-4 mb-30">
                 <div class="card" style="border-radius: 15px">
                     <div class="card-body">
-                        <p style="font-size: 14px;color: #000">1 Item, Price {{ $data->price }} RPoint</p>
+                        <p style="font-size: 14px;color: #000">1 Item, Price {{ $data->price }} POINT</p>
                         <p style="font-size: 18px;color: #000;font-weight: bolder">{{ strtoupper($data->name) }}</p>
                     </div>
                     <div class="card-body pt-5" style="display: flex; justify-content: center;">

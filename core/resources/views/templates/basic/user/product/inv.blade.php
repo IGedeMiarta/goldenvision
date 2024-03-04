@@ -128,7 +128,7 @@
                             @endif
                         </td>
                         <td>
-                            {{ $item->total_order }} RP
+                            {{ $item->total_order }} POINT
                         </td>
                         <td style="white-space:nowrap;">
                             <a href="#" style="color: #8C8C8C;text-decoration: underline;">View Invoice</a>
