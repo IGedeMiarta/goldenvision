@@ -400,7 +400,7 @@ function  leaderCommission($id, $qty)
     $from = $id;
     $gnl = GeneralSetting::first();
     $com = 75000;
-    $ref = 'q';
+    $ref = $id;
     while ($id != "" || $id != "0") {
         if (isUserExists($id)) {
             $refid = getRefId($id);
