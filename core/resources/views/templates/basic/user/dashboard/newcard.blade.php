@@ -178,7 +178,7 @@
     </style>
 @endpush
 <div class="row">
-    <div class="col-md-4 mb-30" style="margin-top: 25px;">
+    <div class="col-xl-4 col-md-4 col-sm-6 mb-30" style="margin-top: 25px;">
         Selamat datang,
         <h4 style="font-size: 24px; font-weight: bolder; color: black">{{ auth()->user()->fullname }}</h4>
         <div style="">
@@ -192,7 +192,7 @@
             </span>
         </div>
     </div>
-    <div class="col-md-4 mb-30 text-center">
+    <div class="col-xl-4 col-md-4 col-sm-6 mb-30 text-center">
         @if (auth()->user()->rank != 0)
             <div class="row" style="max-height: 200px; margin-top: 25px;">
                 <div class="col-md-12 mb-3">
@@ -217,7 +217,7 @@
         @endif
 
     </div>
-    <div class="col-md-4 mb-30">
+    <div class="col-xl-4 col-md-4 col-sm-6 mb-30">
         <p style="color: black">Refferal Link</p>
         <div class="row" style="max-height: 200px;">
             <div class="col-md-12 mb-3">
@@ -241,7 +241,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4 mb-30 text-center">
+    <div class="col-xl-4 col-md-4 col-sm-6 mb-30 text-center">
         <div class="card bg--success"
             style="height: 200px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
                 background-position: center;
@@ -250,7 +250,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-white" style="font-size: 12px">Cash - Wallet</span>
-                    <h6 class="text-white" style="font-size: 18px">5.000.000 IDR</h6>
+                    <h6 class="text-white" style="font-size: 18px">{{ nb(auth()->user()->balance) }} IDR</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <div class="icon-rp">Rp</div>
@@ -262,7 +262,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-30 text-center">
+    <div class="col-xl-4 col-md-4 col-sm-6 mb-30 text-center">
         <div class="card bg--success"
             style="height: 200px; border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
                 background-position: center;
@@ -271,9 +271,9 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-white" style="font-size: 12px">B - Wallet</span>
-                    <h6 class="text-white mb-n2" style="font-size: 18px">1.000.000 IDR</h6>
+                    <h6 class="text-white mb-n2" style="font-size: 18px">{{ nb(auth()->user()->b_balance) }} IDR</h6>
                     <span class="text-white" style="font-size: 9px; margin-top: -10px">Available Limit
-                        2.000.000</span>
+                        {{ nb(auth()->user()->limit_ro) }}</span>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <div class="icon-rp">Rp</div>
@@ -296,7 +296,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-30 text-center">
+    <div class="col-xl-4 col-md-4 col-sm-6 mb-30 text-center">
         <div class="row" style="max-height: 200px;">
             <div class="col-md-12 mb-3">
                 <div class="card bg--success" style="height: 90px; border-radius: 20px">
@@ -305,7 +305,7 @@
                             <div class="icon-key mr-3">
                                 <i class="fas fa-key"></i>
                             </div>
-                            <p style="font-size: 20px; color: white">70</p>
+                            <p style="font-size: 20px; color: white">{{ auth()->user()->pin }}</p>
                         </div>
                         <div style="display: flex; align-items: center;" class="mb-3">
                             <a data-toggle="modal" class="btn btn-sm mt-20 py-2 text-white"
@@ -324,7 +324,7 @@
                             <div class="icon-users mr-3">
                                 <i class="fas fa-users"></i>
                             </div>
-                            <p style="font-size: 20px; color: white">10</p>
+                            <p style="font-size: 20px; color: white">{{ $total_ref }}</p>
                         </div>
                         <div style="display: flex; align-items: center" class="">
                             <div class="text-white">Direct Refferals</div>
@@ -339,7 +339,7 @@
 </div>
 <p style="font-size: 14px">Withdraw</p>
 <div class="row">
-    <div class="col-md-4 mb-30 text-center">
+    <div class="col-xl-4 col-md-4 col-sm-6 mb-30 text-center">
         <div class="card"
             style="background-color: #045199; height: 200px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
                 background-position: center;
@@ -348,7 +348,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span style="font-size: 12px; color: #FFC453">Waiting</span>
-                    <h6 class="text-white" style="font-size: 18px">100.000 IDR</h6>
+                    <h6 class="text-white" style="font-size: 18px">{{ nb($pendingWithdraw) }} IDR</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <a href="{{ route('user.report.transactions') }}" style="width: 80px"
@@ -358,7 +358,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span style="font-size: 12px; color: #07FFB8">Complate</span>
-                    <h6 class="text-white" style="font-size: 18px">100.000 IDR</h6>
+                    <h6 class="text-white" style="font-size: 18px">{{ nb($completeWithdraw) }} IDR</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <a href="{{ route('user.report.transactions') }}" style="width: 80px"
@@ -367,7 +367,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-30 text-center">
+    <div class="col-xl-4 col-md-4 col-sm-6 mb-30 text-center">
         <div class="card"
             style="background-color: #045199; height: 200px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
                 background-position: center;
@@ -390,7 +390,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-30 text-center">
+    <div class="col-xl-4 col-md-4 col-sm-6 mb-30 text-center">
         <div class="card"
             style="background-color: #045199; height: 200px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
                 background-position: center;
@@ -421,7 +421,7 @@
     <hr style="flex: 1; margin: 0;">
 </div>
 <div class="row mt-1">
-    <div class="col-md-4 mb-30 text-center">
+    <div class="col-xl-4 col-md-4 col-sm-6 mb-30 text-center">
         <div class="card"
             style="background-color: #ECBC13; height: 200px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
                 background-position: center;
@@ -430,7 +430,8 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Sponsor Bonus </span>
-                    <h6 class="text-dark" style="font-size: 18px">200.000 IDR</h6>
+                    <h6 class="text-dark" style="font-size: 18px">{{ nb(getAmount(auth()->user()->total_ref_com)) }}
+                        IDR</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <div class="icon-rp-total">
@@ -445,7 +446,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-30 text-center">
+    <div class="col-xl-4 col-md-4 col-sm-6 mb-30 text-center">
         <div class="card"
             style="background-color: #ECBC13; height: 200px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
                 background-position: center;
@@ -454,7 +455,8 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Binary Bonus </span>
-                    <h6 class="text-dark" style="font-size: 18px">200.000 IDR</h6>
+                    <h6 class="text-dark" style="font-size: 18px">
+                        {{ nb(getAmount(auth()->user()->total_binary_com)) }} IDR</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <div class="icon-rp-total">
@@ -469,7 +471,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-30 text-center">
+    <div class="col-xl-4 col-md-4 col-sm-6 mb-30 text-center">
         <div class="card"
             style="background-color: #ECBC13; height: 200px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
                 background-position: center;
@@ -478,7 +480,8 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">All Bonus </span>
-                    <h6 class="text-dark" style="font-size: 18px">200.000 IDR</h6>
+                    <h6 class="text-dark" style="font-size: 18px">
+                        {{ nb(getAmount(auth()->user()->total_binary_com + auth()->user()->total_ref_com)) }} IDR</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <div class="icon-rp-total">
@@ -502,7 +505,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Leadership Bonus </span>
-                    <h6 class="text-dark" style="font-size: 18px">200.000 IDR</h6>
+                    <h6 class="text-dark" style="font-size: 18px">0 IDR</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <div class="icon-rp-total">
@@ -526,7 +529,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Pool Bonus </span>
-                    <h6 class="text-dark" style="font-size: 18px">200.000 IDR</h6>
+                    <h6 class="text-dark" style="font-size: 18px">0 IDR</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <div class="icon-rp-total">
@@ -550,7 +553,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">total Order</span>
-                    <h6 class="text-dark" style="font-size: 18px">200.000 IDR</h6>
+                    <h6 class="text-dark" style="font-size: 18px">0 IDR</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <div class="icon-rp-total">

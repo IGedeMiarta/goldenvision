@@ -20,3 +20,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('rekening-info/{username}',[UserController::class,'rekeningInfo']);
+Route::get('check-user/{username}',[UserController::class,'checkUser']);

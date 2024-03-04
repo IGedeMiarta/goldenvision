@@ -24,15 +24,6 @@ use Weidner\Goutte\GoutteFacade;
 
 class CronController extends Controller
 {
-    public function weeklyGold(){
-        $last = WeeklyGold::orderByDesc('id')->first();
-        $wk =  WeeklyGold::create([
-                'per_gram' => 0.005,
-                'week' => !$last?1:$last->week+1,
-            ]);
-        return ['status'=>'success','data'=>$wk];
-    }
-
     public function cronNew(){
         $gnl = GeneralSetting::first();
         $gnl->last_cron = Carbon::now()->toDateTimeString();
@@ -44,8 +35,6 @@ class CronController extends Controller
             $user_plan = user::where('users.id',$ux->user_id)
                     ->join('plans','plans.id','=','users.plan_id')
                     ->where('users.plan_id','!=',0)->first(); 
-
-            // checkStartDayPair;
             if(Date('H') == "00"){
                 $ux->limit = 0;
                 $ux->last_flush_out = null;
@@ -578,108 +567,5 @@ class CronController extends Controller
         // dd($dd);
 
     }
- 
 
-    public function oldGold(){
-        $user = UserExtra::where('is_gold',0)->get();
-        foreach ($user as $key => $value) {
-            $ex = UserExtra::find($value->id);
-            if($ex->left >= 3 && $ex->right >= 3){
-                $ex->update([
-                    'is_gold' => 1
-                ]);
-            }
-        }
-    }
-    public function isGold(){
-        $users = User::join('user_extras','users.id','=','user_extras.user_id')
-            ->where('is_gold',0)
-            ->where('bonus_deliver', 0)
-            ->orWhereNull('bonus_deliver')
-            ->get();
-        // dd($users);
-        $record = 0;
-        $true = 0;
-        $false = 0;
-        foreach ($users as $key => $value) {
-            $userID = $value->user_id;
-            $user = User::where('ref_id',$userID)->get();
-            $count = $user->count();
-            if ($count >= 6) {
-                $kiri = 0;
-                $kanan = 0;
-                $p_kiri =0;
-                $p_kanan =0;
-                // dd($user);
-                foreach ($user as $key => $value) {
-                    if($value->position==1){
-                        $kiri += 1;
-                    }
-                    if ($value->position==2) {
-                        $kanan += 1;
-                    }
-                    if($value->position_by_ref==1){
-                        $p_kiri += 1;
-                    }
-                    if($value->position_by_ref==2){
-                        $p_kanan += 1;
-                    }
-                    
-                }
-                $userex = UserExtra::where('user_id',$userID)->first();
-                if($userex){
-                    if($kiri == 3 && $kanan == 3){
-                        $userex->update([
-                            'is_gold'   => 1,
-                            'right_lv'  => $kanan,
-                            'left_lv'   => $kiri,
-                            'on_gold'   => date('Y-m-d H:i:s')
-                        ]);
-                        $true += 1;
-                    }elseif($kiri > 3 && $kanan > 3){
-                        $userex->update([
-                            'is_gold'           => 1,
-                            'bonus_deliver'     => 1,
-                            'right_lv'          => $kanan,
-                            'left_lv'           => $kiri
-                        ]);
-                        $true += 1;
-                    }
-
-
-                    if($p_kiri == 3 && $p_kanan == 3){
-                        $userex->update([
-                            'is_gold'   => 1,
-                            'right_lv'  => $kanan,
-                            'left_lv'   => $kiri,
-                            'on_gold'   => date('Y-m-d H:i:s')
-                        ]);
-                        $true += 1;
-                    }else
-                    if($p_kiri > 3 && $p_kanan > 3){
-                        $userex->update([
-                            'is_gold'           => 1,
-                            'bonus_deliver'     => 1,
-                            'right_lv'          => $kanan,
-                            'left_lv'           => $kiri
-                        ]);
-                        $true += 1;
-                    }
-                    else{
-                        $userex->update([
-                            'right_lv'  => $kanan,
-                            'left_lv'   => $kiri
-                        ]);
-                    }
-                }
-            }
-            
-            $record += 1;
-        }
-        return [
-            'status'=>'success',
-            'record'=> $record,
-            'gold'  => $true,
-        ];
-    }
 }

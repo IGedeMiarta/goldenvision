@@ -10,6 +10,16 @@
             background-size: cover;
             object-fit: contain;
         }
+
+        .is-valid {
+            border-color: #28a745 !important;
+            /* Green border color */
+        }
+
+        .is-invalid {
+            border-color: #dc3545 !important;
+            /* Red border color */
+        }
     </style>
 @endsection
 
@@ -128,12 +138,13 @@
                                     <div class="form-group mt-3 col-md-10">
                                         <label>@lang('Referrals')</label>
                                         <input type="text"
-                                            class="form-style {{ $errors->has('referrals') ? 'is-invalid' : '' }}"
-                                            placeholder="@lang('Referrals username')" autocomplete="off"
-                                            value="{{ old('referrals') }}" name="referrals">
-                                        @error('username')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
+                                            class="form-style {{ $errors->has('referrals') ? 'is-invalid' : '' }} {{ isset($_GET['ref']) ? 'is-valid' : '' }}"
+                                            placeholder="@lang('Referrals username')" autocomplete="off" id="referrals"
+                                            value="{{ $_GET['ref'] ?? old('referrals') }}" name="referrals"
+                                            {{ isset($_GET['ref']) ? 'readonly' : '' }}>
+
+                                        <small class="refInfo d-none"></small>
+
                                     </div>
 
                                     <div class="col-lg-12">
@@ -155,28 +166,7 @@
                                         </div>
                                     @endif
 
-                                </div> {{-- end div row --}}
-
-
-
-
-
-
-
-
-
-
-                                {{-- <div class="row mt-3">
-                                    <div class="col pr-0">
-                                        <div class="form-group">
-                                            <input type="checkbox" id="checkbox" checked>
-                                            <label class="checkbox mb-0 font-weight-500 size-15" for="checkbox">Stay signed in</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-auto align-self-center text-right pl-0">
-                                        <a href="recovery.html" class="link link-gray-primary size-15 font-weight-500 animsition-link" data-hover="Forgot password?">Forgot password?</a>
-                                    </div>
-                                </div> --}}
+                                </div>
                                 <div class="row mt-4">
                                     <div class="col-12 text-sm-center">
                                         <button type="submit" class="btn btn-dark-primary">Register<i
@@ -201,6 +191,40 @@
 
 
 @section('js')
+    @if (isset($_GET['ref']))
+        <script>
+            $(document).ready(function() {
+                getvalidation();
+
+                function getvalidation() {
+                    var username = "{{ $_GET['ref'] }}";
+                    $.ajax({
+                        url: "{{ url('/api/check-user') }}/" + username,
+                        type: 'GET',
+                        success: function(response) {
+                            var info = $('.refInfo');
+                            var input = $('#referrals');
+                            if (response.status) {
+                                var msg = 'Referrals Insert: `' + response.username + '`  | ' + response
+                                    .fullname;
+                                info.removeClass('d-none').addClass('text-success').text(msg);
+                                input.addClass('is-valid')
+                            } else {
+                                info.removeClass('d-none').addClass('text-danger').text(
+                                    'User Not Found');
+                                input.addClass('is-invalid')
+
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                            $('#userStatus').text('Error occurred while checking user.');
+                        }
+                    });
+                }
+            })
+        </script>
+    @endif
     <script>
         $('select[name=country_code]').change(function() {
             $('input[name=country]').val($('select[name=country_code] :selected').data('country'));
@@ -225,5 +249,61 @@
                 @endif
             @endif
         @endif
+
+
+        $(document).ready(function() {
+            var typingTimer;
+            var doneTypingInterval = 1000; // 1 second
+
+            $('#referrals').on('keyup', function() {
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(doneTyping, doneTypingInterval);
+            });
+
+            $('#referrals').on('keydown', function() {
+                clearTimeout(typingTimer);
+            });
+
+            function doneTyping() {
+                var value = $('#referrals').val();
+                if (value.trim() !== '') {
+                    $.ajax({
+                        url: "{{ url('/api/check-user') }}/" + value,
+                        type: 'GET',
+                        success: function(response) {
+                            var info = $('.refInfo');
+                            var input = $('#referrals');
+                            if (response.status) {
+                                clearInput();
+                                var msg = 'Akun found: `' + response.username + '`  | ' + response
+                                    .fullname;
+                                info.removeClass('d-none').addClass('text-success').text(msg);
+                                input.addClass('is-valid')
+                            } else {
+                                clearInput();
+                                info.removeClass('d-none').addClass('text-danger').text(
+                                    'User Not Found');
+                                input.addClass('is-invalid')
+
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                            $('#userStatus').text('Error occurred while checking user.');
+                        }
+                    });
+                } else {
+                    $('#userStatus').text('Please enter a username.');
+                }
+            }
+
+            function clearInput() {
+                var info = $('.refInfo');
+                var input = $('#referrals');
+
+                info.removeClass('text-success').removeClass('text-danger');
+                input.removeClass('is-valid').removeClass('is-invalid');
+            }
+        });
     </script>
 @endsection

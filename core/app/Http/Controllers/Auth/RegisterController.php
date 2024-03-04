@@ -198,13 +198,12 @@ class RegisterController extends Controller
         $gnl = GeneralSetting::first();
 
         $refferals = $data['referrals'];
-        if (!$refferals) {
+        $ref = User::where('username',$refferals)->first();
+
+        if (!$ref) {
             $ref = User::where('comp',1)->first();
-        }else{
-            $ref = User::where('username',$refferals)->first();
         }
 
-        //User Create
         $user = new User();
         $user->firstname    = isset($data['firstname']) ? $data['firstname'] : null;
         $user->lastname     = isset($data['lastname']) ? $data['lastname'] : null;
