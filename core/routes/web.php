@@ -25,9 +25,9 @@ Route::get('cyc',function(){
     updateCycleNasional(1);
 });
 Route::get('leader',function(){
-    leaderCommission(25,2);
+    $r = leaderCommission(25,2);
 
-    echo 'ok';
+    echo $r;
 });
 
 Route::get('cron-single',[NewCronController::class,'checkSponsor']);
