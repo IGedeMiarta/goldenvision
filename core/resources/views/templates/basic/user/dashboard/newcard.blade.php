@@ -505,7 +505,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Leadership Bonus </span>
-                    <h6 class="text-dark" style="font-size: 18px">0 IDR</h6>
+                    <h6 class="text-dark" style="font-size: 18px">{{ nb(sumBonus('leader')) }} IDR</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <div class="icon-rp-total">
@@ -552,8 +552,8 @@
                 background-size: cover;">
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
-                    <span class="text-dark" style="font-size: 12px">total Order</span>
-                    <h6 class="text-dark" style="font-size: 18px">0 IDR</h6>
+                    <span class="text-dark" style="font-size: 12px">Total Order</span>
+                    <h6 class="text-dark" style="font-size: 18px">{{ nb(auth()->user()->total_invest) }} IDR</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <div class="icon-rp-total">

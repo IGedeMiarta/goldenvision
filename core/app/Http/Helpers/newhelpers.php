@@ -6,6 +6,7 @@ use App\Models\Plan;
 use App\Models\Rank;
 use App\Models\rekening;
 use App\Models\Test;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserChart;
 use App\Models\UserExtra;
@@ -393,4 +394,18 @@ function updateLimit($userID){
     $user = User::find($userID);
     $user->limit_ro += 2500000;
     $user->save();
+}
+
+function sumBonus($type){
+    if($type=='referral'){
+        $mark = 'referral_commission';
+    }elseif($type=='binary'){
+        $mark = 'binary_commission';
+    }elseif($type=='leader'){
+        $mark = 'leadership_com';
+    }else{
+        return 0;
+    }
+
+    return Transaction::where('remark',$mark)->where('user_id',auth()->user()->id)->sum('amount');
 }
