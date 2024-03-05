@@ -288,6 +288,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
 
         Route::get('users/{scope}/search', 'ManageUsersController@search')->name('users.search');
         Route::get('user/detail/{id}', 'ManageUsersController@detail')->name('users.detail');
+        Route::get('user/detail-rank/{id}', 'ManageUsersController@updateRank')->name('users.detail.rank');
         Route::get('user/detailbalance/{id}', 'ManageUsersController@BalanceLog')->name('users.detailbalance');
         Route::post('user/detail/find', 'ManageUsersController@detailFind')->name('users.detail.find');
         Route::get('user/gold_invest', 'ManageUsersController@userGold')->name('invest.gdetail');
@@ -638,6 +639,9 @@ Route::name('user.')->prefix('user')->group(function () {
             //Claimreward
             Route::post('claim_reward/{id}', 'UrewardController@claimReward')->name('claim.reward');
 
+
+            //Convert
+            Route::post('convert-bwallet',[UserController::class,'convertBwallet'])->name('convert.bwallet');
 
             //2FA
             Route::get('twofactor', 'UserController@show2faForm')->name('twofactor');

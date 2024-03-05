@@ -68,6 +68,42 @@ class UserController extends Controller
         }
         return 'success';
     }
+
+    public function convertBwallet(Request $request){
+        $user = Auth::user();
+        if($user->b_balance < $request->amount){
+            $notify[] = ['error', 'Invalid Amount, not enough balance'];
+            return back()->withNotify($notify);
+        }
+        if($user->limit_ro < $request->amount){
+            $notify[] = ['error', 'Invalid Amount, your convert max limit'];
+            return back()->withNotify($notify);
+        }
+        $user->balance +=  $request->amount;
+        $user->b_balance -=  $request->amount;
+        $user->limit_ro -= $request->amount;
+        $user->save();
+
+        $user->transactions()->create([
+            'amount' => $request->amount,
+            'trx_type' => '-',
+            'details' => 'Convert  '. nb($request->amount) .' IDR B-Wallet to Cash-Wallet',
+            'remark' => 'convert_bwallet',
+            'trx' => getTrx(),
+            'post_balance' => getAmount($user->b_balance),
+        ]);
+        $user->transactions()->create([
+            'amount' => $request->amount,
+            'trx_type' => '+',
+            'details' => 'Convert  '. nb($request->amount) .' IDR B-Wallet to Cash-Wallet',
+            'remark' => 'convert_wallet',
+            'trx' => getTrx(),
+            'post_balance' => getAmount($user->balance),
+        ]);
+        $notify[] = ['success', 'Convert Balance B-Wallet to Cash Wallet Success!'];
+            return back()->withNotify($notify);
+    }
+
     public function fileDownload(Request $r){
     if($r->file == 'mp'){
         $file = public_path().'/files/mp.pdf';

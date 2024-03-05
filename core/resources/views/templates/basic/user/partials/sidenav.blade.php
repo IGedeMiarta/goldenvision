@@ -25,7 +25,7 @@
                 </li>
 
                 <li
-                    class="sidebar-menu-item sidebar-dropdown {{ menuActive('user.product*', 2) }} {{ auth()->user()->point == 0 ? 'd-none' : '' }}">
+                    class="sidebar-menu-item sidebar-dropdown {{ menuActive('user.product*', 2) }} {{ auth()->user()->plan_id == 0 ? 'd-none' : '' }}">
                     <a href="javascript:void(0)" class=" my-2">
                         <i class="menu-icon  las la-tag {{ menuActive('user.product*', 2) }}"></i>
                         <span class="menu-title {{ menuActive('user.product*', 2) }}">@lang('Product')</span>

@@ -49,9 +49,9 @@
         }
 
         /* .btn-11:hover {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            text-decoration: none;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            color: #fff;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                text-decoration: none;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                color: #fff;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            } */
         .btn-11:before {
             position: absolute;
             content: '';
@@ -65,14 +65,14 @@
         }
 
         /* .btn-11:hover{
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                          opacity: .7;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              opacity: .7;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            } */
         /* .btn-11:active{
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                          box-shadow:  4px 4px 6px 0 rgba(255,255,255,.3),
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      -4px -4px 6px 0 rgba(116, 125, 136, .2),
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            inset -4px -4px 6px 0 rgba(255,255,255,.2),
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              box-shadow:  4px 4px 6px 0 rgba(255,255,255,.3),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          -4px -4px 6px 0 rgba(116, 125, 136, .2),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                inset -4px -4px 6px 0 rgba(255,255,255,.2),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            } */
 
 
         @-webkit-keyframes shiny-btn1 {
@@ -116,10 +116,31 @@
                                 class="text--small">@lang('Joined At ')<strong>{{ showDateTime(
                                     $user->created_at,
                                     'd M, Y
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                h:i A',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                h:i A',
                                 ) }}</strong></span>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="card b-radius--10 overflow-hidden mt-30 box--shadow1">
+                <div class="card-body text-center">
+                    <img src="{{ asset($user->ranks->logo) }}" alt="UserRank" style="max-width: 200px">
+                    <form action="{{ route('admin.users.detail.rank', $user->id) }}">
+                        @csrf
+                        <div class="input-group mb-3">
+                            <select name="rank" class="form-control" id="">
+                                @foreach ($rank as $item)
+                                    <option value="{{ $item->id }}" @if ($user->rank == $item->id) selected @endif>
+                                        {{ $item->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-outline-success" type="button" id="button-addon2"><i
+                                        class="fas fa-check"></i> Update</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -135,16 +156,7 @@
                             @lang('Ref By')
                             <span class="font-weight-bold"> {{ $ref_id->no_bro ?? 'N/A' }}</span>
                         </li>
-                        {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                            @lang('Balance')
-                            <span class="font-weight-bold"> 
-                            </span>
-                        </li> --}}
-                        {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                        @lang('Total BV')
-                        <span class="font-weight-bold"><a href="{{route('admin.report.single.bvLog', $user->id)}}">
-                                {{getAmount($user->userExtra->bv_left + $user->userExtra->bv_right)}} </a></span>
-                    </li> --}}
+
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             @lang('MP Left User')
                             <span class="font-weight-bold">{{ $user->userExtra->left }}</span>
@@ -153,22 +165,7 @@
                             @lang('MP Right User')
                             <span class="font-weight-bold">{{ $user->userExtra->right }}</span>
                         </li>
-                        {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
-                        @lang('Free Left User')
-                        <span class="font-weight-bold">{{$user->userExtra->free_left}}</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        @lang('Free Right User')
-                        <span class="font-weight-bold">{{$user->userExtra->free_right}}</span>
-                    </li> --}}
-                        {{-- @if ($user->plan_id != 0)
 
-                    <li class="list-group-item d-flex justify-content-between">
-                        <span>@lang('MP')</span>
-                        <div class="custom-btn btn-11 text-center"><span style="font-weight: 700">
-                                {{$user->bro_qty}} MP </span></div>
-                    </li>
-                    @endif --}}
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             @lang('Status')
                             @switch($user->status)
@@ -201,9 +198,9 @@
                                 @break
                             @endswitch
                         </li>
-
                     </ul>
                 </div>
+
             </div>
             <div class="card b-radius--10 overflow-hidden mt-30 box--shadow1">
                 <div class="card-body">

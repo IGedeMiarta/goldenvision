@@ -153,7 +153,6 @@ class PlanController extends Controller
             
 
             $firstUpline = $this->placementFirstAccount($user,$request,$ref_user,$plan,$sponsor);
-            updateLimit($firstUpline->id);
             
             if($firstUpline == false){
                 $notify[] = ['error', 'Invalid On First Placement, Rollback'];
@@ -162,12 +161,11 @@ class PlanController extends Controller
             $waitlistUserID[] =  $user->id;
             
             if (!$checkloop) {
-                fnSingleQualified($sponsor->id,$firstUpline->id);
-                fnDelWaitList(Auth::user()->id);
-                
+                updateLimit($firstUpline->id);
                 
                 deliverPoint(Auth::user()->id,$request->qty*2);
                 leaderCommission(Auth::user()->id,$request->qty);
+                dd($firstUpline);
                 checkRank($user->id);
                 DB::commit();
                 $notify[] = ['success', 'Successfully Purchased Plan'];

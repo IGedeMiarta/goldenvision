@@ -14,6 +14,7 @@ use App\Models\GeneralSetting;
 use App\Http\Controllers\Controller;
 use App\Models\bank;
 use App\Models\Gold;
+use App\Models\Rank;
 use App\Models\rekening;
 use App\Models\SupportTicket;
 use App\Models\Transaction;
@@ -223,9 +224,16 @@ class ManageUsersController extends Controller
 
         $emas               = Gold::where('user_id',$user->id)->where('golds.status','=','0')->join('products','products.id','=','golds.prod_id')->select('golds.*',db::raw('COALESCE(SUM(products.price * golds.qty),0) as total_rp'),db::raw('COALESCE(sum(products.weight * golds.qty ),0) as total_wg'))->groupBy('golds.user_id')->first();
         $provinsi            = \Indonesia::allProvinces();
-        
+        $rank = Rank::all();
         return view('admin.users.detail', compact('page_title','ref_id','user','totalDeposit',
-            'totalWithdraw','totalTransaction',  'totalBvCut','emas','bank','provinsi'));
+            'totalWithdraw','totalTransaction',  'totalBvCut','emas','bank','provinsi','rank'));
+    }
+    public function updateRank(Request $request, $id){
+        $user = User::find($id);
+        $user->rank = $request->rank;
+        $user->save();
+        $notify[] = ['success', 'User rank has been updated'];
+        return redirect()->back()->withNotify($notify);
     }
     public function BalanceLog($id){
         $user = User::where('comp',0)->find($id);
