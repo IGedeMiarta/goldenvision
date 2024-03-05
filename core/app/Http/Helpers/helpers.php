@@ -2204,6 +2204,7 @@ $res = '';
     $uplines = $resp['upline'];
     $upuser = User::where('username',$uplines->username)->first();
     $checkLeft = User::where('pos_id',$upuser->id)->where('position',2)->first();
+    // dd($upuser);
 
     if($uplines){
         $upline = $uplines->username;

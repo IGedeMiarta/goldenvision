@@ -125,7 +125,7 @@ class SponsorRegisterController extends Controller
             $checkloop = $request->pin > 1  ? true:false;
 
             if(!$checkloop){
-                deliverPoint(Auth::user()->id,$request->pin*2);
+                deliverPoint($newUser->id,$request->pin*2);
                 checkRank($newUser->id);
                 leaderCommission(Auth::user()->id,$request->pin);
                 DB::commit();
