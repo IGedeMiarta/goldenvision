@@ -1141,8 +1141,11 @@ function  leaderCommission($id, $qty)
     while ($id != "" || $id != "0") {
         if (isUserExists($id)) {
             $refid = getRefId($id);
-            $user = user::where('id',$id)->first();
-            $userRef = user::where('id',$refid)->first();
+            $user = user::find($id);
+            $userRef = user::find($refid);
+            if ($refid == "0") {
+                break;
+            }
             if ($userRef->rank == 0) {
                 $id = $refid;
                 continue;
@@ -1171,9 +1174,7 @@ function  leaderCommission($id, $qty)
                 $trx->details = 'Paid Leadership Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
                 $trx->save();  
             }
-            if ($refid == "0") {
-                break;
-            }
+            
             if ($com <= 0){
                 break;
             }
