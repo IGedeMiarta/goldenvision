@@ -42,6 +42,16 @@ class PlanController extends Controller
         $data['plans'] = Plan::whereStatus(1)->get();
         return view($this->activeTemplate . '.user.plan_ro', $data);
     }
+
+    public function changeDafault(Request $request){
+        $user = Auth::user();
+        $user->default_pos = $request->pos;
+        $user->save();
+
+        $notify[] = ['success', 'Success Update Referrals Default Position'];
+        return back()->withNotify($notify);
+    }
+
     public function buyMpStore(Request $request){
 
         $this->validate($request, [
@@ -272,13 +282,13 @@ class PlanController extends Controller
 
         $gnl = GeneralSetting::first();
         try {
+            $user = User::find($user->id);
             
-            $pos = getPosition($ref_user->id, $request->position);
+            $pos = getPosition($ref_user->id, $ref_user->default_pos);
 
             if($pos['position'] == 0){
                 return false;
             }
-            $user = User::find($user->id);
             $user->ref_id           = $sponsor->id; // ref id = sponsor
             $user->pos_id           = $pos['pos_id']; //pos id = upline
             $user->position         = $pos['position'];

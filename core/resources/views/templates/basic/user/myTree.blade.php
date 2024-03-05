@@ -79,7 +79,7 @@
 @section('panel')
     <div class="row d-flex justify-content-center">
 
-        <div class="mr-4 col-md-3 card mb-3">
+        {{-- <div class="mr-4 col-md-3 card mb-3">
 
             <div class="card-body">
                 <h4 class="text-center">Last Level Left</h4>
@@ -93,10 +93,7 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="card-footer justify-center text-center">
-                <button class="btn btn-primary btn-block btnCopy"
-                    data-url="{{ url('user/plan') . '?sponsor=' . auth()->user()->username . '&pos=1' }}">COPY URL</button>
-            </div> --}}
+
         </div>
         <div class="mr-4 col-md-3 card mb-3">
             <div class="card-body">
@@ -110,118 +107,70 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="card-footer justify-center text-center">
-                <button class="btn btn-warning btn-block btnCopy"
-                    data-url="{{ url('user/plan') . '?sponsor=' . auth()->user()->username . '&pos=2' }}">COPY URL</button>
-            </div> --}}
-        </div>
-        <div class="col-md-12 card card-tree">
-            <div class="card-body">
 
-            </div>
-            <div class="active-user-none" data-id="{{ auth()->user()->id }}"></div>
-            <div class="row text-center justify-content-center llll">
-                <!-- <div class="col"> -->
-                <div class="w-1 ">
-                    @php echo showSingleUserinTree($tree['a']); @endphp
-                </div>
-            </div>
-            <div class="row text-center justify-content-center llll">
-                <!-- <div class="col"> -->
-                <div class="w-2 ">
-                    @php echo showSingleUserinTree($tree['b']); @endphp
-                </div>
-                <!-- <div class="col"> -->
-                <div class="w-2 ">
-                    @php echo showSingleUserinTree($tree['c']); @endphp
-                </div>
-            </div>
-            <div class="row text-center justify-content-center llll">
-                <!-- <div class="col"> -->
-                <div class="w-4  ">
-                    @php echo showSingleUserNoLine($tree['d']); @endphp
-                </div>
-                <!-- <div class="col"> -->
-                <div class="w-4  ">
-                    @php echo showSingleUserNoLine($tree['e']); @endphp
-                </div>
-                <!-- <div class="col"> -->
-                <div class="w-4  ">
-                    @php echo showSingleUserNoLine($tree['f']); @endphp
-                </div>
-                <!-- <div class="col"> -->
-                <div class="w-4  ">
-                    @php echo showSingleUserNoLine($tree['g']); @endphp
-                </div>
-                <!-- <div class="col"> -->
-
-            </div>
-            {{-- <div class="row text-center justify-content-center llll">
-            <!-- <div class="col"> -->
-            <div class="w-8 ">
-                @php echo showSingleUserinTree($tree['h']); @endphp
-            </div>
-            <!-- <div class="col"> -->
-            <div class="w-8 ">
-                @php echo showSingleUserinTree($tree['i']); @endphp
-            </div>
-            <!-- <div class="col"> -->
-            <div class="w-8 ">
-                @php echo showSingleUserinTree($tree['j']); @endphp
-            </div>
-            <!-- <div class="col"> -->
-            <div class="w-8 ">
-                @php echo showSingleUserinTree($tree['k']); @endphp
-            </div>
-            <!-- <div class="col"> -->
-            <div class="w-8 ">
-                @php echo showSingleUserinTree($tree['l']); @endphp
-            </div>
-            <!-- <div class="col"> -->
-            <div class="w-8 ">
-                @php echo showSingleUserinTree($tree['m']); @endphp
-            </div>
-            <!-- <div class="col"> -->
-            <div class="w-8 ">
-                @php echo showSingleUserinTree($tree['n']); @endphp
-            </div>
-            <!-- <div class="col"> -->
-            <div class="w-8 ">
-                @php echo showSingleUserinTree($tree['o']); @endphp
-            </div>
         </div> --}}
+        <div class="col-md-12 card card-tree">
+            <div class="card-header">
+                <form action="{{ route('user.plan.changedef') }}" method="post">
+                    @csrf
+                    <div class="col-md-3">
+                        <label for="default" style="font-size: 14px">Referrals Default Position</label>
+                        <div class="input-group mb-3">
+                            <select name="pos" id="default" class="form-control">
+                                <option value="1" @if (auth()->user()->default_pos == 1) selected @endif>Left</option>
+                                <option value="2" @if (auth()->user()->default_pos == 2) selected @endif>Right</option>
+                            </select>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-outline-primary" type="button" id="button-addon2"><i
+                                        class="fas fa-save"></i> Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
+            <div class="card-body">
+                <div class="active-user-none" data-id="{{ auth()->user()->id }}"></div>
+                <div class="row text-center justify-content-center llll">
+                    <!-- <div class="col"> -->
+                    <div class="w-1 ">
+                        @php echo showSingleUserinTree($tree['a']); @endphp
+                    </div>
+                </div>
+                <div class="row text-center justify-content-center llll">
+                    <!-- <div class="col"> -->
+                    <div class="w-2 ">
+                        @php echo showSingleUserinTree($tree['b']); @endphp
+                    </div>
+                    <!-- <div class="col"> -->
+                    <div class="w-2 ">
+                        @php echo showSingleUserinTree($tree['c']); @endphp
+                    </div>
+                </div>
+                <div class="row text-center justify-content-center llll">
+                    <!-- <div class="col"> -->
+                    <div class="w-4  ">
+                        @php echo showSingleUserNoLine($tree['d']); @endphp
+                    </div>
+                    <!-- <div class="col"> -->
+                    <div class="w-4  ">
+                        @php echo showSingleUserNoLineInsideLeft($tree['e']); @endphp
+                    </div>
+                    <!-- <div class="col"> -->
+                    <div class="w-4  ">
+                        @php echo showSingleUserNoLineInsideRight($tree['f']); @endphp
+                    </div>
+                    <!-- <div class="col"> -->
+                    <div class="w-4  ">
+                        @php echo showSingleUserNoLine($tree['g']); @endphp
+                    </div>
+                    <!-- <div class="col"> -->
+
+                </div>
+            </div>
         </div>
     </div>
-    {{-- <div class="card mb-4">
-        <div class="card-header">
-            Share Referals
-        </div>
-        <div class="card-body">
-            <div class="form-group row">
-                <label for="kiri" class="col-sm-2 col-form-label">Kiri</label>
-                <div class="col-sm-10 input-group">
-                    <input type="text" class="form-control" id="kiri"
-                        value="{{ url('user/plan?') . 'sponsor=' . auth()->user()->no_bro . '&position=1' }}">
-                    <div class="input-group-append">
-                        <button type="button" class="input-group-text" id="btnKiri"> <i class="fas fa-copy mr-2"></i>
-                            Salin</button>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="kiri" class="col-sm-2 col-form-label">Kanan</label>
-                <div class="col-sm-10 input-group">
-                    <input type="text" class="form-control" id="kanan"
-                        value="{{ url('user/plan?') . 'sponsor=' . auth()->user()->no_bro . '&position=2' }}">
-                    <div class="input-group-append">
-                        <button type="button" class="input-group-text" id="btnKanan"> <i class="fas fa-copy mr-2"></i>
-                            Salin</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
+
 
 
 

@@ -690,6 +690,9 @@ Route::name('user.')->prefix('user')->group(function () {
             
             Route::post('add-sub-balance/{id}', 'UserController@addSubBalance')->name('addSubBalance');
             Route::post('send-pin/{id}', [SponsorRegisterController::class,'sendPin'])->name('addPinUser');
+            
+
+
             //Report
             // Route::get('report/deposit/log', 'UserReportController@depositHistory')->name('report.deposit');
             // Route::get('report/invest/log', 'UserReportController@investLog')->name('report.invest');
@@ -743,6 +746,7 @@ Route::name('user.')->prefix('user')->group(function () {
 
           
             Route::post('/buymp', 'PlanController@buyMpStore')->name('plan.mppurchase');
+            Route::post('/check-default', 'PlanController@changeDafault')->name('plan.changedef');
             Route::get('/manage-user', 'UserController@user_boom')->name('user_boom');
             Route::get('/tree', 'PlanController@myTree')->name('my.tree');
 
