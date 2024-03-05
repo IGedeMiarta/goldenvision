@@ -281,7 +281,7 @@
             </div>
             <div class="card-body mt-n4" style="position: relative; ">
                 <div class="" style="display: flex; justify-content: space-between">
-                    <a href="{{ route('user.report.transactions') }}"
+                    <a href="#"
                         class="btn btn-sm btn-block text--small bg-btn-success box--shadow3 mt-3 mr-2">@lang('Repeat Order')</a>
                     <button data-toggle="modal" data-target="#convertModal"
                         class="btn btn-sm btn-block text--small bg-btn-dark box--shadow3 mt-3">@lang('Convert') <svg
