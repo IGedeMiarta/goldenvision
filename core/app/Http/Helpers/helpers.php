@@ -2085,15 +2085,18 @@ $res = '';
     $uplines = $resp['upline'];
 
     // checkSebelah
-    $upuser = User::where('username',$uplines->username)->first();
-    $checkLeft = User::where('pos_id',$upuser->id)->where('position',1)->first();
-
+    
     if($uplines){
         $upline = $uplines->username;
         $uname = $uplines->username;
+        
+        $upuser = User::where('username',$uplines->username)->first();
+        $checkLeft = User::where('pos_id',$upuser->id)->where('position',1)->first();
+
     }else{
         $upline = '';
         $uname = '';
+        $checkLeft = false;
 
     }
     $pos = $resp['pos'];
@@ -2202,16 +2205,18 @@ function showSingleUserNoLineInsideRight($resp)
 $res = '';
     $user = $resp['user'];
     $uplines = $resp['upline'];
-    $upuser = User::where('username',$uplines->username)->first();
-    $checkLeft = User::where('pos_id',$upuser->id)->where('position',2)->first();
+   
     // dd($upuser);
 
     if($uplines){
         $upline = $uplines->username;
         $uname = $uplines->username;
+        $upuser = User::where('username',$uplines->username)->first();
+        $checkLeft = User::where('pos_id',$upuser->id)->where('position',2)->first();
     }else{
         $upline = '';
         $uname = '';
+        $checkLeft  = false;
 
     }
     $pos = $resp['pos'];
