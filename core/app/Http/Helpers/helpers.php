@@ -1924,25 +1924,29 @@ function showSingleUserinTree($resp)
         // $res .= "<p class=\" user-btn\" style=\"padding-top:0px;\"><a class=\"btn btn-sm\" style=\"background-color:#63bbf3;color:black;\" href=\"$hisTree\" style=\"position: absolute; z-index:-1;\">Explore Tree</a></p>";
 
     } else {
-         if($upline){
+        //  if($upline){
              
-            if ($upline == auth()->user()->no_bro && auth()->user()->userExtra->is_gold || $pos == 2) {
-                $img = getImage('assets/images/add2.jpg', null, true);
+        //     if ($upline == auth()->user()->no_bro && auth()->user()->userExtra->is_gold || $pos == 2) {
+        //         $img = getImage('assets/images/add2.jpg', null, true);
 
-                # code...
-                $addList = 'btnUser';
-            }else{
-                 $img = getImage('assets/images/add2.jpg', null, true);
+        //         # code...
+        //         $addList = 'btnUser';
+        //     }else{
+        //          $img = getImage('assets/images/add2.jpg', null, true);
                 
 
-                $addList = 'btnUser';
-            }
+        //         $addList = 'btnUser';
+        //     }
            
-        }else{
-             $img = getImage('assets/images/add2.jpg', null, true);
+        // }else{
+        //     $img = getImage('assets/images/add2.jpg', null, true);
             
-            $addList = 'noUser';
-        }
+        //     $addList = 'noUser';
+        // }
+
+        // $img = getImage('assets/images/add2.jpg', null, true);
+        $img = getImage('assets/images/bg.png', null, true);
+        $addList = 'noUser';
         $res .= '<div class="user '.$addList.' " data-upline="'.$uname.'" data-pos="'.$pos.'" data-up="'.$uname.'" type="button">';
         // $res .= '<div class="user btnUser" type="button">';
         $res .= '<img src="'.$img.'" alt="*"  class="no-user imgUser'.$pos.$bro.'" style="border-radius:50%">';
@@ -2058,15 +2062,18 @@ function showSingleUserNoLine($resp)
         // $res .= "<p class=\" user-btn\" style=\"padding-top:0px;\"><a class=\"btn btn-sm\" style=\"background-color:#63bbf3;color:black;\" href=\"$hisTree\" style=\"position: absolute; z-index:-1;\">Explore Tree</a></p>";
 
     } else {
-            if ($uname != '') {
-                $img = getImage('assets/images/add2.jpg', null, true);
+            // if ($uname != '') {
+            //     $img = getImage('assets/images/add2.jpg', null, true);
+            //     # code...
+            //     $addList = 'btnUser';
+            // }else{
+            //      $img = getImage('assets/images/bg.png', null, true);
+            //     # code...
+            //     $addList = 'btnUser';
+            // }
+        $img = getImage('assets/images/bg.png', null, true);
                 # code...
-                $addList = 'btnUser';
-            }else{
-                 $img = getImage('assets/images/bg.png', null, true);
-                # code...
-                $addList = 'btnUser';
-            }
+                $addList = 'noUser';
         $res .= '<div class="user '.$addList.' " data-upline="'.$uname.'" data-pos="'.$pos.'" data-up="'.$uname.'" type="button">';
         $res .= '<img src="'.$img.'" alt="*"  class="no-user imgUser'.$pos.$upline.'" style="border-radius:50%">';
 
@@ -2311,9 +2318,13 @@ $res = '';
 
     } else {
             if ($uname != '' &&  $checkLeft) {
-                $img = getImage('assets/images/add2.jpg', null, true);
+                // $img = getImage('assets/images/add2.jpg', null, true);
+                 $img = getImage('assets/images/bg.png', null, true);
+
                 # code...
-                $addList = 'btnUser';
+                // $addList = 'btnUser';
+                $addList = 'noUser';
+
             }else{
                  $img = getImage('assets/images/bg.png', null, true);
                 # code...
@@ -2417,7 +2428,10 @@ function showLastUserLeft()
         // $res .= "<p class=\" user-btn\" style=\"padding-top:0px;\"><a class=\"btn btn-sm\" style=\"background-color:#63bbf3;color:black;\" href=\"$hisTree\" style=\"position: absolute; z-index:-1;\">Explore Tree</a></p>";
 
     } else {
-        $img = getImage('assets/images/', null, true);
+        
+        // $img = getImage('assets/images/', null, true);
+        $img = getImage('assets/images/bg.png', null, true);
+
         $addList = 'noUser';
         $res .= '<div class="user '.$addList.' " type="button">';
         // $res .= '<div class="user btnUser" type="button">';

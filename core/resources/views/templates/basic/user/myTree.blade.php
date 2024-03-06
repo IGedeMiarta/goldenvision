@@ -78,55 +78,33 @@
 
 @section('panel')
     <div class="row d-flex justify-content-center">
-
-        {{-- <div class="mr-4 col-md-3 card mb-3">
-
-            <div class="card-body">
-                <h4 class="text-center">Last Level Left</h4>
-            </div>
-
-            <div class="card-body">
-                <div class="row text-center justify-content-center">
-                    <!-- <div class="col"> -->
-                    <div class="w-1 ">
-                        @php echo showLastUserLeft(); @endphp
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="mr-4 col-md-3 card mb-3">
-            <div class="card-body">
-                <h4 class="text-center">Last Level Right</h4>
-            </div>
-            <div class="card-body">
-                <div class="row text-center justify-content-center">
-                    <!-- <div class="col"> -->
-                    <div class="w-1 ">
-                        @php echo showLastUserRight(); @endphp
-                    </div>
-                </div>
-            </div>
-
-        </div> --}}
         <div class="col-md-12 card card-tree">
-            <div class="card-header">
+            <div class="card-header ">
                 <form action="{{ route('user.plan.changedef') }}" method="post">
                     @csrf
-                    <div class="col-md-3">
-                        <label for="default" style="font-size: 14px">Referrals Default Position</label>
-                        <div class="input-group mb-3">
-                            <select name="pos" id="default" class="form-control">
-                                <option value="1" @if (auth()->user()->default_pos == 1) selected @endif>Left</option>
-                                <option value="2" @if (auth()->user()->default_pos == 2) selected @endif>Right</option>
-                            </select>
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-outline-primary" type="button" id="button-addon2"><i
-                                        class="fas fa-save"></i> Update</button>
+                    <div class="row">
+                        <div class="col-md-3">
+
+                            <div class="input-group">
+                                <select name="pos" id="default" class="form-control">
+                                    <option value="1" @if (auth()->user()->default_pos == 1) selected @endif>Left</option>
+                                    <option value="2" @if (auth()->user()->default_pos == 2) selected @endif>Right</option>
+                                </select>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-outline-primary" type="button"
+                                        id="button-addon2"><i class="fas fa-save"></i> Update</button>
+                                </div>
                             </div>
+                            <label for="default" style="font-size: 14px">Referrals Default Position</label>
                         </div>
+                        <div class="col-md-3">
+                            <a href="{{ route('user.sponsor.regist') }}" class="btn btn-outline-success w-100"
+                                type="button" id="button-addon2"><i class="fas fa-user"></i>Register New User</a>
+                        </div>
+                        <div class="col-md-6"></div>
                     </div>
                 </form>
+
             </div>
 
             <div class="card-body">
@@ -154,17 +132,15 @@
                     </div>
                     <!-- <div class="col"> -->
                     <div class="w-4  ">
-                        @php echo showSingleUserNoLineInsideLeft($tree['e']); @endphp
+                        @php echo showSingleUserNoLine($tree['e']); @endphp
                     </div>
                     <!-- <div class="col"> -->
                     <div class="w-4  ">
-                        @php echo showSingleUserNoLineInsideRight($tree['f']); @endphp
+                        @php echo showSingleUserNoLine($tree['f']); @endphp
                     </div>
-                    <!-- <div class="col"> -->
                     <div class="w-4  ">
                         @php echo showSingleUserNoLine($tree['g']); @endphp
                     </div>
-                    <!-- <div class="col"> -->
 
                 </div>
             </div>

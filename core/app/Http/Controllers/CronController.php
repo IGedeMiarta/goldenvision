@@ -287,7 +287,7 @@ class CronController extends Controller
 
                         }else{
                             $payment = User::find($uex->user_id);
-                            $payment->balance += $bonus;
+                            $payment->b_balance += $bonus;
                             $payment->total_binary_com += $bonus;
                             
 
@@ -296,7 +296,7 @@ class CronController extends Controller
                             $trx->amount = $bonus;
                             $trx->charge = 0;
                             $trx->trx_type = '+';
-                            $trx->post_balance = $payment->balance;
+                            $trx->post_balance = $payment->b_balance;
                             $trx->remark = 'binary_commission';
                             $trx->trx = getTrx();
 

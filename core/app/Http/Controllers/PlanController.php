@@ -108,8 +108,6 @@ class PlanController extends Controller
 
     function planStore(Request $request)
     {
-        $request['position'] = $request->pos ?? 2;
-
         $this->validate($request, [
             'plan_id' => 'required|integer', 
             'qty' => 'required',
@@ -121,24 +119,11 @@ class PlanController extends Controller
         try {
            
             $sponsor = User::find(Auth::user()->ref_id);
+
             if(!$sponsor){
                 $sponsor = User::where('comp',1)->first();
             }
-            // checkJalur Kiri;
-            if($request['position'] == 1){
-                //check jika jalur kiri pertama kosong;
-                $ref_user = User::where(['pos_id'=>$sponsor->id,'position'=>1])->first();
-               
-                if(!$ref_user){
-                    $ref_user = $sponsor;
-                    $request['position'] =  1;
-                }else{
-                    $request['position'] =  2;          
-                }
-            }else{
-                $ref_user = $sponsor;
-                $request['position'] =  2;          
-            }
+            $request['position'] = $sponsor->default_pos;
            
             $user = Auth::user();
             if (!$sponsor) {
@@ -162,7 +147,7 @@ class PlanController extends Controller
             }
             
 
-            $firstUpline = $this->placementFirstAccount($user,$request,$ref_user,$plan,$sponsor);
+            $firstUpline = $this->placementFirstAccount($user,$request,$plan,$sponsor);
             
             if($firstUpline == false){
                 $notify[] = ['error', 'Invalid On First Placement, Rollback'];
@@ -263,7 +248,7 @@ class PlanController extends Controller
 
                
             }
-            
+          
             deliverPoint(Auth::user()->id,$request->qty*2);
             // leaderCommission(118,5);
             checkRank($user->id);
@@ -277,24 +262,23 @@ class PlanController extends Controller
             return redirect()->back()->withNotify($notify);
         }
     }
-    function placementFirstAccount($user,$request,$ref_user,$plan,$sponsor)
+    function placementFirstAccount($user,$request,$plan,$sponsor)
     {
 
         $gnl = GeneralSetting::first();
         try {
             $user = User::find($user->id);
             
-            $pos = getPosition($ref_user->id, $ref_user->default_pos);
+            $pos = getPosition($sponsor->id, $sponsor->default_pos);
 
             if($pos['position'] == 0){
                 return false;
             }
-            $user->ref_id           = $sponsor->id; // ref id = sponsor
-            $user->pos_id           = $pos['pos_id']; //pos id = upline
+            $user->pos_id           = $pos['pos_id']; 
             $user->position         = $pos['position'];
-            $user->position_by_ref  = $ref_user->position;
+            $user->position_by_ref  = $sponsor->position;
             $user->plan_id          = $plan->id;
-            $user->total_invest     += ($plan->price * 1);
+            $user->total_invest     += $plan->price;
             $user->save();
 
             $spin = UserPin::create([
@@ -339,7 +323,7 @@ class PlanController extends Controller
             referralCommission2($user->id, $details);
             leaderCommission($user->id,$request->qty);
             updatePaidCount2($user->id);
-
+            updateLimit($user->id);
             return $user;
         } catch (\Throwable $th) {
             return false;

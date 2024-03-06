@@ -231,6 +231,7 @@ class ManageUsersController extends Controller
     public function updateRank(Request $request, $id){
         $user = User::find($id);
         $user->rank = $request->rank;
+        $user->rank_by_admin = 1;
         $user->save();
         $notify[] = ['success', 'User rank has been updated'];
         return redirect()->back()->withNotify($notify);

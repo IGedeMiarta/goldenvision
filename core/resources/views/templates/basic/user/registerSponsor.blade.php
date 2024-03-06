@@ -24,14 +24,14 @@
                             placeholder="Sponsor" value="{{ $user->username }}" readonly>
                     </div>
                 </div>
-                <div class="form-group row">
+                {{-- <div class="form-group row">
                     <label for="sponsor" class="col-sm-2 col-form-label">Upline</label>
                     <div class="input-group col-sm-10">
                         <input type="text" class="form-control col-md-12" id="upline" name="upline"
                             placeholder="upline" value="{{ session()->get('SponsorSet')['upline'] ?? '' }}" readonly>
                     </div>
-                </div>
-                <div class="form-group row">
+                </div> --}}
+                {{-- <div class="form-group row">
                     <label for="sponsor" class="col-sm-2 col-form-label">Placement</label>
                     <div class="col-sm-10">
                         <input type="hidden" name="position" id=""
@@ -43,7 +43,7 @@
                                 Kanan</option>
                         </select>
                     </div>
-                </div>
+                </div> --}}
                 <div class="for-group row">
                     <label for="phone" class="col-sm-2 col-form-label">Registered User
                         <br>
@@ -144,8 +144,7 @@
 
                         <div class="form-group mt-3 col-md-5 mr-2">
                             <label>@lang('Password')</label>
-                            <input type="password"
-                                class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                            <input type="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
                                 placeholder="@lang('Password')" autocomplete="off" name="password">
                             @error('password')
                                 <small class="text-danger">{{ $message }}</small>

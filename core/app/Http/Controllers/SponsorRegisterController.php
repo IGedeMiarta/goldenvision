@@ -45,7 +45,7 @@ class SponsorRegisterController extends Controller
         $data['page_title'] = "Register By Sponsor";
         $data['user'] = Auth::user();
         $data['bank'] = bank::all();
-        $data['upline'] = User::where('username',session()->get('SponsorSet')['upline'])->orWhere('id',session()->get('SponsorSet')['upline'])->first();
+        // $data['upline'] = User::where('username',session()->get('SponsorSet')['upline'])->orWhere('id',session()->get('SponsorSet')['upline'])->first();
         return view($this->activeTemplate . 'user.registerSponsor', $data);
     }
     
@@ -57,8 +57,8 @@ class SponsorRegisterController extends Controller
         }
         $validate = Validator::make($request->all(),[
             'sponsor'   => 'required',
-            'upline'    => 'required',
-            'position'  => 'required',
+            // 'upline'    => 'required',
+            // 'position'  => 'required',
             'pin'       => 'required|numeric|min:1',
             'firstname'     => 'sometimes|required|string|max:60',
             'lastname'      => 'sometimes|required|string|max:60',
@@ -71,7 +71,6 @@ class SponsorRegisterController extends Controller
         ]);
       
         if ($validate->fails()) {
-            // dd('error validasi');
            return redirect()->back()->withInput($request->all())->withErrors($validate);
         }
             
@@ -82,9 +81,6 @@ class SponsorRegisterController extends Controller
         }
         DB::beginTransaction();
         try {
-          
-          
-            // create rekening
             $cekbank = rekening::where('nama_bank',$request->bank_name)
                             ->where('nama_akun','like','%'.$request->acc_name.'%')
                             ->where('no_rek','like','%'.$request->acc_number.'%')
@@ -118,6 +114,7 @@ class SponsorRegisterController extends Controller
                 'position'  => $sponsor->default_pos,
                 'user_id'   => $newUser->id,
             ]);
+            // dd($buyPlan);
             if(!$buyPlan){
                 $notify[] = ['success', 'Invalid On Subscibe Plan, Rollback'];
                 return redirect()->back()->withNotify($notify);
@@ -125,13 +122,15 @@ class SponsorRegisterController extends Controller
             $checkloop = $request->pin > 1  ? true:false;
 
             if(!$checkloop){
+                updateLimit($sponsor->id);
                 deliverPoint($newUser->id,$request->pin*2);
                 checkRank($newUser->id);
                 leaderCommission(Auth::user()->id,$request->pin);
+                // dd($checkloop);
                 DB::commit();
                 addToLog('Created '.$request->pin.' User & Purchased Plan');
                 $notify[] = ['success', 'Created User & Purchased Plan Successfully'];
-                return redirect(session()->get('SponsorSet')['url'])->withNotify($notify);
+                return redirect()->route('user.my.tree') ->withNotify($notify);
             }else{
                 $registeredUser = $request->pin;
                 $firstUpline = $newUser;
@@ -210,8 +209,9 @@ class SponsorRegisterController extends Controller
             DB::commit();
             addToLog('Created '.$request->pin.' User & Purchased Plan');
             $notify[] = ['success', 'Success Created '.$request->pin.' User & Purchased Plan Each'];
-            return redirect(session()->get('SponsorSet')['url'])->withNotify($notify);
+            return redirect()->route('user.my.tree') ->withNotify($notify);
         } catch (\Throwable $th) {
+            dd($th->getMessage());
             DB::rollBack();
             $notify[] = ['error', 'Error on Placement, Rollback!'];
             return redirect()->back()->withNotify($notify);
@@ -248,11 +248,11 @@ class SponsorRegisterController extends Controller
             UserExtra::create([
                 'user_id' => $user->id
             ]);
-            $adminNotification = new AdminNotification();
-            $adminNotification->user_id = $user->id;
-            $adminNotification->title = 'New member registered By Sponsor: '. Auth::user()->username;
-            $adminNotification->click_url = route('admin.users.detail', $user->id);
-            $adminNotification->save();
+            // $adminNotification = new AdminNotification();
+            // $adminNotification->user_id = $user->id;
+            // $adminNotification->title = 'New member registered By Sponsor: '. Auth::user()->username;
+            // $adminNotification->click_url = route('admin.users.detail', $user->id);
+            // $adminNotification->save();
 
             return $user;
        } catch (\Throwable $th) {
@@ -318,21 +318,24 @@ class SponsorRegisterController extends Controller
     {
         try {
             $plan = Plan::where('id', $data['plan_id'])->where('status', 1)->firstOrFail();
-            $gnl = GeneralSetting::first();
-
+         
             $user = User::find($data['user_id']);
-            $ref_user = User::where('username', $data['upline'])->first();
 
             $sponsor = User::where('username', $data['sponsor'])->first();
-            $user->no_bro           = $user->username;
+            
+            $pos = getPosition($sponsor->id, $sponsor->default_pos);
+            
+            if($pos['position'] == 0){
+                return false;
+            }
             $user->ref_id           = $sponsor->id; // ref id = sponsor
-            $user->pos_id           = $ref_user->id; //pos id = upline
-            $user->position         = $data['position'];
-            $user->position_by_ref  = $ref_user->position;
+            $user->pos_id           = $pos['pos_id']; //pos id = upline
+            $user->position         = $pos['position'];
+            $user->no_bro           = $user->username;
+            $user->position_by_ref  = $sponsor->default_pos;
             $user->plan_id          = $plan->id;
             $user->total_invest     += ($plan->price * $data['pin']);
             $user->save();
-            // dd($user,'user');
 
             brodev($data['user_id'], $data['pin']);
 
@@ -345,13 +348,15 @@ class SponsorRegisterController extends Controller
                 'post_balance' => getAmount($user->balance),
             ]);
             
-            // updatePaidCount2($user->id);
+            updatePaidCount2($user->id);
             $userSponsor = User::find($data['user_id']);
             $details = $userSponsor->username. ' Subscribed to ' . $plan->name . ' plan.';
 
             addToLog('Purchased ' . $plan->name . ' For '.$data['pin'].' MP as Sponsor');
 
             referralCommission2($user->id, $details);
+            updateLimit($user->id);
+
             return $trx;  
         } catch (\Throwable $th) {
             dd($th->getMessage(),'error');

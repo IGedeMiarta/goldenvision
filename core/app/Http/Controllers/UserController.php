@@ -92,14 +92,6 @@ class UserController extends Controller
             'trx' => getTrx(),
             'post_balance' => getAmount($user->b_balance),
         ]);
-        $user->transactions()->create([
-            'amount' => $request->amount,
-            'trx_type' => '+',
-            'details' => 'Convert  '. nb($request->amount) .' IDR B-Wallet to Cash-Wallet',
-            'remark' => 'convert_wallet',
-            'trx' => getTrx(),
-            'post_balance' => getAmount($user->balance),
-        ]);
         $notify[] = ['success', 'Convert Balance B-Wallet to Cash Wallet Success!'];
             return back()->withNotify($notify);
     }
