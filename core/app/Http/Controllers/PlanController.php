@@ -156,10 +156,8 @@ class PlanController extends Controller
             $waitlistUserID[] =  $user->id;
             
             if (!$checkloop) {
-                updateLimit($firstUpline->id);
-                
                 deliverPoint(Auth::user()->id,$request->qty*2);
-                // leaderCommission(Auth::user()->id,$request->qty);
+                leaderCommission(Auth::user()->id,$request->qty);
                 checkRank($user->id);
                 DB::commit();
                 $notify[] = ['success', 'Successfully Purchased Plan'];
@@ -250,7 +248,6 @@ class PlanController extends Controller
             }
           
             deliverPoint(Auth::user()->id,$request->qty*2);
-            // leaderCommission(118,5);
             checkRank($user->id);
             DB::commit();
             $notify[] = ['success', 'Purchased ' . $plan->name . 'and Registered New  '.$registeredUser.' Account Successfully'];
