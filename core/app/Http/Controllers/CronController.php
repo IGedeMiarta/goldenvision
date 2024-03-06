@@ -568,4 +568,12 @@ class CronController extends Controller
 
     }
 
+    public function resetCountingLF() {
+        UserExtra::query()->update([
+            'p_left' => 0,
+            'p_right' => 0
+        ]);
+    }
+
+
 }

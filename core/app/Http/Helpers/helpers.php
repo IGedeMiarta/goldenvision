@@ -1072,8 +1072,6 @@ function updatePaidCount2($id)
 
 function updatePaidCountRO($id)
 {
-    $upliner = User::where('pos_id',$id)->first();
-    $id  = $upliner->id;
     while ($id != "" || $id != "0") {
         if (isUserExists($id)) {
             $posid = getPositionId($id);
@@ -1086,9 +1084,11 @@ function updatePaidCountRO($id)
 
             if ($position == 1) {
                 $extra->bv_left += 1;
+                $extra->p_left += 1;
                
             } else {
                 $extra->bv_right += 1;
+                $extra->p_right += 1;
             }
             $extra->save();
             $id = $posid;

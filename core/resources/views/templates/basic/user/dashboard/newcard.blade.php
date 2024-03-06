@@ -228,10 +228,12 @@
                 background-size: cover;">
                     <div class="card-body" style="display: flex; justify-content: start;">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" style="height: 50px; background-color: white"
+                            <input type="text" class="form-control" id="referralLink"
+                                style="height: 50px; background-color: white"
                                 value="{{ url('register') . '?ref=' . auth()->user()->username }}">
                             <div class="input-group-append">
-                                <button class="btn btn-dark" style="height: 50px" type="button">Copy</button>
+                                <button class="btn btn-dark" id="btnCopyLink" style="height: 50px"
+                                    type="button">Copy</button>
                             </div>
                         </div>
                     </div>
@@ -281,8 +283,8 @@
             </div>
             <div class="card-body mt-n4" style="position: relative; ">
                 <div class="" style="display: flex; justify-content: space-between">
-                    <a href="#"
-                        class="btn btn-sm btn-block text--small bg-btn-success box--shadow3 mt-3 mr-2">@lang('Repeat Order')</a>
+                    <button type="button" data-toggle="modal" data-target="#roModal"
+                        class="btn btn-sm btn-block text--small bg-btn-success box--shadow3 mt-3 mr-2">@lang('Repeat Order')</button>
                     <button data-toggle="modal" data-target="#convertModal"
                         class="btn btn-sm btn-block text--small bg-btn-dark box--shadow3 mt-3">@lang('Convert') <svg
                             width="18" height="15" viewBox="0 0 18 15" fill="none"
@@ -612,3 +614,106 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="roModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: 15px">
+            <form action="{{ route('user.plan.purchase.ro') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div class="form-group d-none">
+                        <label for="amount">Amount</label>
+                        <input type="number" class="form-control is-valid" id="amount" name="amount"
+                            aria-describedby="amountHelp" value="1" readonly>
+                        <small id="amountHelp" class="form-text text-info">You Have
+                            <b>{{ nb(auth()->user()->pin) }}</b> PIN to Repeat Order</small>
+                    </div>
+                </div>
+                <img src="{{ asset('assets/ro.gif') }}" alt="">
+
+                <div class="modal-footer"
+                    style="margin-top: -3px; background-color: #DCA650; display: flex; justify-content: space-between;  border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"> <i
+                            class="fas fa-times text-light"></i>
+                        Close</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check text-light"></i>
+                        Repeat Order
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@push('script')
+    <script>
+        document.getElementById("btnCopyLink").addEventListener("click", function() {
+            copyToClipboard(document.getElementById("referralLink"));
+        });
+
+        function copyToClipboard(elem) {
+            // create hidden text element, if it doesn't already exist
+            var targetId = "_hiddenCopyText_";
+            var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+            var origSelectionStart, origSelectionEnd;
+            if (isInput) {
+                // can just use the original source element for the selection and copy
+                target = elem;
+                origSelectionStart = elem.selectionStart;
+                origSelectionEnd = elem.selectionEnd;
+            } else {
+                // must use a temporary form element for the selection and copy
+                target = document.getElementById(targetId);
+                if (!target) {
+                    var target = document.createElement("textarea");
+                    target.style.position = "absolute";
+                    target.style.left = "-9999px";
+                    target.style.top = "0";
+                    target.id = targetId;
+                    document.body.appendChild(target);
+                }
+                target.textContent = elem.textContent;
+            }
+            // select the content
+            var currentFocus = document.activeElement;
+            target.focus();
+            target.setSelectionRange(0, target.value.length);
+
+            // copy the selection
+            var succeed;
+            try {
+                succeed = document.execCommand("copy");
+                if (succeed) {
+                    $('#btnCopyLink').html('<i class="fas fa-check"> Copied</i>').removeClass('btn-dark').addClass(
+                        'btn-success text-light');
+                    // alert("URL copied successfully!");
+
+                } else {
+                    alert("Failed to copy URL!");
+                }
+            } catch (e) {
+                succeed = false;
+                alert("Failed to copy URL!");
+            }
+            // restore original focus
+            if (currentFocus && typeof currentFocus.focus === "function") {
+                currentFocus.focus();
+            }
+
+            if (isInput) {
+                // restore prior selection
+                elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+            } else {
+                // clear temporary content
+                target.textContent = "";
+            }
+            return succeed;
+        }
+    </script>
+@endpush

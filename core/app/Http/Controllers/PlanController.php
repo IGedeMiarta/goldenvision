@@ -42,11 +42,57 @@ class PlanController extends Controller
         $data['plans'] = Plan::whereStatus(1)->get();
         return view($this->activeTemplate . '.user.plan_ro', $data);
     }
+    public function planRoStore(Request $request){
+
+        $user = Auth::user();
+        $activePin = Auth::user()->pin;
+        if ($activePin < 1) {
+            $notify[] = ['error', 'Insufficient Balance, Not Enough PIN to Buy'];
+            return back()->withNotify($notify);
+        }
+        $plan = Plan::find(1);
+        DB::beginTransaction();
+        try {
+            $spin = UserPin::create([
+                'user_id' => $user->id,
+                'pin'     => 1,
+                'pin_by'  => $user->id,
+                'type'      => "-",
+                'start_pin' => $user->pin,
+                'end_pin'   => $user->pin - 1,
+                'ket'       => 'Reorder Point 1 ID'
+            ]);
+            $trx = $user->transactions()->create([
+                'amount' => $plan->price *  1 ,
+                'trx_type' => '-',
+                'details' => 'Repeat Order ' . $plan->name . ' For '. 1 .' MP',
+                'remark' => 'repeat_order',
+                'trx' => getTrx(),
+                'post_balance' => 0,
+            ]);
+
+
+            $user->pin -= 1;
+            $user->total_invest     += 500000;
+            $user->save();
+            
+            updatePaidCountRO($user->pos_id);
+            updateLimit($user->id);
+            DB::commit();
+            $notify[] = ['success', 'Reorder Point Success!'];
+            return back()->withNotify($notify);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            dd($th->getMessage());
+        }
+       
+    }
 
     public function changeDafault(Request $request){
         $user = Auth::user();
         $user->default_pos = $request->pos;
         $user->save();
+        
 
         $notify[] = ['success', 'Success Update Referrals Default Position'];
         return back()->withNotify($notify);
@@ -286,10 +332,6 @@ class PlanController extends Controller
                 'start_pin' => $user->pin,
                 'end_pin'   => $user->pin - ($request->qty),
                 'ket'       => 'Sponsor Subscibe and Create '.$request->qty.' New User'
-            ]);
-
-            $user->update([
-                'pin' => $spin->end_pin
             ]);
 
         
