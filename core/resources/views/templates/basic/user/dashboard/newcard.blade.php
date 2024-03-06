@@ -377,7 +377,9 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-white" style="font-size: 12px">Today Point: Left / Right </span>
-                    <h6 class="text-white" style="font-size: 18px">10.00 / 20.00</h6>
+                    <h6 class="text-white" style="font-size: 18px">{{ auth()->user()->userExtra->p_left }} /
+                        {{ auth()->user()->userExtra->p_right }}
+                    </h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <div class="icon-user">
@@ -400,7 +402,8 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-white" style="font-size: 12px">Total Point: Left / Right </span>
-                    <h6 class="text-white" style="font-size: 18px">10.00 / 20.00</h6>
+                    <h6 class="text-white" style="font-size: 18px">{{ auth()->user()->userExtra->bv_left }} /
+                        {{ auth()->user()->userExtra->bv_right }}</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <div class="icon-user">
