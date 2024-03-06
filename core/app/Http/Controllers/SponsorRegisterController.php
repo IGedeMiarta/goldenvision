@@ -347,7 +347,7 @@ class SponsorRegisterController extends Controller
                 'post_balance' => getAmount($user->balance),
             ]);
             
-            // updatePaidCount2($user->id);
+            updatePaidCount2($user->id);
             $userSponsor = User::find($data['user_id']);
             $details = $userSponsor->username. ' Subscribed to ' . $plan->name . ' plan.';
 

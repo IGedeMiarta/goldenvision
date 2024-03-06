@@ -273,7 +273,7 @@ class PlanController extends Controller
             }
             $user->pos_id           = $pos['pos_id']; 
             $user->position         = $pos['position'];
-            $user->position_by_ref  = $sponsor->position;
+            $user->position_by_ref  = $sponsor->default_pos;
             $user->plan_id          = $plan->id;
             $user->total_invest     += $plan->price;
             $user->save();
