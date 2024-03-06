@@ -122,10 +122,9 @@ class SponsorRegisterController extends Controller
             $checkloop = $request->pin > 1  ? true:false;
 
             if(!$checkloop){
-                updateLimit($sponsor->id);
                 deliverPoint($newUser->id,$request->pin*2);
                 checkRank($newUser->id);
-                leaderCommission2(Auth::user()->id,$request->pin);
+                leaderCommission(Auth::user()->id,$request->pin);
                 // dd($checkloop);
                 DB::commit();
                 addToLog('Created '.$request->pin.' User & Purchased Plan');
@@ -205,7 +204,7 @@ class SponsorRegisterController extends Controller
             }
             deliverPoint(Auth::user()->id,$request->pin*2);
             checkRank(Auth::user()->id);
-            leaderCommission2(Auth::user()->id,$request->pin);
+            leaderCommission(Auth::user()->id,$request->pin);
             DB::commit();
             addToLog('Created '.$request->pin.' User & Purchased Plan');
             $notify[] = ['success', 'Success Created '.$request->pin.' User & Purchased Plan Each'];
@@ -348,7 +347,7 @@ class SponsorRegisterController extends Controller
                 'post_balance' => getAmount($user->balance),
             ]);
             
-            updatePaidCount2($user->id);
+            // updatePaidCount2($user->id);
             $userSponsor = User::find($data['user_id']);
             $details = $userSponsor->username. ' Subscribed to ' . $plan->name . ' plan.';
 
