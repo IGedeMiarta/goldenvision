@@ -125,7 +125,7 @@ class SponsorRegisterController extends Controller
                 updateLimit($sponsor->id);
                 deliverPoint($newUser->id,$request->pin*2);
                 checkRank($newUser->id);
-                leaderCommission(Auth::user()->id,$request->pin);
+                leaderCommission2(Auth::user()->id,$request->pin);
                 // dd($checkloop);
                 DB::commit();
                 addToLog('Created '.$request->pin.' User & Purchased Plan');
@@ -205,7 +205,7 @@ class SponsorRegisterController extends Controller
             }
             deliverPoint(Auth::user()->id,$request->pin*2);
             checkRank(Auth::user()->id);
-            leaderCommission(Auth::user()->id,$request->pin);
+            leaderCommission2(Auth::user()->id,$request->pin);
             DB::commit();
             addToLog('Created '.$request->pin.' User & Purchased Plan');
             $notify[] = ['success', 'Success Created '.$request->pin.' User & Purchased Plan Each'];

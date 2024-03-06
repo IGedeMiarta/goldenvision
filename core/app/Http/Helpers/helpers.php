@@ -1186,6 +1186,84 @@ function  leaderCommission($id, $qty)
     }
 }
 
+function  leaderCommission2($id, $qty)
+{
+    $from = $id;
+    $gnl = GeneralSetting::first();
+    $com = 75000;
+    $userfrom = user::find($id);
+    if ($userfrom->rank != 0 || $userfrom->rank != 1) {
+        $amount = $userfrom->ranks->leader_bonus;
+            $com = $com - $userfrom->ranks->leader_bonus;
+            if(($com - $userfrom->ranks->leader_bonus) <= 0){
+                $amount += $com;
+            }
+            
+            if ($userfrom->plan_id != 0 && $amount != 0) {
+                // $userfrom->balance += $amount * $qty;
+                $userfrom->b_balance += ($amount * $qty);
+                $userfrom->save();
+                $trx = new Transaction();
+                $trx->user_id = $userfrom->id;
+                $trx->amount = $amount * $qty;
+                $trx->charge = 0;
+                $trx->trx_type = '+';
+                $trx->post_balance = getAmount($userfrom->b_balance);
+                $trx->remark = 'leadership_com';
+                $trx->trx = getTrx();
+                $trx->details = 'Paid Leadership Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
+                $trx->save();  
+            }
+    }
+
+    while ($id != "" || $id != "0") {
+        if (isUserExists($id)) {
+            $refid = getRefId($id);
+            $user = user::find($id);
+            $userRef = user::find($refid);
+            if ($refid == "0") {
+                break;
+            }
+            if ($userRef->rank == 0) {
+                $id = $refid;
+                continue;
+            }
+            if($user->rank == $userRef->rank && $user->rank != 0 && $user->rank != 1 && $user->id != $from){
+                break;
+            }
+            $amount = $userRef->ranks->leader_bonus;
+            $com = $com - $userRef->ranks->leader_bonus;
+            if(($com - $userRef->ranks->leader_bonus) <= 0){
+                $amount += $com;
+            }
+            
+            if ($userRef->plan_id != 0 && $amount != 0) {
+                // $userRef->balance += $amount * $qty;
+                $userRef->b_balance += ($amount * $qty);
+                $userRef->save();
+                $trx = new Transaction();
+                $trx->user_id = $userRef->id;
+                $trx->amount = $amount * $qty;
+                $trx->charge = 0;
+                $trx->trx_type = '+';
+                $trx->post_balance = getAmount($userRef->b_balance);
+                $trx->remark = 'leadership_com';
+                $trx->trx = getTrx();
+                $trx->details = 'Paid Leadership Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
+                $trx->save();  
+            }
+            
+            if ($com <= 0){
+                break;
+            }
+            $id = $refid;
+                
+        } else {
+            break;
+        }
+    }
+}
+
 function findBottomLeg($nodeId)
 {
     $bottomLeg = [];
