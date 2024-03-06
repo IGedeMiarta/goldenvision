@@ -123,8 +123,8 @@ class SponsorRegisterController extends Controller
 
             if(!$checkloop){
                 deliverPoint($newUser->id,$request->pin*2);
+                // leaderCommission2(Auth::user()->id,$request->pin);
                 checkRank($newUser->id);
-                leaderCommission(Auth::user()->id,$request->pin);
                 // dd($checkloop);
                 DB::commit();
                 addToLog('Created '.$request->pin.' User & Purchased Plan');
@@ -203,8 +203,8 @@ class SponsorRegisterController extends Controller
                 }
             }
             deliverPoint(Auth::user()->id,$request->pin*2);
+            // leaderCommission2(Auth::user()->id,$request->pin);
             checkRank(Auth::user()->id);
-            leaderCommission(Auth::user()->id,$request->pin);
             DB::commit();
             addToLog('Created '.$request->pin.' User & Purchased Plan');
             $notify[] = ['success', 'Success Created '.$request->pin.' User & Purchased Plan Each'];
@@ -354,7 +354,9 @@ class SponsorRegisterController extends Controller
             addToLog('Purchased ' . $plan->name . ' For '.$data['pin'].' MP as Sponsor');
 
             referralCommission2($user->id, $details);
+            leaderCommission2($sponsor->id,$data['pin']);
             updateLimit($user->id);
+            // updatePaidCount2($user->id);
           
             return $trx;  
         } catch (\Throwable $th) {
