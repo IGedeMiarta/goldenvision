@@ -355,7 +355,7 @@ class SponsorRegisterController extends Controller
 
             referralCommission2($user->id, $details);
             updateLimit($user->id);
-
+          
             return $trx;  
         } catch (\Throwable $th) {
             dd($th->getMessage(),'error');

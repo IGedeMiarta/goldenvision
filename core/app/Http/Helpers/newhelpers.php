@@ -63,7 +63,7 @@ function fnRegisterUser($sponsor,$broUpline,$position,$firstname,$lastname,$user
         }
 
         updateCycleNasional($user->id);
-        checkRank($user->id,'single');
+        checkRank($user->id);
 
         sendEmail2($user->id,'sponsor_register',[
             'email' => $user->email,
