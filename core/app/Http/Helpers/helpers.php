@@ -1225,7 +1225,7 @@ function  leaderCommission($id, $qty)
                 break;
             }
             if ($userRef->rank == 0 || $userRef->rank == 1) {
-                $id = $userRef->ref_id;
+                $id = $refid;
                 continue;
             }
             if($user->rank == $userRef->rank && ($user->rank != 0 || $user->rank != 1) && $user->id != $from){
