@@ -1083,10 +1083,12 @@ function updatePaidCountRO($id)
             $extra = UserExtra::where('user_id', $posid)->first();
 
             if ($position == 1) {
+                 $extra->paid_left += 1;
                 $extra->bv_left += 1;
                 $extra->p_left += 1;
                
             } else {
+                 $extra->paid_right += 1;
                 $extra->bv_right += 1;
                 $extra->p_right += 1;
             }
