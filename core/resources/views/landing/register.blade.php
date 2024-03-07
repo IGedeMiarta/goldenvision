@@ -73,6 +73,16 @@
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
+                                    <div class="form-group col-md-10 mt-3">
+                                        <label>@lang('Email Dinaran')</label>
+                                        <input type="text"
+                                            class="form-style {{ $errors->has('email_dinaran') ? 'is-invalid' : '' }}"
+                                            placeholder="Email Dinaran" name="email_dinaran"
+                                            value="{{ old('email_dinaran') }}" autocomplete="off">
+                                        @error('email_dinaran')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
                                     <div class="form-group mt-3 col-md-10">
                                         <label>@lang('Username')</label>
                                         <input type="text"

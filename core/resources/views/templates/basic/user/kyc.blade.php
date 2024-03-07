@@ -1,18 +1,14 @@
 @extends($activeTemplate . 'user.layouts.app')
 
 @section('panel')
-    <div class="row mb-none-30">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-12 mb-30 ">
+    <div class="row mb-none-30 ">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-12 mb-30 d-none">
             <div class="card">
                 <div class="card-body ">
 
                     <br>
                     <div class="img row text-center">
                         <div class="col-md-6">
-                            {{-- <img src="{{ asset('assets/images/favicon-new.png') }}" alt=""
-                                style="max-width: 300px;-webkit-filter: drop-shadow(5px 5px 5px #222);
-  filter: drop-shadow(5px 5px 5px #222);"> --}}
-                            {{-- <h1 style="text-transform: uppercase" style="display-1"><b>masterplan</b></h1> --}}
                             <img src="{{ asset('assets/nav-logo.png') }}" alt="GV" style="max-width: 300px">
                         </div>
 
@@ -31,14 +27,18 @@
         </div>
 
 
-        <div class="col-xl-12 col-lg-12 col-md-12 col-12 mb-30 d-none">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-12 mb-30">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title mb-50 border-bottom pb-2">{{ auth()->user()->fullname }} @lang('Information')</h5>
 
                     <form action="{{ route('user.submitVerification') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <div class="row">
+                        <div style="display: flex; align-items: center; margin-top: 15px; margin-bottom: 5px;">
+                            <p style="font-size: 14px; margin-right: 5px; color: rgb(72, 71, 71)">Account Section</p>
+                            <hr style="flex: 1; margin: 2; color: black">
+                        </div>
+                        <div class="row ml-5">
                             <div class="col-md-6">
                                 <div class="form-group ">
                                     <label class="form-control-label font-weight-bold">@lang('First Name') <span
@@ -58,9 +58,9 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row ml-5">
                             @if (auth()->user()->plan_id != 0)
-                                <div class="col-md-6">
+                                <div class="col-md-6 d-none">
                                     <div class="form-group ">
                                         <label class="form-control-label font-weight-bold">@lang('No MP')<span
                                                 class="text-danger">*</span></label>
@@ -70,7 +70,7 @@
                                 </div>
                             @endif
 
-                            <div class="col-md-6">
+                            <div class="col-md-6 d-none">
                                 <div class="form-group ">
                                     <label class="form-control-label font-weight-bold">@lang('Email')<span
                                             class="text-danger">*</span></label>
@@ -81,10 +81,10 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-control-label  font-weight-bold">@lang('Mobile Number')<span
+                                    <label class="form-control-label  font-weight-bold">@lang('Phone Number')<span
                                             class="text-danger">*</span></label>
                                     <input class="form-control form-control-lg" type="text"
-                                        value="{{ auth()->user()->mobile }}" readonly>
+                                        value="{{ auth()->user()->mobile }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -94,19 +94,15 @@
                                         onchange="loadFile(event)" name="image">
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
+                        <div style="display: flex; align-items: center; margin-top: 15px; margin-bottom: 5px;">
+                            <p style="font-size: 14px; margin-right: 5px; color: rgb(72, 71, 71)">Address Section<span
+                                    class="text-danger">*</span></p>
+                            <hr style="flex: 1; margin: 2; color: black">
+                        </div>
                         {{-- alamat --}}
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-control-label font-weight-bold">@lang('Alamat') </label>
-                                    <input class="form-control form-control-lg" type="text" name="alamat"
-                                        value="{{ auth()->user()->address->address }}">
-                                    <small class="form-text text-muted"><i class="las la-info-circle"></i>@lang(' Alamat Lengkap Rumah')
-                                    </small>
-                                </div>
-                            </div>
+                        <div class="row ml-5">
                             <div class="col-md-6">
                                 <div class="form-group ">
                                     <label class="form-control-label font-weight-bold">@lang('Provinsi')<span
@@ -176,9 +172,24 @@
                                         @include('partials.country') </select>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-control-label font-weight-bold">@lang('Alamat') </label>
+                                    <textarea class="form-control form-control-lg" type="text" name="alamat">{{ auth()->user()->address->address }}</textarea>
+                                    <small class="form-text text-muted"><i
+                                            class="las la-info-circle"></i>@lang(' Alamat Lengkap Rumah')
+                                    </small>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="row mt-4">
+                        <div style="display: flex; align-items: center; margin-top: 15px; margin-bottom: 5px;">
+                            <p style="font-size: 14px; margin-right: 5px; color: rgb(72, 71, 71)">National ID<span
+                                    class="text-danger">*</span></p>
+                            <hr style="flex: 1; margin: 2; color: black">
+                        </div>
+
+                        <div class="row mt-4 ml-5">
                             <div class="col-xl-6 col-md-6 col-12">
                                 <div class="form-group ">
                                     <label class="form-control-label font-weight-bold">Nomor National ID (KTP)<span
@@ -205,9 +216,13 @@
                             </div>
                         </div>
 
-                        <hr>
                         @if ($bank_user)
-                            <div class="row">
+                            <div style="display: flex; align-items: center; margin-top: 15px; margin-bottom: 5px;">
+                                <p style="font-size: 14px; margin-right: 5px; color: rgb(72, 71, 71)">Bank Section<span
+                                        class="text-danger">*</span></p>
+                                <hr style="flex: 1; margin: 2; color: black">
+                            </div>
+                            <div class="row ml-5">
                                 <div class="col-md-6">
                                     <div class="form-group ">
                                         <label class="form-control-label font-weight-bold">@lang('Bank Name') <span
@@ -236,7 +251,7 @@
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <div class="row ml-5">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-control-label  font-weight-bold">@lang('Bank Account Name') <span
@@ -306,7 +321,7 @@
                                     <div class="form-group">
                                         <button type="submit"
                                             class="btn btn--primary btn-block btn-lg">@lang('Save
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Changes')</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Changes')</button>
                                     </div>
                                 </div>
                             </div>

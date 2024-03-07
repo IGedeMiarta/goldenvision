@@ -121,6 +121,7 @@ class RegisterController extends Controller
             'firstname'     => 'sometimes|required|string|max:60',
             'lastname'      => 'sometimes|required|string|max:60',
             'email'         => 'required|regex:/^[a-zA-Z0-9@.]+$/|string|email|max:160',
+            'email_dinaran' => 'required|regex:/^[a-zA-Z0-9@.]+$/|string|email|max:160',
             'mobile'        => 'required|string|max:30',
             'password'      => 'required|string|min:6|confirmed',
             'username'      => 'required|alpha_num|unique:users|min:6|not_regex:/\badmin\b/i',
@@ -203,11 +204,11 @@ class RegisterController extends Controller
         if (!$ref) {
             $ref = User::where('comp',1)->first();
         }
-
         $user = new User();
         $user->firstname    = isset($data['firstname']) ? $data['firstname'] : null;
         $user->lastname     = isset($data['lastname']) ? $data['lastname'] : null;
         $user->email        = strtolower(trim($data['email']));
+        $user->email_dinaran= strtolower(trim($data['email_dinaran']));
         $user->password     = Hash::make($data['password']);
         $user->username     = trim($data['username']);
         $user->ref_id       = $ref->id;

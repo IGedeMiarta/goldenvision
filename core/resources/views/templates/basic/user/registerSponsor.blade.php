@@ -106,9 +106,19 @@
                         </div>
                         <div class="form-group col-md-10 mt-3">
                             <label>@lang('Email')</label>
-                            <input type="text" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                            <input type="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
                                 placeholder="Email" name="email" value="{{ old('email') }}" autocomplete="off">
                             @error('email')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group col-md-10 mt-3">
+                            <label>@lang('Email Dinaran')</label>
+                            <input type="email"
+                                class="form-control {{ $errors->has('email_dinaran') ? 'is-invalid' : '' }}"
+                                placeholder="Email" name="email_dinaran" value="{{ old('email_dinaran') }}"
+                                autocomplete="off">
+                            @error('email_dinaran')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>

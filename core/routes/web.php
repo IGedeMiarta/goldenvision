@@ -25,7 +25,7 @@ Route::get('cyc',function(){
     updateCycleNasional(1);
 });
 
-Route::get('cron-single',[NewCronController::class,'checkSponsor']);
+Route::get('reset-point-startDay',[CronController::class,'resetCountingLF']);
 
 Route::get('create-acc/{jml}/{username}',[LandingController::class,'createAcc']);
 
