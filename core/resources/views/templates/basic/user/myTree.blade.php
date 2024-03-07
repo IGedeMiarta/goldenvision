@@ -90,9 +90,9 @@
                     </div>
                     <div style="display: block; text-align: start;" class="mb-3">
                         <h4 style="color: #000; font-size: 18px;">Carry Forward Binary Point</h4>
-                        <span style="color: #000;">Left {{ auth()->user()->paid_left - auth()->user()->bv_left }}</span>
+                        <span style="color: #000;">Left {{ auth()->user()->paid_left }}</span>
                         <br>
-                        <span style="color: #000;">Right {{ auth()->user()->paid_right - auth()->user()->bv_right }}</span>
+                        <span style="color: #000;">Right {{ auth()->user()->paid_right }}</span>
                     </div>
                 </div>
             </div>
