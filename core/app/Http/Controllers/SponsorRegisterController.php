@@ -356,7 +356,7 @@ class SponsorRegisterController extends Controller
             addToLog('Purchased ' . $plan->name . ' For '.$data['pin'].' MP as Sponsor');
 
             referralCommission2($user->id, $details);
-            leaderCommission($sponsor->id,$data['pin']);
+            leaderCommission2($sponsor->id,$data['pin']);
             updateLimit($user->id);
             // updatePaidCount2($user->id);
 
