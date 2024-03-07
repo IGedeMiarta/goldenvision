@@ -309,11 +309,11 @@ class NewCronController extends Controller
                     $trx->save();
 
                     if($weaktext == 'kiri'){
+                        $uex->paid_right = $uex->paid_right - $weak;
                         $uex->paid_left = 0;
-                        $uex->paid_right = $uex->paid_right - $uex->paid_left;
                     }else{
+                        $uex->paid_left = $uex->paid_left - $weak;
                         $uex->paid_right = 0;
-                        $uex->paid_left = $uex->paid_left - $uex->paid_right;
                     }
                     $uex->level_binary = $pair;
                     $uex->save();
