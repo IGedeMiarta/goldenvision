@@ -363,7 +363,8 @@ class SponsorRegisterController extends Controller
             deliverPoint($user->id,$data['pin']*2);
             return $trx;  
         } catch (\Throwable $th) {
-            dd($th->getMessage(),'error');
+            return false;
+            // dd($th->getMessage(),'error');
         }
     }
 
