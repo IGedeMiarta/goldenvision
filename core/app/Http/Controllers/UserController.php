@@ -115,7 +115,7 @@ class UserController extends Controller
     public function home()
     {
         // dd(promoSept('mark'));
-        // dd(Auth::user()->wd_gold);
+        // dd(Auth::user()->wd_gold)
         // dd(checkWdGold(auth()->user()));
         
         $data['page_title']         = "Dashboard";
