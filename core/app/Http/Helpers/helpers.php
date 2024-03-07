@@ -1252,7 +1252,7 @@ function  leaderCommission($id, $qty)
                 $trx->post_balance = getAmount($userRef->b_balance);
                 $trx->remark = 'leadership_com';
                 $trx->trx = getTrx();
-                $trx->details = leaderComCounter($from).'Paid Leadership Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
+                $trx->details = 'Paid Leadership Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
                 $trx->save();  
             }
             
