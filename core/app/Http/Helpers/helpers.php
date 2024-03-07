@@ -1281,7 +1281,7 @@ function  leaderCommission2($id, $qty)
             
             if ($userfrom->plan_id != 0 && $amount != 0) {
                 // $userfrom->balance += $amount * $qty;
-                $deliver += $amount * $qty;
+                $deliver += ($amount * $qty);
                 $userfrom->b_balance += $deliver;
                 $userfrom->save();
                 $trx = new Transaction();
@@ -1323,8 +1323,6 @@ function  leaderCommission2($id, $qty)
                 $amount = ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus) - $deliver;
                 $com -= ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
             }
-            $com = $amount * $qty;
-
             if ($userRef->plan_id != 0 && $amount != 0) {
                 $deliver += $amount * $qty;
                 $userRef->b_balance += $deliver;
