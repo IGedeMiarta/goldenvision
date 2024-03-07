@@ -1271,7 +1271,7 @@ function  leaderCommission2($id, $qty)
 {
     $from = $id;
     $gnl = GeneralSetting::first();
-    $com = 75000;
+    $com = 7500000;
     $userfrom = user::find($id);
     $first = false;
     $deliver = 0;
@@ -1326,6 +1326,7 @@ function  leaderCommission2($id, $qty)
                 $amount = ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
                 $com -= ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
             }
+            
             if ($userRef->plan_id != 0 && $amount != 0) {
                 $userRef->b_balance += ($amount * $qty) - $deliver;
                 $userRef->save();
