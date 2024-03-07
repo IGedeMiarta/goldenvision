@@ -1279,9 +1279,9 @@ function  leaderCommission2($id, $qty)
             $amount = $userfrom->ranks->leader_bonus;
             $com = $com - $userfrom->ranks->leader_bonus;
             
-            if ($userfrom->plan_id != 0 && $amount != 0) {
+            if ($userfrom->plan_id != 0 && (($amount * $qty)-$deliver) > 0) {
                 // $userfrom->balance += $amount * $qty;
-                
+
                 $userfrom->b_balance += ($amount * $qty) - $deliver ;
                 $userfrom->save();
 
@@ -1327,7 +1327,7 @@ function  leaderCommission2($id, $qty)
                 $com -= ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
             }
             
-            if ($userRef->plan_id != 0 && $amount != 0) {
+            if ($userRef->plan_id != 0 && (($amount * $qty) - $deliver)  > 0) {
                 $userRef->b_balance += ($amount * $qty) - $deliver;
                 $userRef->save();
 
