@@ -322,6 +322,7 @@ class PlanController extends Controller
             $user->position_by_ref  = $sponsor->default_pos;
             $user->plan_id          = $plan->id;
             $user->total_invest     += $plan->price;
+            
 
             $spin = UserPin::create([
                 'user_id' => $user->id,
@@ -333,7 +334,7 @@ class PlanController extends Controller
                 'ket'       => 'Sponsor Subscibe and Create '.$request->qty.' New User'
             ]);
 
-            $user->pin -= $spin->end_pin;
+            $user->pin -= $request->qty;
             $user->save();
 
         

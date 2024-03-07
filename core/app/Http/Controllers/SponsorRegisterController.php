@@ -335,7 +335,7 @@ class SponsorRegisterController extends Controller
             $user->no_bro           = $user->username;
             $user->position_by_ref  = $sponsor->default_pos;
             $user->plan_id          = $plan->id;
-            $user->total_invest     += ($plan->price * $data['pin']);
+            $user->total_invest     += ($plan->price * 1);
             $user->save();
 
             brodev($data['user_id'], $data['pin']);

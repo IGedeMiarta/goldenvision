@@ -20,11 +20,6 @@ class WithdrawalController extends Controller
         $page_title = 'Pending Withdrawals';
         // $withdrawals = Withdrawal::where('status', 2)->with(['user','user.userExtra','method'])->latest()->paginate(getPaginate());
         $withdrawals = Withdrawal::where('status', 2)
-                    ->whereHas('user', function ($query) {
-                        $query->whereHas('userExtra', function ($query) {
-                            $query->where('is_gold', 1);
-                        });
-                    })
                     ->with(['user', 'user.userExtra', 'method'])
                     ->latest()
                     ->paginate(getPaginate());
