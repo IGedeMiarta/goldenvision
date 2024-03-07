@@ -123,7 +123,7 @@ class SponsorRegisterController extends Controller
             $checkloop = $request->pin > 1  ? true:false;
 
             if(!$checkloop){
-                deliverPoint($newUser->id,$request->pin*2);
+                
                 // leaderCommission2(Auth::user()->id,$request->pin);
                 checkRank($newUser->id);
                 // dd($checkloop);
@@ -203,7 +203,7 @@ class SponsorRegisterController extends Controller
                     $user->save();
                 }
             }
-            deliverPoint(Auth::user()->id,$request->pin*2);
+            
             // leaderCommission2(Auth::user()->id,$request->pin);
             checkRank(Auth::user()->id);
             DB::commit();
@@ -359,7 +359,8 @@ class SponsorRegisterController extends Controller
             leaderCommission2($sponsor->id,$data['pin']);
             updateLimit($user->id);
             // updatePaidCount2($user->id);
-          
+
+            deliverPoint($user->id,$data['pin']*2);
             return $trx;  
         } catch (\Throwable $th) {
             dd($th->getMessage(),'error');
