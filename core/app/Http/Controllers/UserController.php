@@ -1646,6 +1646,7 @@ class UserController extends Controller
             // $image->resize($size[0], $size[1]);
             $image->save($location);
         }
+        $in['is_kyc'] = 2;
         $user->fill($in)->save();
 
         addToLog('Send Data Verification.');
