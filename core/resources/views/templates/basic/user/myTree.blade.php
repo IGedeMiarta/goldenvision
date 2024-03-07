@@ -77,8 +77,56 @@
 @endpush
 
 @section('panel')
+    <div class="row" style="display: flex; justify-content: space-between">
+        <div class="col-md-6 mb-3">
+            <div class="card"
+                style="height: 100px; border-radius: 15px; background-color: #fff; 
+                background-position: end;
+                background-repeat: no-repeat;
+                background-size: cover;">
+                <div class="card-body" style="display: flex; justify-content: start;">
+                    <div class="text-icon" style="display: flex; align-items: center;">
+                        <img src="{{ asset(auth()->user()->ranks->logo) }}" alt="logo" style="max-width: 80px">
+                    </div>
+                    <div style="display: block; text-align: start;" class="mb-3">
+                        <h4 style="color: #000; font-size: 18px;">Carry Forward Binary Point</h4>
+                        <span style="color: #000;">Left {{ auth()->user()->paid_left - auth()->user()->bv_left }}</span>
+                        <br>
+                        <span style="color: #000;">Right {{ auth()->user()->paid_right - auth()->user()->bv_right }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row" style="max-height: 200px;">
+                <div class="col-md-12 mb-3">
+                    <div class="card"
+                        style="height: 100px; border-radius: 20px; background-color: #0A0A0A; background-image: url('{{ asset('assets/figma/nav-bg2.png') }}') !important;  
+                background-position: end;
+                background-repeat: no-repeat;
+                background-size: cover;">
+                        <form action="{{ route('user.other.tree.search') }}" method="GET">
+                            <div class="card-body "
+                                style="display: flex; justify-content: center; width: 100%; align-content: center">
+                                <div class="input-group has_append mt-2">
+                                    <input type="text" name="username" class="form-control"
+                                        placeholder="@lang('Search by username')" style="background-color: #fff">
+                                    <div class="input-group-append">
+                                        <button class="btn btn--dark text-light" type="submit"><i
+                                                class="fa fa-search"></i>CARI</button>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <div class="row d-flex justify-content-center">
-        <div class="col-md-12 card card-tree">
+        <div class="col-md-12 card card-tree" style="border-radius: 15px;">
             <div class="card-header ">
                 <form action="{{ route('user.plan.changedef') }}" method="post">
                     @csrf
@@ -478,14 +526,4 @@
             })
         })(jQuery);
     </script>
-@endpush
-@push('breadcrumb-plugins')
-    <form action="{{ route('user.other.tree.search') }}" method="GET" class="form-inline float-right bg--white">
-        <div class="input-group has_append">
-            <input type="text" name="username" class="form-control" placeholder="@lang('Search by username')">
-            <div class="input-group-append">
-                <button class="btn btn--success" type="submit"><i class="fa fa-search"></i></button>
-            </div>
-        </div>
-    </form>
 @endpush
