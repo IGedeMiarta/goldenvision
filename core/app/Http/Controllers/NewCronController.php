@@ -113,10 +113,10 @@ class NewCronController extends Controller
                                     $trx->save();
 
                                     if($weaktext == 'kiri'){
-                                        $uex->paid_right = $uex->paid_right - $uex->paid_left;
+                                        $uex->paid_right = $uex->paid_right - $weak;
                                         $uex->paid_left = 0;
                                     }else{
-                                        $uex->paid_left = $uex->paid_left - $uex->paid_right;
+                                        $uex->paid_left = $uex->paid_left - $weak;
                                         $uex->paid_right = 0;
                                     }
  
@@ -135,10 +135,10 @@ class NewCronController extends Controller
                                     $trx->save();
 
                                     if($weaktext == 'kiri'){
-                                        $uex->paid_right = $uex->paid_right - $uex->paid_left;
+                                        $uex->paid_right = $uex->paid_right - $weak;
                                         $uex->paid_left = 0;
                                     }else{
-                                        $uex->paid_left = $uex->paid_left - $uex->paid_right;
+                                        $uex->paid_left = $uex->paid_left - $weak;
                                         $uex->paid_right = 0;
                                     }
                                     $uex->level_binary = 0;
@@ -157,10 +157,10 @@ class NewCronController extends Controller
                                 $trx->save();
 
                                 if($weaktext == 'kiri'){
-                                    $uex->paid_right = $uex->paid_right - $uex->paid_left;
+                                    $uex->paid_right = $uex->paid_right - $weak;
                                     $uex->paid_left = 0;
                                 }else{
-                                    $uex->paid_left = $uex->paid_left - $uex->paid_right;
+                                    $uex->paid_left = $uex->paid_left - $weak;
                                     $uex->paid_right = 0;
                                 }
                                 $uex->level_binary = 0;
@@ -184,10 +184,10 @@ class NewCronController extends Controller
                             $trx->save();
 
                             if($weaktext == 'kiri'){
-                                $uex->paid_right = $uex->paid_right - $uex->paid_left;
+                                $uex->paid_right = $uex->paid_right - $weak;
                                 $uex->paid_left = 0;
                             }else{
-                                $uex->paid_left = $uex->paid_left - $uex->paid_right;
+                                $uex->paid_left = $uex->paid_left - $weak;
                                 $uex->paid_right = 0;
                             }
 
@@ -210,10 +210,10 @@ class NewCronController extends Controller
                                     $trx->save();
 
                                     if($weaktext == 'kiri'){
-                                        $uex->paid_right = $uex->paid_right - $uex->paid_left;
+                                        $uex->paid_right = $uex->paid_right - $weak;
                                         $uex->paid_left = 0;
                                     }else{
-                                        $uex->paid_left = $uex->paid_left - $uex->paid_right;
+                                        $uex->paid_left = $uex->paid_left - $weak;
                                         $uex->paid_right = 0;
                                     }
                                     $uex->level_binary = 0;
@@ -232,10 +232,10 @@ class NewCronController extends Controller
                                     $trx->save();
 
                                     if($weaktext == 'kiri'){
-                                        $uex->paid_right = $uex->paid_right - $uex->paid_left;
+                                        $uex->paid_right = $uex->paid_right - $weak;
                                         $uex->paid_left = 0;
                                     }else{
-                                        $uex->paid_left = $uex->paid_left - $uex->paid_right;
+                                        $uex->paid_left = $uex->paid_left - $weak;
                                         $uex->paid_right = 0;
                                     }
                                     $uex->level_binary = 0;
@@ -254,11 +254,11 @@ class NewCronController extends Controller
                                 $trx->save();
 
                                 if($weaktext == 'kiri'){
+                                    $uex->paid_right = $uex->paid_right - $weak;
                                     $uex->paid_left = 0;
-                                    $uex->paid_right = $uex->paid_right - $uex->paid_left;
                                 }else{
+                                    $uex->paid_left = $uex->paid_left - $weak;
                                     $uex->paid_right = 0;
-                                    $uex->paid_left = $uex->paid_left - $uex->paid_right;
                                 }
                                 $uex->level_binary = 0;
                                 $uex->limit += $pair;
@@ -277,11 +277,11 @@ class NewCronController extends Controller
                             $trx->save();
 
                             if($weaktext == 'kiri'){
+                                $uex->paid_right = $uex->paid_right - $weak;
                                 $uex->paid_left = 0;
-                                $uex->paid_right = $uex->paid_right - $uex->paid_left;
                             }else{
+                                $uex->paid_left = $uex->paid_left - $weak;
                                 $uex->paid_right = 0;
-                                $uex->paid_left = $uex->paid_left - $uex->paid_right;
                             }
                             $uex->level_binary = 0;
                             $uex->limit += ($pair - $uex->level_binary);

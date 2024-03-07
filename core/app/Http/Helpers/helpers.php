@@ -1166,6 +1166,50 @@ function monolegSaving($id, $amount, $username, $type)
 
 }
 
+function  leaderComCounter($id)
+{
+    $from = $id;
+    $gnl = GeneralSetting::first();
+    $com = 75000;
+    $count = 0;
+    while ($id != "" || $id != "0") {
+        if (isUserExists($id)) {
+            $refid = getRefId($id);
+            $user = user::find($id);
+            $userRef = user::find($refid);
+            if ($refid == "0") {
+                break;
+            }
+            if ($userRef->rank == 0) {
+                $id = $refid;
+                continue;
+            }
+            if($user->rank == $userRef->rank && ($user->rank != 0 && $user->rank) != 1 && $user->id != $from){
+                break;
+            }
+            $amount = $userRef->ranks->leader_bonus;
+            $com = $com - $userRef->ranks->leader_bonus;
+            if(($com - $userRef->ranks->leader_bonus) <= 0){
+                $amount += $com;
+            }
+            
+            if ($userRef->plan_id != 0 && $amount != 0) {
+                $count++;
+            }
+            
+            if ($com <= 0){
+                break;
+            }
+            $id = $refid;
+                
+        } else {
+            break;
+        }
+    }
+
+    return $count;
+}
+
 function  leaderCommission($id, $qty)
 {
     $from = $id;
