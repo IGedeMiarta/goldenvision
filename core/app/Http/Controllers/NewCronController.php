@@ -17,13 +17,14 @@ class NewCronController extends Controller
         $gnl = GeneralSetting::first();
         $gnl->last_cron = Carbon::now()->toDateTimeString();
         $gnl->save();
-        $userx = UserExtra::where('bv_left', '>=', 1)
-        ->where('bv_right', '>=', 1)->get();
+        $userx = UserExtra::where('paid_left', '>=', 1)
+        ->where('paid_right', '>=', 1)->get();
 
         $cron = array();
         foreach ($userx as $uex) {
             $user = $uex->user_id;
-            $weak = $uex->bv_left < $uex->bv_right ? $uex->bv_left : $uex->bv_right;
+            $weak = $uex->paid_left < $uex->paid_right ? $uex->paid_left : $uex->paid_right;
+            $weaktext = $uex->paid_left < $uex->paid_right ? 'kiri' : 'kanan';
             $weaks = $uex->left < $uex->right ? $uex->left : $uex->right;
 
             $user_plan = User::where('users.id', $user)
@@ -111,8 +112,14 @@ class NewCronController extends Controller
                                     $trx->details = '[1] Paid Flush Out ' . $bonus . ' ' . $gnl->cur_text . ' For ' . $pair . ' Pairs.';
                                     $trx->save();
 
-                                    $uex->bv_left -= $weak;
-                                    $uex->bv_right -= $weak;
+                                    if($weaktext == 'kiri'){
+                                        $uex->paid_right = $uex->paid_right - $uex->paid_left;
+                                        $uex->paid_left = 0;
+                                    }else{
+                                        $uex->paid_left = $uex->paid_left - $uex->paid_right;
+                                        $uex->paid_right = 0;
+                                    }
+ 
                                     $uex->level_binary = 0;
                                     $uex->limit += $pair;
                                     $uex->last_getcomm = Carbon::now()->toDateTimeString();
@@ -127,8 +134,13 @@ class NewCronController extends Controller
                                     $trx->details = '[2] Paid ' . $bonus . ' ' . $gnl->cur_text . ' For ' . ($pair - $uex->level_binary) . ' Pairs.';
                                     $trx->save();
 
-                                    $uex->bv_left -= 25;
-                                    $uex->bv_right -= 25;
+                                    if($weaktext == 'kiri'){
+                                        $uex->paid_right = $uex->paid_right - $uex->paid_left;
+                                        $uex->paid_left = 0;
+                                    }else{
+                                        $uex->paid_left = $uex->paid_left - $uex->paid_right;
+                                        $uex->paid_right = 0;
+                                    }
                                     $uex->level_binary = 0;
                                     $uex->limit += ($pair - $uex->level_binary);
                                     $uex->last_getcomm = Carbon::now()->toDateTimeString();
@@ -144,8 +156,13 @@ class NewCronController extends Controller
                                 $trx->details = '[3] Paid ' . $bonus . ' ' . $gnl->cur_text . ' For ' . ($pair - $uex->level_binary) . ' Pairs.';
                                 $trx->save();
 
-                                $uex->bv_left -= 25;
-                                $uex->bv_right -= 25;
+                                if($weaktext == 'kiri'){
+                                    $uex->paid_right = $uex->paid_right - $uex->paid_left;
+                                    $uex->paid_left = 0;
+                                }else{
+                                    $uex->paid_left = $uex->paid_left - $uex->paid_right;
+                                    $uex->paid_right = 0;
+                                }
                                 $uex->level_binary = 0;
                                 $uex->limit += ($pair - $uex->level_binary);
                                 $uex->last_getcomm = Carbon::now()->toDateTimeString();
@@ -166,8 +183,14 @@ class NewCronController extends Controller
                             }
                             $trx->save();
 
-                            $uex->bv_left -= 25;
-                            $uex->bv_right -= 25;
+                            if($weaktext == 'kiri'){
+                                $uex->paid_right = $uex->paid_right - $uex->paid_left;
+                                $uex->paid_left = 0;
+                            }else{
+                                $uex->paid_left = $uex->paid_left - $uex->paid_right;
+                                $uex->paid_right = 0;
+                            }
+
                             $uex->level_binary = 0;
                             $uex->limit += ($pair - $uex->level_binary);
                             $uex->last_getcomm = Carbon::now()->toDateTimeString();
@@ -186,8 +209,13 @@ class NewCronController extends Controller
                                     $trx->details = '[6] Paid Flush Out ' . $bonus . ' ' . $gnl->cur_text . ' For ' . $pair . ' Pairs.';
                                     $trx->save();
 
-                                    $uex->bv_left -= $weak;
-                                    $uex->bv_right -= $weak;
+                                    if($weaktext == 'kiri'){
+                                        $uex->paid_right = $uex->paid_right - $uex->paid_left;
+                                        $uex->paid_left = 0;
+                                    }else{
+                                        $uex->paid_left = $uex->paid_left - $uex->paid_right;
+                                        $uex->paid_right = 0;
+                                    }
                                     $uex->level_binary = 0;
                                     $uex->limit += $pair;
                                     $uex->last_flush_out = Carbon::now()->toDateTimeString();
@@ -203,8 +231,13 @@ class NewCronController extends Controller
                                     $trx->details = '[6.5] Paid ' . $bonus . ' ' . $gnl->cur_text . ' For ' . ($pair - $uex->level_binary) . ' Pairs.';
                                     $trx->save();
 
-                                    $uex->bv_left -= 25;
-                                    $uex->bv_right -= 25;
+                                    if($weaktext == 'kiri'){
+                                        $uex->paid_right = $uex->paid_right - $uex->paid_left;
+                                        $uex->paid_left = 0;
+                                    }else{
+                                        $uex->paid_left = $uex->paid_left - $uex->paid_right;
+                                        $uex->paid_right = 0;
+                                    }
                                     $uex->level_binary = 0;
                                     $uex->limit += ($pair - $uex->level_binary);
                                     $uex->last_getcomm = Carbon::now()->toDateTimeString();
@@ -220,8 +253,13 @@ class NewCronController extends Controller
                                 $trx->details = '[7] Paid Flush Out ' . $bonus . ' ' . $gnl->cur_text . ' For ' . $pair . ' Pairs.';
                                 $trx->save();
 
-                                $uex->bv_left -= $weak;
-                                $uex->bv_right -= $weak;
+                                if($weaktext == 'kiri'){
+                                    $uex->paid_left = 0;
+                                    $uex->paid_right = $uex->paid_right - $uex->paid_left;
+                                }else{
+                                    $uex->paid_right = 0;
+                                    $uex->paid_left = $uex->paid_left - $uex->paid_right;
+                                }
                                 $uex->level_binary = 0;
                                 $uex->limit += $pair;
                                 $uex->last_flush_out = Carbon::now()->toDateTimeString();
@@ -238,8 +276,13 @@ class NewCronController extends Controller
                             $trx->details = '[8] Paid ' . $bonus . ' ' . $gnl->cur_text . ' For ' . ($pair - $uex->level_binary) . ' Pairs.';
                             $trx->save();
 
-                            $uex->bv_left -= 25;
-                            $uex->bv_right -= 25;
+                            if($weaktext == 'kiri'){
+                                $uex->paid_left = 0;
+                                $uex->paid_right = $uex->paid_right - $uex->paid_left;
+                            }else{
+                                $uex->paid_right = 0;
+                                $uex->paid_left = $uex->paid_left - $uex->paid_right;
+                            }
                             $uex->level_binary = 0;
                             $uex->limit += ($pair - $uex->level_binary);
                             $uex->last_getcomm = Carbon::now()->toDateTimeString();
@@ -265,6 +308,13 @@ class NewCronController extends Controller
                     }
                     $trx->save();
 
+                    if($weaktext == 'kiri'){
+                        $uex->paid_left = 0;
+                        $uex->paid_right = $uex->paid_right - $uex->paid_left;
+                    }else{
+                        $uex->paid_right = 0;
+                        $uex->paid_left = $uex->paid_left - $uex->paid_right;
+                    }
                     $uex->level_binary = $pair;
                     $uex->save();
 
