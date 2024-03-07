@@ -203,7 +203,6 @@ class PlanController extends Controller
             
             if (!$checkloop) {
                 deliverPoint(Auth::user()->id,$request->qty*2);
-                leaderCommission(Auth::user()->id,$request->qty);
                 checkRank($user->id);
                 DB::commit();
                 $notify[] = ['success', 'Successfully Purchased Plan'];
