@@ -1213,7 +1213,8 @@ function  leaderComCounter($id)
 
 function  leaderCommission($id, $qty)
 {
-    // return true;
+
+    return true;
     $from = $id;
     $gnl = GeneralSetting::first();
     // $com = 75000;
@@ -1272,7 +1273,7 @@ function  leaderCommission($id, $qty)
 
 function  leaderCommission2($id, $qty)
 {
-    // return true;
+    return true;
     $from = $id;
     $gnl = GeneralSetting::first();
     // $com = 7500000;
