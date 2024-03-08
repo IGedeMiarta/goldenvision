@@ -71,9 +71,6 @@ class AdminController extends Controller
         $widget['total_ref_com'] = User::where('comp',0)->sum('total_ref_com');
         $widget['total_bro_joined'] = User::where('comp',0)->where('plan_id','!=',0)->count();
         $widget['admin_leader_pin'] = adminLeaderSellPin($date);
-// dd($widget);
-
-        // Monthly Deposit & Withdraw Report Graph
         $report['months'] = collect([]);
         $report['deposit_month_amount'] = collect([]);
         $report['withdraw_month_amount'] = collect([]);

@@ -82,10 +82,6 @@ class SponsorRegisterController extends Controller
         }
         DB::beginTransaction();
         try {
-            $cekbank = rekening::where('nama_bank',$request->bank_name)
-                            ->where('nama_akun','like','%'.$request->acc_name.'%')
-                            ->where('no_rek','like','%'.$request->acc_number.'%')
-                                ->first();
                                 
             $newUser = $this->placementFirstAccount($request->all());  //register user
          
@@ -170,10 +166,6 @@ class SponsorRegisterController extends Controller
                     $emailNewUser = $firstUpline->email;
                     $phoneNewUser = $firstUpline->mobile;
                     $pinNewUser = 1;
-                    $newBankName = $cekbank->nama_bank??null;
-                    $newBankAcc = $cekbank->nama_akun??null;
-                    $newBankNo = $cekbank->no_rek??null;
-                    $newBankCity = $cekbank->kota_cabang??null;
 
                     $nextUser = fnRegisterUser(
                         $sponsor,
@@ -185,10 +177,6 @@ class SponsorRegisterController extends Controller
                         $emailNewUser,
                         $phoneNewUser,
                         $pinNewUser,
-                        $newBankName,
-                        $newBankCity,
-                        $newBankAcc,
-                        $newBankNo
                     );
                     // dd($nextUser);
                     if($nextUser == false){

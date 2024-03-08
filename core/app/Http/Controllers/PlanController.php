@@ -257,10 +257,6 @@ class PlanController extends Controller
                 $emailNewUser = $firstUpline->email;
                 $phoneNewUser = $firstUpline->mobile;
                 $pinNewUser = 1;
-                $newBankName = $checkBankAcc->nama_bank??null;
-                $newBankAcc = $checkBankAcc->nama_akun??null;
-                $newBankNo = $checkBankAcc->no_rek??null;
-                $newBankCity = $checkBankAcc->kota_cabang??null;
 
                 $nextUser = fnRegisterUser(
                     $sponsor,
@@ -271,11 +267,7 @@ class PlanController extends Controller
                     $usernameNewUser,
                     $emailNewUser,
                     $phoneNewUser,
-                    $pinNewUser,
-                    $newBankName,
-                    $newBankCity,
-                    $newBankAcc,
-                    $newBankNo
+                    $pinNewUser
                 );
                 if(!$nextUser){
                     $notify[] = ['error', 'Invalid On Create Downline, Rollback'];
