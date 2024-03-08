@@ -268,7 +268,6 @@ class ManageUsersController extends Controller
 
     public function update(Request $request, $id)
     {
-        // dd($request->all());
         $user = User::where('comp',0)->findOrFail($id);
         $request->validate([
             'firstname' => 'required|max:60',
@@ -294,7 +293,7 @@ class ManageUsersController extends Controller
         $kota = \Indonesia::findCity($request->kota, $with = null);
         $kec  = \Indonesia::findDistrict($request->kecamatan, $with = null);
         $desa  = \Indonesia::findVillage($request->desa, $with = null);
-        if(is_numeric($request->kota)){
+        if(is_numeric($request->kota) && $request->kota!="--Pilih Kabupaten/Kota"){
             $user->address = [
                 'address' => $request->alamat,
                 'state' => $prov->name,
@@ -312,17 +311,17 @@ class ManageUsersController extends Controller
             $user->address_check    = 1;
 
         }else{
-             $user->address = [
-                'address' =>$request->alamat,
-                'state' => $user->address->prov,
-                'zip' => $request->pos,
-                'country' => $request->country,
-                'city' => $user->address->city,
-                'prov'  => $user->address->prov,
-                'prov_code'  => $user->address->prov_code,
-                'kota'  => $user->address->kota,
-                'kec'   =>$user->address->kec,
-                'desa'  => $user->address->desa,
+            $user->address = [
+                'address' =>$request->alamat??"",
+                'state' => $user->address->prov??"",
+                'zip' => $request->pos??'',
+                'country' => $request->country??'',
+                'city' => $user->address->city??"",
+                'prov'  => $user->address->prov??'',
+                'prov_code'  => $user->address->prov_code??'',
+                'kota'  => $user->address->kota??'',
+                'kec'   =>$user->address->kec??"",
+                'desa'  => $user->address->desa??"",
             ];
             $user->lat = $user->lat;
             $user->lng= $user->lng;
@@ -330,8 +329,8 @@ class ManageUsersController extends Controller
         $user->status = $request->status ? 1 : 0;
         $user->ev = $request->ev ? 1 : 0;
         $user->sv = $request->sv ? 1 : 0;
-        $user->is_stockiest = $request->is_stockiest ? 1 : 0 ;
-        $user->is_leader = $request->is_leader ? 1 : 0 ;
+        // $user->is_stockiest = $request->is_stockiest ? 1 : 0 ;
+        // $user->is_leader = $request->is_leader ? 1 : 0 ;
         $user->ts = $request->ts ? 1 : 0;
         $user->tv = $request->tv ? 1 : 0;
         $user->save();

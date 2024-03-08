@@ -1084,7 +1084,7 @@ function updatePaidCountRO($id)
             $extra = UserExtra::where('user_id', $posid)->first();
 
             if ($position == 1) {
-                 $extra->paid_left += 1;
+                $extra->paid_left += 1;
                 $extra->bv_left += 1;
                 $extra->p_left += 1;
                
@@ -1099,6 +1099,70 @@ function updatePaidCountRO($id)
             break;
         }
     }
+}
+
+function UpdateCountingUser($username,$pos,$counting = 0)
+{
+    // dd($counting);
+    $user1 =User::where('username',$username)->first();
+    $ux= UserExtra::where('user_id',$user1->id)->first();
+    $data = [];
+    if ($pos == 1) {
+        $ux->paid_left += $counting;
+        $ux->bv_left += $counting;
+        $ux->p_left += $counting;
+        $ux->left += $counting;
+        $data[] = [
+            $ux->paid_left,$ux->bv_left,$ux->p_left,$ux->left,'1st kiri'
+        ];
+    } else {
+        $ux->paid_right += $counting;
+        $ux->bv_right += $counting;
+        $ux->p_right += $counting;
+        $ux->right += $counting;
+        $data[] = [
+            $ux->paid_left,$ux->bv_left,$ux->p_left,$ux->left,'1st kanan'
+        ];
+    }
+
+    $id = $user1->id;
+    $count = 1;
+    while ($id != "" || $id != "0") {
+        if (isUserExists($id)) {
+            $posid = getPositionId($id);
+
+            if ($posid == "0") {
+                break;
+            }
+            $position = getPositionLocation($id);
+
+            $extra = UserExtra::where('user_id', $posid)->first();
+            if ($position == 1) {
+                $extra->paid_left += $counting;
+                $extra->bv_left += $counting;
+                $extra->p_left += $counting;
+                $extra->left += $counting;
+                $data[] = [
+                    $ux->paid_left,$ux->bv_left,$ux->p_left,$ux->left,$count. ' kanan'
+                ];
+
+            } else {
+                $extra->paid_right += $counting;
+                $extra->bv_right += $counting;
+                $extra->p_right += $counting;
+                $extra->right += $counting;
+                $data[] = [
+                    $ux->paid_left,$ux->bv_left,$ux->p_left,$ux->left, $count. ' kanan'
+                ];
+            }
+            $extra->save();
+            $id = $posid;
+            $count++;
+        } else {
+            break;
+        }
+    }
+    return $data;
 
 }
 
