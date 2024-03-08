@@ -362,7 +362,7 @@ class PlanController extends Controller
             $details = Auth::user()->username . ' Subscribed to ' . $plan->name . ' plan.';
 
             referralCommission2($user->id, $details);
-            leaderCommission2($user->id,$request->qty);
+            leaderCommission($user->id,$request->qty);
             updatePaidCount2($user->id);
             updateLimit($user->id);
             return $user;
