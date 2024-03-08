@@ -1184,8 +1184,9 @@ function  leaderComCounter($id)
                 $id = $refid;
                 continue;
             }
-            if($user->rank == $userRef->rank && ($user->rank != 0 && $user->rank) != 1 && $user->id != $from){
-                break;
+            if($user->rank == $userRef->rank && ($user->rank != 0 || $user->rank) != 1 && $user->id != $from){
+                $id = $refid;
+                continue;
             }
             $amount = $userRef->ranks->leader_bonus;
             $com = $com - $userRef->ranks->leader_bonus;
@@ -1229,7 +1230,8 @@ function  leaderCommission($id, $qty)
                 continue;
             }
             if($user->rank == $userRef->rank && ($user->rank != 0 || $user->rank != 1) && $user->id != $from){
-                break;
+                $id = $refid;
+                continue;
             }
             $count++;
             if ($count == 1) {
@@ -1309,8 +1311,9 @@ function  leaderCommission2($id, $qty)
                 $id = $refid;
                 continue;
             }
-            if($user->rank == $userRef->rank && ($user->rank != 0 || $user->rank != 1) && $user->id != $from){
-                break;
+            if($user->rank == $userRef->rank){
+                $id = $refid;
+                continue;
             }
             $count++;
             if ($count == 1 && $first == false) {
