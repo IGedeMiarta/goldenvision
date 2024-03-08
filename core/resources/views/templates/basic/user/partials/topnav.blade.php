@@ -28,11 +28,11 @@
                 </button>
             </li>
             <li class="dropdown">
-                <button type="button" class="primary--layer" data-toggle="dropdown" data-display="static"
+                <button type="button" class="warning--layer" data-toggle="dropdown" data-display="static"
                     aria-haspopup="true" aria-expanded="false">
-                    <i class="las la-shopping-cart text--primary"></i>
+                    <i class="las la-shopping-cart text--warning"></i>
                     @if (checkCart())
-                        <span class="pulse--primary"></span>
+                        <span class="pulse--warning"></span>
                     @endif
                 </button>
                 <div class="dropdown-menu dropdown-menu--md p-0 border-0 box--shadow1 dropdown-menu-right">
