@@ -1216,7 +1216,7 @@ function  leaderCommission($id, $qty)
     // return true;
     $from = $id;
     $gnl = GeneralSetting::first();
-    $com = 75000;
+    // $com = 75000;
     $count = 0;
     while ($id != "" || $id != "0") {
         if (isUserExists($id)) {
@@ -1237,10 +1237,10 @@ function  leaderCommission($id, $qty)
             $count++;
             if ($count == 1) {
                 $amount = $userRef->ranks->leader_bonus;
-                $com = $com - $userRef->ranks->leader_bonus;
+                // $com = $com - $userRef->ranks->leader_bonus;
             }else{
                 $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
-                $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                // $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
             }
             
             if ($userRef->plan_id != 0 && $amount > 0) {
@@ -1259,9 +1259,9 @@ function  leaderCommission($id, $qty)
                 $trx->save();  
             }
             
-            if ($com <= 0){
-                break;
-            }
+            // if ($com <= 0){
+            //     break;
+            // }
             $id = $refid;
                 
         } else {
@@ -1275,12 +1275,12 @@ function  leaderCommission2($id, $qty)
     // return true;
     $from = $id;
     $gnl = GeneralSetting::first();
-    $com = 7500000;
+    // $com = 7500000;
     $userfrom = user::find($id);
     $first = false;
     if ($userfrom->rank != 0 || $userfrom->rank != 1) {
             $amount = $userfrom->ranks->leader_bonus;
-            $com = $com - $userfrom->ranks->leader_bonus;
+            // $com = $com - $userfrom->ranks->leader_bonus;
             
             if ($userfrom->plan_id != 0 && $amount > 0) {
                 // $userfrom->balance += $amount * $qty;
@@ -1322,10 +1322,10 @@ function  leaderCommission2($id, $qty)
             $count++;
             if ($count == 1 && $first == false ) {
                 $amount = $userRef->ranks->leader_bonus;
-                $com = $com - $userRef->ranks->leader_bonus;
+                // $com = $com - $userRef->ranks->leader_bonus;
             }else{
                 $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
-                $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                // $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
             }
             
             if ($userRef->plan_id != 0 && $amount > 0) {
@@ -1344,9 +1344,9 @@ function  leaderCommission2($id, $qty)
                 $trx->save();  
             }
             
-            if ($com <= 0){
-                break;
-            }
+            // if ($com <= 0){
+            //     break;
+            // }
             $id = $refid;
                 
         } else {
