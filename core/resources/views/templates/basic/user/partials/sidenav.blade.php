@@ -163,12 +163,12 @@
                                     <span class="menu-title">@lang('Binary Commission')</span>
                                 </a>
                             </li>
-                            <li class="sidebar-menu-item {{ menuActive('user.report.leadersComm') }}">
+                            {{-- <li class="sidebar-menu-item {{ menuActive('user.report.leadersComm') }}">
                                 <a href="{{ route('user.report.leadersComm') }}" class="nav-link">
                                     <i class="menu-icon las la-dot-circle"></i>
                                     <span class="menu-title">@lang('Leadership Commission')</span>
                                 </a>
-                            </li>
+                            </li> --}}
 
                         </ul>
                     </div>
