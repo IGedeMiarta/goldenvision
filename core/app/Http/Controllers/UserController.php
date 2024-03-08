@@ -115,15 +115,15 @@ class UserController extends Controller
     public function home()
     {
         // dd(promoSept('mark'));
-        // dd(Auth::user()->wd_gold);
+        // dd(Auth::user()->wd_gold)
         // dd(checkWdGold(auth()->user()));
         
         $data['page_title']         = "Dashboard";
         $data['totalDeposit']       = Deposit::where('user_id', auth()->id())->where('status', 1)->sum('amount');
         $data['totalWithdraw']      = Withdrawal::where('user_id', auth()->id())->where('status', 1)->sum('amount');
-        $data['completeWithdraw']   = Withdrawal::where('user_id', auth()->id())->where('status', 1)->count();
-        $data['pendingWithdraw']    = Withdrawal::where('user_id', auth()->id())->where('status', 2)->count();
-        $data['rejectWithdraw']     = Withdrawal::where('user_id', auth()->id())->where('status', 3)->count();
+        $data['completeWithdraw']   = Withdrawal::where('user_id', auth()->id())->where('status', 1)->sum('amount');
+        $data['pendingWithdraw']    = Withdrawal::where('user_id', auth()->id())->where('status', 2)->sum('amount');
+        $data['rejectWithdraw']     = Withdrawal::where('user_id', auth()->id())->where('status', 3)->sum('amount');
         $data['total_ref']          = User::where('ref_id', auth()->id())->count();
         $data['totalBvCut']         = BvLog::where('user_id', auth()->id())->where('trx_type', '-')->sum('amount');
         $data['emas']               = Gold::where('user_id',Auth::user()->id)->where('golds.status','=','0')->join('products','products.id','=','golds.prod_id')->select('golds.*',db::raw('SUM(products.price * golds.qty) as total_rp'),db::raw('sum(products.weight * golds.qty ) as total_wg'))->groupBy('golds.user_id')->first();

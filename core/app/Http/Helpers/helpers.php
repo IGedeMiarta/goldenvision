@@ -1273,28 +1273,33 @@ function  leaderCommission2($id, $qty)
 {
     $from = $id;
     $gnl = GeneralSetting::first();
-    $com = 75000;
+    $com = 7500000;
     $userfrom = user::find($id);
     $first = false;
+    $deliver = 0;
     if ($userfrom->rank != 0 || $userfrom->rank != 1) {
             $amount = $userfrom->ranks->leader_bonus;
             $com = $com - $userfrom->ranks->leader_bonus;
             
-            if ($userfrom->plan_id != 0 && $amount != 0) {
+            if ($userfrom->plan_id != 0 && (($amount * $qty)-$deliver) > 0) {
                 // $userfrom->balance += $amount * $qty;
-                $userfrom->b_balance += ($amount * $qty);
+
+                $userfrom->b_balance += ($amount * $qty) - $deliver ;
                 $userfrom->save();
+
                 $trx = new Transaction();
                 $trx->user_id = $userfrom->id;
-                $trx->amount = $amount * $qty;
+                $trx->amount = ($amount * $qty) - $deliver ;
                 $trx->charge = 0;
                 $trx->trx_type = '+';
                 $trx->post_balance = getAmount($userfrom->b_balance);
                 $trx->remark = 'leadership_com';
                 $trx->trx = getTrx();
-                $trx->details = 'Paid Leadership Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
+                $trx->details = 'Paid Leadership Commission  ' . ($amount * $qty) - $deliver . ' ' . $gnl->cur_text;
                 $trx->save();  
                 $first = true;
+
+                $deliver += $trx->amount;
             }
     }
 
@@ -1318,26 +1323,29 @@ function  leaderCommission2($id, $qty)
             $count++;
             if ($count == 1 && $first == false) {
                 $amount = $userRef->ranks->leader_bonus;
-                $com = $com - $userRef->ranks->leader_bonus;
+                $com -= $userRef->ranks->leader_bonus ;
+               
             }else{
-                $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
-                $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                $amount = ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                $com -= ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
             }
             
-            if ($userRef->plan_id != 0 && $amount > 0) {
-                // $userRef->balance += $amount * $qty;
-                $userRef->b_balance += ($amount * $qty);
+            if ($userRef->plan_id != 0 && (($amount * $qty) - $deliver)  > 0) {
+                $userRef->b_balance += ($amount * $qty) - $deliver;
                 $userRef->save();
+
                 $trx = new Transaction();
                 $trx->user_id = $userRef->id;
-                $trx->amount = $amount * $qty;
+                $trx->amount = ($amount * $qty) - $deliver;
                 $trx->charge = 0;
                 $trx->trx_type = '+';
                 $trx->post_balance = getAmount($userRef->b_balance);
                 $trx->remark = 'leadership_com';
                 $trx->trx = getTrx();
-                $trx->details = 'Paid Leadership Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
+                $trx->details = 'Paid Leadership Commission  ' . ($amount * $qty) - $deliver . ' ' . $gnl->cur_text;
                 $trx->save();  
+
+                $deliver += $trx->amount;
             }
             
             if ($com <= 0){
