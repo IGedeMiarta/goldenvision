@@ -11,6 +11,7 @@ use App\Models\GeneralSetting;
 use App\Models\LogActivity;
 use App\Models\MemberGrow;
 use App\Models\Plan;
+use App\Models\Rank;
 use App\Models\rekening;
 use App\Models\SmsTemplate;
 use App\Models\Transaction;
@@ -1216,8 +1217,9 @@ function  leaderCommission($id, $qty)
     // return true;
     $from = $id;
     $gnl = GeneralSetting::first();
-    // $com = 75000;
+    $com = 75000;
     $count = 0;
+    $last = 0;
     while ($id != "" || $id != "0") {
         if (isUserExists($id)) {
             $refid = getRefId($id);
@@ -1230,17 +1232,23 @@ function  leaderCommission($id, $qty)
                 $id = $refid;
                 continue;
             }
-            if($user->rank == $userRef->rank && ($user->rank != 0 || $user->rank != 1) && $user->id != $from){
+            if($user->rank >= $userRef->rank && ($user->rank != 0 || $user->rank != 1) && $user->id != $from){
                 $id = $refid;
                 continue;
             }
             $count++;
             if ($count == 1) {
                 $amount = $userRef->ranks->leader_bonus;
-                // $com = $com - $userRef->ranks->leader_bonus;
+                $com = $com - $userRef->ranks->leader_bonus;
             }else{
-                $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
-                // $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                if (($userRef->rank - $user->rank) > 1) {
+                    $selisih = Rank::find($last);
+                    $amount = $userRef->ranks->leader_bonus - $selisih->leader_bonus;
+                    $com = $com - ($userRef->ranks->leader_bonus - $selisih->leader_bonus);
+                }else{
+                    $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
+                    $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                }
             }
             
             if ($userRef->plan_id != 0 && $amount > 0) {
@@ -1257,11 +1265,13 @@ function  leaderCommission($id, $qty)
                 $trx->trx = getTrx();
                 $trx->details = 'Paid Leadership Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
                 $trx->save();  
+
+                $last = $userRef->rank;
             }
             
-            // if ($com <= 0){
-            //     break;
-            // }
+            if ($com <= 0){
+                break;
+            }
             $id = $refid;
                 
         } else {
@@ -1275,12 +1285,13 @@ function  leaderCommission2($id, $qty)
     // return true;
     $from = $id;
     $gnl = GeneralSetting::first();
-    // $com = 7500000;
+    $com = 75000;
     $userfrom = user::find($id);
     $first = false;
+    $last = 0;
     if ($userfrom->rank != 0 || $userfrom->rank != 1) {
             $amount = $userfrom->ranks->leader_bonus;
-            // $com = $com - $userfrom->ranks->leader_bonus;
+            $com = $com - $userfrom->ranks->leader_bonus;
             
             if ($userfrom->plan_id != 0 && $amount > 0) {
                 // $userfrom->balance += $amount * $qty;
@@ -1299,6 +1310,8 @@ function  leaderCommission2($id, $qty)
                 $trx->details = 'Paid Leadership Commission  ' . ($amount * $qty) . ' ' . $gnl->cur_text;
                 $trx->save();  
                 $first = true;
+
+                $last = $userfrom->rank;
             }
     }
 
@@ -1322,10 +1335,16 @@ function  leaderCommission2($id, $qty)
             $count++;
             if ($count == 1 && $first == false ) {
                 $amount = $userRef->ranks->leader_bonus;
-                // $com = $com - $userRef->ranks->leader_bonus;
+                $com = $com - $userRef->ranks->leader_bonus;
             }else{
-                $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
-                // $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                if (($userRef->rank - $user->rank) > 1) {
+                    $selisih = Rank::find($last);
+                    $amount = $userRef->ranks->leader_bonus - $selisih->leader_bonus;
+                    $com = $com - ($userRef->ranks->leader_bonus - $selisih->leader_bonus);
+                }else{
+                    $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
+                    $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                }
             }
             
             if ($userRef->plan_id != 0 && $amount > 0) {
@@ -1342,11 +1361,13 @@ function  leaderCommission2($id, $qty)
                 $trx->trx = getTrx();
                 $trx->details = 'Paid Leadership Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
                 $trx->save();  
+
+                $last = $userRef->rank;
             }
             
-            // if ($com <= 0){
-            //     break;
-            // }
+            if ($com <= 0){
+                break;
+            }
             $id = $refid;
                 
         } else {
