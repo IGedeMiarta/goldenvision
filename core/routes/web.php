@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\NewCronController;
+use App\Http\Controllers\NewSponsorRegitserController;
 use App\Http\Controllers\SponsorRegisterController;
 use App\Http\Controllers\UserController;
 use App\Models\rekening;
@@ -682,8 +683,12 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::get('/tree/search', 'PlanController@otherTree')->name('other.tree.search');
 
             Route::get('/register-by-sponsor',[SponsorRegisterController::class,'index'])->name('sponsor.regist');
+            Route::get('/register-by-sponsor-up',[SponsorRegisterController::class,'sponsorSet'])->name('sponsor.regist.up');
+
             Route::post('/register-by-sponsor-set',[SponsorRegisterController::class,'setSession'])->name('sponsor.set');
+            Route::post('/register-by-sponsor-set-update',[SponsorRegisterController::class,'setSessionUpdate'])->name('sponsor.set.update');
             Route::post('/register-sponsor',[SponsorRegisterController::class,'registerUser'])->name('sponsorRegist.post');
+            Route::post('/register-sponsor-update',[NewSponsorRegitserController::class,'register'])->name('sponsorRegist.post.up');
             
             //balance transfer
             Route::get('/transfer', 'UserController@indexTransfer')->name('balance.transfer');

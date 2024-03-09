@@ -40,7 +40,7 @@ class NewCronController extends Controller
             if (!$user_plan) {
                 continue;
             }
-            if ($weaks >= 25) {
+            if ($weaks >= 50) {
                 $pairs = intval($weak);
                 $pair = intval($weak);
             } else {
@@ -54,28 +54,28 @@ class NewCronController extends Controller
 
             if ($uex->level_binary != 0 && $pairs != $uex->level_binary) {
                 if ($pair > $uex->level_binary) {
-                    if ($pair - $uex->level_binary >= 25) {
-                        $pair = 25;
+                    if ($pair - $uex->level_binary >= 50) {
+                        $pair = 50;
                         $bonus = intval(($pair) * ($user_plan->tree_com * 2));
                     } else {
-                        if ($pair >= 25) {
-                            $pair = 25;
+                        if ($pair >= 50) {
+                            $pair = 50;
                             $bonus = intval(($pair - $uex->level_binary) * ($user_plan->tree_com * 2));
                         } else {
                             $bonus = intval(($pair - $uex->level_binary) * ($user_plan->tree_com * 2));
                         }
                     }
                 } else {
-                    if ($pair >= 25) {
-                        $pair = 25;
+                    if ($pair >= 50) {
+                        $pair = 50;
                         $bonus = intval(($uex->level_binary - $pair) * ($user_plan->tree_com * 2));
                     } else {
                         $bonus = intval(($uex->level_binary - $pair) * ($user_plan->tree_com * 2));
                     }
                 }
             } else {
-                if ($pair >= 25) {
-                    $pair = 25;
+                if ($pair >= 50) {
+                    $pair = 50;
                     $bonus = intval($pair * ($user_plan->tree_com * 2));
                 } else {
                     $bonus = intval($pair * ($user_plan->tree_com * 2));
@@ -84,8 +84,8 @@ class NewCronController extends Controller
 
             $pair2[] = $pair == $uex->level_binary;
 
-            if ($pair >= 25) {
-                $pair = 25;
+            if ($pair >= 50) {
+                $pair = 50;
             }
 
             if ($pair == $uex->level_binary) {
@@ -103,7 +103,7 @@ class NewCronController extends Controller
                 $trx->remark = 'binary_commission';
                 $trx->trx = getTrx();
 
-                if ($pair >= 25) {
+                if ($pair >= 50) {
                     if ($uex->last_flush_out) {
                         if (Carbon::parse($uex->last_flush_out)->format('Y-m-d') != Carbon::now()->toDateString()) {
                             if ($uex->level_binary == 0) {

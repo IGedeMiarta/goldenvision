@@ -143,12 +143,13 @@
                                         id="button-addon2"><i class="fas fa-save"></i> Update</button>
                                 </div>
                             </div>
-                            <label for="default" style="font-size: 14px">Referrals Default Position</label>
+                            <label for="default" style="font-size: 14px">Referrals Default Position By Refferal
+                                Link</label>
                         </div>
-                        <div class="col-md-3">
+                        {{-- <div class="col-md-3">
                             <a href="{{ route('user.sponsor.regist') }}" class="btn btn-outline-success w-100"
                                 type="button" id="button-addon2"><i class="fas fa-user"></i>Register New User</a>
-                        </div>
+                        </div> --}}
                         <div class="col-md-6"></div>
                     </div>
                 </form>
@@ -180,11 +181,11 @@
                     </div>
                     <!-- <div class="col"> -->
                     <div class="w-4  ">
-                        @php echo showSingleUserNoLine($tree['e']); @endphp
+                        @php echo showSingleUserNoLineInsideLeft($tree['e']); @endphp
                     </div>
                     <!-- <div class="col"> -->
                     <div class="w-4  ">
-                        @php echo showSingleUserNoLine($tree['f']); @endphp
+                        @php echo showSingleUserNoLineInsideRight($tree['f']); @endphp
                     </div>
                     <div class="w-4  ">
                         @php echo showSingleUserNoLine($tree['g']); @endphp
@@ -382,7 +383,7 @@
                 let upline = $(this).data('upline');
                 let pos = $(this).data('pos');
                 let backUrl = "{{ Request::url() }}";
-                const postUrl = "{{ route('user.sponsor.set') }}";
+                const postUrl = "{{ route('user.sponsor.set.update') }}";
 
                 $.ajax({
                     type: 'POST',

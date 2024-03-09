@@ -1295,7 +1295,7 @@ function  leaderComCounter($id)
 function  leaderCommission($id, $qty)
 {
 
-    return true;
+    // return true;
     $from = $id;
     $gnl = GeneralSetting::first();
     $com = 75000;
@@ -1363,7 +1363,7 @@ function  leaderCommission($id, $qty)
 
 function  leaderCommission2($id, $qty)
 {
-    return true;
+    // return true;
     $from = $id;
     $gnl = GeneralSetting::first();
     $com = 75000;
@@ -2093,6 +2093,7 @@ function inTreeUser($id){
 
 function showSingleUserinTree($resp)
 {
+    // dd($resp);
     $res = '';
     $user = $resp['user'];
     if(auth()->user()->userExtra->is_gold){
@@ -2111,7 +2112,6 @@ function showSingleUserinTree($resp)
         $uname = '';
     }
     $pos = $resp['pos'];
-    // dd($user);
     if ($user) {
         if($user->userExtra->is_gold){
            
@@ -2126,9 +2126,16 @@ function showSingleUserinTree($resp)
             $planName = '';
             $test = $user->userExtra->is_gold;
             $bg = 'bg-pink';
-          
-
         }
+        $countDownline = User::where('pos_id',$resp['user']->id)->count();
+
+        if($countDownline <= 1){
+            $classSee = 'btnCantSeeUser';
+
+        }else{
+            $classSee = 'btnSeeUser';
+        }
+
 
         // $img = getImage('assets/images/user/profile/'. $user->image, null, true);
         $img = getImage($user->ranks->logo);
@@ -2169,7 +2176,7 @@ function showSingleUserinTree($resp)
         $extraData .= " data-lbv=\"" . getAmount(@$user->userExtra->bv_left) . "\"";
         $extraData .= " data-rbv=\"" . getAmount(@$user->userExtra->bv_right) . "\"";
 
-        $res .= "<div class=\"user btnSeeUser\" data-username=\"$user->username\" type=\"button\" >";
+        $res .= "<div class=\"user  $classSee\" data-username=\"$user->username\" type=\"button\" >";
         $res .= "<img src=\"$img\" alt=\"*\"  class=\"$userType $test $bg showDetails \" $extraData>";
         
         if (auth()->guard('admin')->user()) {
@@ -2195,29 +2202,29 @@ function showSingleUserinTree($resp)
         // $res .= "<p class=\" user-btn\" style=\"padding-top:0px;\"><a class=\"btn btn-sm\" style=\"background-color:#63bbf3;color:black;\" href=\"$hisTree\" style=\"position: absolute; z-index:-1;\">Explore Tree</a></p>";
 
     } else {
-        //  if($upline){
+        if($upline){
              
-        //     if ($upline == auth()->user()->no_bro && auth()->user()->userExtra->is_gold || $pos == 2) {
-        //         $img = getImage('assets/images/add2.jpg', null, true);
+            if ($upline == auth()->user()->no_bro && auth()->user()->userExtra->is_gold || $pos == 2) {
+                $img = getImage('assets/images/add2.jpg', null, true);
 
-        //         # code...
-        //         $addList = 'btnUser';
-        //     }else{
-        //          $img = getImage('assets/images/add2.jpg', null, true);
+                # code...
+                $addList = 'btnUser';
+            }else{
+                 $img = getImage('assets/images/add2.jpg', null, true);
                 
 
-        //         $addList = 'btnUser';
-        //     }
+                $addList = 'btnUser';
+            }
            
-        // }else{
-        //     $img = getImage('assets/images/add2.jpg', null, true);
+        }else{
+            $img = getImage('assets/images/add2.jpg', null, true);
             
-        //     $addList = 'noUser';
-        // }
+            $addList = 'noUser';
+        }
 
         // $img = getImage('assets/images/add2.jpg', null, true);
-        $img = getImage('assets/images/bg.png', null, true);
-        $addList = 'noUser';
+        // $img = getImage('assets/images/bg.png', null, true);
+        // $addList = 'noUser';
         $res .= '<div class="user '.$addList.' " data-upline="'.$uname.'" data-pos="'.$pos.'" data-up="'.$uname.'" type="button">';
         // $res .= '<div class="user btnUser" type="button">';
         $res .= '<img src="'.$img.'" alt="*"  class="no-user imgUser'.$pos.$bro.'" style="border-radius:50%">';
@@ -2333,18 +2340,18 @@ function showSingleUserNoLine($resp)
         // $res .= "<p class=\" user-btn\" style=\"padding-top:0px;\"><a class=\"btn btn-sm\" style=\"background-color:#63bbf3;color:black;\" href=\"$hisTree\" style=\"position: absolute; z-index:-1;\">Explore Tree</a></p>";
 
     } else {
-            // if ($uname != '') {
-            //     $img = getImage('assets/images/add2.jpg', null, true);
-            //     # code...
-            //     $addList = 'btnUser';
-            // }else{
-            //      $img = getImage('assets/images/bg.png', null, true);
-            //     # code...
-            //     $addList = 'btnUser';
-            // }
-        $img = getImage('assets/images/bg.png', null, true);
+            if ($uname != '') {
+                $img = getImage('assets/images/add2.jpg', null, true);
                 # code...
-                $addList = 'noUser';
+                $addList = 'btnUser';
+            }else{
+                 $img = getImage('assets/images/bg.png', null, true);
+                # code...
+                $addList = 'btnUser';
+            }
+        // $img = getImage('assets/images/bg.png', null, true);
+        //         # code...
+        //         $addList = 'noUser';
         $res .= '<div class="user '.$addList.' " data-upline="'.$uname.'" data-pos="'.$pos.'" data-up="'.$uname.'" type="button">';
         $res .= '<img src="'.$img.'" alt="*"  class="no-user imgUser'.$pos.$upline.'" style="border-radius:50%">';
 
@@ -2490,11 +2497,11 @@ $res = '';
         $upline = $uplines->username;
         $uname = $uplines->username;
         $upuser = User::where('username',$uplines->username)->first();
-        $checkLeft = User::where('pos_id',$upuser->id)->where('position',2)->first();
+        $checRight = User::where('pos_id',$upuser->id)->where('position',2)->first();
     }else{
         $upline = '';
         $uname = '';
-        $checkLeft  = false;
+        $checRight  = false;
 
     }
     $pos = $resp['pos'];
@@ -2588,13 +2595,9 @@ $res = '';
         // $res .= "<p class=\" user-btn\" style=\"padding-top:0px;\"><a class=\"btn btn-sm\" style=\"background-color:#63bbf3;color:black;\" href=\"$hisTree\" style=\"position: absolute; z-index:-1;\">Explore Tree</a></p>";
 
     } else {
-            if ($uname != '' &&  $checkLeft) {
-                // $img = getImage('assets/images/add2.jpg', null, true);
-                 $img = getImage('assets/images/bg.png', null, true);
-
-                # code...
-                // $addList = 'btnUser';
-                $addList = 'noUser';
+            if ($uname != '' &&  $checRight) {
+                $img = getImage('assets/images/add2.jpg', null, true);
+                $addList = 'btnUser';
 
             }else{
                  $img = getImage('assets/images/bg.png', null, true);
@@ -2823,15 +2826,15 @@ function showSingleUserinTree2($user,$id)
 {
     $res = '';
     if ($user) {
-        // if ($user->plan_id == 0) {
-        //     $userType = "free-user";
-        //     $stShow = "Free";
-        //     $planName = '';
-        // } else {
-        //     $userType = "paid-user";
-        //     $stShow = "Paid";
-        //     $planName = $user->plan->name;
-        // }
+        if ($user->plan_id == 0) {
+            $userType = "free-user";
+            $stShow = "Free";
+            $planName = '';
+        } else {
+            $userType = "paid-user";
+            $stShow = "Paid";
+            $planName = $user->plan->name;
+        }
 
         if ($user->id == $id) {
             $userType = "active-user";
