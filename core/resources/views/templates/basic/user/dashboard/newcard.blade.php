@@ -503,7 +503,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-30 text-center d-none">
+    <div class="col-md-4 mb-30 text-center">
         <div class="card"
             style="background-color: #ECBC13; height: 200px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
                 background-position: center;
