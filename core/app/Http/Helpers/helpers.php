@@ -2497,11 +2497,11 @@ $res = '';
         $upline = $uplines->username;
         $uname = $uplines->username;
         $upuser = User::where('username',$uplines->username)->first();
-        $checkLeft = User::where('pos_id',$upuser->id)->where('position',2)->first();
+        $checRight = User::where('pos_id',$upuser->id)->where('position',2)->first();
     }else{
         $upline = '';
         $uname = '';
-        $checkLeft  = false;
+        $checRight  = false;
 
     }
     $pos = $resp['pos'];
@@ -2595,13 +2595,9 @@ $res = '';
         // $res .= "<p class=\" user-btn\" style=\"padding-top:0px;\"><a class=\"btn btn-sm\" style=\"background-color:#63bbf3;color:black;\" href=\"$hisTree\" style=\"position: absolute; z-index:-1;\">Explore Tree</a></p>";
 
     } else {
-            if ($uname != '' &&  $checkLeft) {
-                // $img = getImage('assets/images/add2.jpg', null, true);
-                 $img = getImage('assets/images/bg.png', null, true);
-
-                # code...
-                // $addList = 'btnUser';
-                $addList = 'noUser';
+            if ($uname != '' &&  $checRight) {
+                $img = getImage('assets/images/add2.jpg', null, true);
+                $addList = 'btnUser';
 
             }else{
                  $img = getImage('assets/images/bg.png', null, true);
