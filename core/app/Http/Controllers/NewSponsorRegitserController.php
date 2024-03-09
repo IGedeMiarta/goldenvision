@@ -2,71 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AdminNotification;
-use App\Models\bank;
 use App\Models\GeneralSetting;
-use App\Models\Gold;
 use App\Models\Plan;
-use App\Models\rekening;
-use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserExtra;
-use App\Models\UserLogin;
 use App\Models\UserPin;
-use App\Models\UserPoint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Services\Tree\TreeService;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Trunc;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 
-class SponsorRegisterController extends Controller
+class NewSponsorRegitserController extends Controller
 {
-    public function __construct(public TreeService $treeService)
-    {
-        $this->activeTemplate = activeTemplate();
-    }
-    public function setSession(Request $request){
-        
-        $data = [
-            'upline'    => $request->upline,
-            'position'  => $request->postion,
-            'url'       => $request->back
-        ];
-        $request->session()->put('SponsorSet', $data);
-        return response()->json(['sts'=>200,'url'=>route('user.sponsor.regist'),'data'=>$data]);
-    }
-    public function setSessionUpdate(Request $request){
-        $data = [
-            'upline'    => $request->upline,
-            'position'  => $request->postion,
-            'url'       => $request->back
-        ];
-        $request->session()->put('SponsorSet', $data);
-        return response()->json(['sts'=>200,'url'=>route('user.sponsor.regist.up'),'data'=>$data]);
-    }
-
-    public function index(){
-        $data['page_title'] = "Register By Sponsor";
-        $data['user'] = Auth::user();
-        $data['bank'] = bank::all();
-        // $data['upline'] = User::where('username',session()->get('SponsorSet')['upline'])->orWhere('id',session()->get('SponsorSet')['upline'])->first();
-        return view($this->activeTemplate . 'user.registerSponsor', $data);
-    }
-    public function sponsorSet(){
-        $data['page_title'] = "Register By Sponsor";
-        $data['user'] = Auth::user();
-        $data['bank'] = bank::all();
-        // $data['upline'] = User::where('username',session()->get('SponsorSet')['upline'])->orWhere('id',session()->get('SponsorSet')['upline'])->first();
-        return view($this->activeTemplate . 'user.new-registerSponsor', $data);
-    }
-    
-    public function registerUser(Request $request){
+    public function register(Request $request){
+        // dd($request->all());
         $general = GeneralSetting::first();
         $agree = 'nullable';
         if ($general->agree_policy) {
@@ -74,9 +24,9 @@ class SponsorRegisterController extends Controller
         }
         $validate = Validator::make($request->all(),[
             'sponsor'   => 'required',
-            // 'upline'    => 'required',
-            // 'position'  => 'required',
-            'pin'       => 'required|numeric|min:1',
+            'upline'    => 'required',
+            'position'  => 'required',
+            'pin'       => 'required|min:1',
             'firstname'     => 'sometimes|required|string|max:60',
             'lastname'      => 'sometimes|required|string|max:60',
             'email'         => 'required|regex:/^[a-zA-Z0-9@.]+$/|string|email|max:160',
@@ -125,7 +75,7 @@ class SponsorRegisterController extends Controller
                 'upline'    => $request->upline,
                 'sponsor'   => $request->sponsor,
                 'pin'       => $request->pin,
-                'position'  => $sponsor->default_pos,
+                'position'  => $request->position,
                 'user_id'   => $newUser->id,
             ]);
             // dd($buyPlan);
@@ -139,7 +89,6 @@ class SponsorRegisterController extends Controller
                 
                 // leaderCommission2(Auth::user()->id,$request->pin);
                 checkRank($newUser->id);
-                // dd($checkloop);
                 DB::commit();
                 addToLog('Created '.$request->pin.' User & Purchased Plan');
                 $notify[] = ['success', 'Created User & Purchased Plan Successfully'];
@@ -254,11 +203,7 @@ class SponsorRegisterController extends Controller
             UserExtra::create([
                 'user_id' => $user->id
             ]);
-            // $adminNotification = new AdminNotification();
-            // $adminNotification->user_id = $user->id;
-            // $adminNotification->title = 'New member registered By Sponsor: '. Auth::user()->username;
-            // $adminNotification->click_url = route('admin.users.detail', $user->id);
-            // $adminNotification->save();
+           
 
             return $user;
        } catch (\Throwable $th) {
@@ -324,8 +269,10 @@ class SponsorRegisterController extends Controller
     {
         try {
             $plan = Plan::where('id', $data['plan_id'])->where('status', 1)->firstOrFail();
-         
+            
             $user = User::find($data['user_id']);
+            
+            $upline = User::where('username',$data['upline'])->first();
 
             $sponsor = User::where('username', $data['sponsor'])->first();
             
@@ -335,8 +282,8 @@ class SponsorRegisterController extends Controller
                 return false;
             }
             $user->ref_id           = $sponsor->id; // ref id = sponsor
-            $user->pos_id           = $pos['pos_id']; //pos id = upline
-            $user->position         = $pos['position'];
+            $user->pos_id           = $upline->id; //pos id = upline
+            $user->position         = $data['position'];
             $user->no_bro           = $user->username;
             $user->position_by_ref  = $sponsor->default_pos;
             $user->plan_id          = $plan->id;
@@ -368,152 +315,10 @@ class SponsorRegisterController extends Controller
             deliverPoint($user->id,$data['pin']*2);
             return $trx;  
         } catch (\Throwable $th) {
+            dd($th->getMessage());
             return false;
             // dd($th->getMessage(),'error');
         }
-    }
-
-    public function sendPin(Request $request,$id){
-         $validate = Validator::make($request->all(),[
-            'pin'       => 'required|numeric|min:1',
-        ]);
-        if ($validate->fails()) {
-           return redirect()->back()->withErrors($validate);
-        }
-        $user = User::find($id);
-        $sponsor = Auth::user();
-        $trx = getTrx();
-        DB::beginTransaction();
-        try {
-            if ($sponsor->pin < $request->pin) {
-                return ['error'=>true, 'msg'=> 'Not enough pin to send'];
-            }
-            $spin = UserPin::create([
-                'user_id' => $sponsor->id,
-                'pin'     => $request->pin,
-                'pin_by'  => $user->id,
-                'type'      => "-",
-                'start_pin' => $sponsor->pin,
-                'end_pin'   => $sponsor->pin - $request->pin,
-                'ket'       => 'Sponsor Send '.$request->pin.' Pin to: '. $user->username
-            ]);
-            $sponsor->pin -= $request->pin;
-            $sponsor->save();
-            addToLog('Send '.$request->pin.' Pin to: '. $user->username);
-
-            $upin = UserPin::create([
-                'user_id' => $user->id,
-                'pin'     => $request->pin,
-                'pin_by'  => $sponsor->id,
-                'start_pin' => $user->pin,
-                'end_pin'   => $user->pin + $request->pin,
-                'ket'       => 'Added '.$user->pin.' Pin By Sponsor: '. $sponsor->username
-            ]);
-           
-            
-            $user->pin += $request->pin;
-            $user->save();
-            
-            // $transaction = new Transaction();
-            // $transaction->user_id = $user->id;
-            // $transaction->amount = $user->pin;
-            // $transaction->post_balance = 0;
-            // $transaction->charge = 0;
-            // $transaction->trx_type = '+';
-            // $transaction->details = 'Added Pin Via Admin';
-            // $transaction->trx =  $trx;
-            // $transaction->save();
-
-            DB::commit();
-            $notify[] = ['success','Send Pin Success to '.$user->username];
-            return back()->withNotify($notify);
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            $notify[] = ['error', 'Error: '. $th->getMessage() ];
-            return back()->withNotify($notify);
-        }
-         
-    }
-
-
-    public function convertSaldo(Request $request){
-        $validate = Validator::make($request->all(),[
-            "saldo" => "required|numeric",
-            "qty" => "required|numeric",
-            "idr" => "required|numeric",
-            "sisa" => "required|numeric",
-        ]);
-        if ($validate->fails()) {
-           return redirect()->back()->withInput($request->all())->withErrors($validate);
-        }
-        $user = Auth::user();
-        $trx = getTrx();
-        DB::beginTransaction();
-        try {
-
-            if ($user->balance < $request->idr) {
-                return ['error'=>true, 'msg'=> 'Not enough balace to convert'];
-            }
-
-            $upin = UserPin::create([
-                'user_id' => $user->id,
-                'pin'     => $request->qty,
-                'pin_by'  => null,
-                'type'      => '+',
-                'start_pin' => $user->pin,
-                'end_pin'   => $user->pin + $request->qty,
-                'ket'       => 'Convert '.$request->idr.' Balance To '.$request->qty.' Pin'
-            ]);
-           
-            
-            $user->pin += $request->qty;
-            $user->balance -= $request->idr;
-            $user->save();
-
-
-            $transaction = new Transaction();
-            $transaction->user_id = $user->id;
-            $transaction->amount = $request->idr;
-            $transaction->post_balance = $request->sisa;
-            $transaction->charge = 0;
-            $transaction->trx_type = '-';
-            $transaction->details = 'Convert '.$request->idr.' Balance To '.$request->qty.' Pin';
-            $transaction->trx =  $trx;
-            $transaction->save();
-
-
-            DB::commit();
-            addToLog('Convert '.$request->idr.' Balance To '.$request->qty.' Pin');
-            
-            $notify[] = ['success', 'Convert '.$request->idr.' Balance To '.$request->qty.' Pin'];
-            return redirect()->back()->withNotify($notify);
-
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            $notify[] = ['success', 'Error: '.$th->getMessage()];
-            return redirect()->back()->withNotify($notify);
-        }
-    }
-
-    public function userSendPin(){
-        $data['page_title'] = "Send PINs";
-        return view($this->activeTemplate . 'user.sendPin', $data);
-    }
-    public function findUname($uname){
-        $find = User::where('username','=',$uname)->first();
-       
-        if(!$find){
-            return response()->json(['status'=>404,'msg'=>"Username `".$uname."` Not Found!"]);
-        }
-        if($find->id == auth()->user()->id){
-            return response()->json(['status'=>404,'msg'=>"Can't Send Pin To Yourself!"]);
-        }
-        return response()->json(['status'=>200,'msg'=>'Username Correct: `'.$find->username.' - '.$find->no_bro.'`','data'=>$find]);
-    }
-    public function userPoint(){
-        $data['page_title'] = "POINT User";
-        $data['log'] = UserPoint::where('user_id',auth()->user()->id)->orderByDesc('id')->get();
-        return view($this->activeTemplate . 'user.point', $data);
     }
 
 }

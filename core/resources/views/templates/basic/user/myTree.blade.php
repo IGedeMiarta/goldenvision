@@ -180,11 +180,11 @@
                     </div>
                     <!-- <div class="col"> -->
                     <div class="w-4  ">
-                        @php echo showSingleUserNoLine($tree['e']); @endphp
+                        @php echo showSingleUserNoLineInsideLeft($tree['e']); @endphp
                     </div>
                     <!-- <div class="col"> -->
                     <div class="w-4  ">
-                        @php echo showSingleUserNoLine($tree['f']); @endphp
+                        @php echo showSingleUserNoLineInsideLeft($tree['f']); @endphp
                     </div>
                     <div class="w-4  ">
                         @php echo showSingleUserNoLine($tree['g']); @endphp
@@ -382,7 +382,7 @@
                 let upline = $(this).data('upline');
                 let pos = $(this).data('pos');
                 let backUrl = "{{ Request::url() }}";
-                const postUrl = "{{ route('user.sponsor.set') }}";
+                const postUrl = "{{ route('user.sponsor.set.update') }}";
 
                 $.ajax({
                     type: 'POST',
