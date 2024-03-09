@@ -179,8 +179,7 @@
                         <p style="font-size: 14px;color: #000">Product Detail</p>
                         <div style="background-color: #EDEDED; padding: 15px; border-radius: 10px;margin-top: 5px;">
                             <p style="font-size: 12px">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde illum laudantium tempora,
-                                assumenda eveniet debitis nesciunt voluptatem in
+                                Parfum ini didatangkan langsung dari laboratorium yang telah berusia 77 tahun di paris. Aroma dari enzim "Pheromon" memancarkan kesan penakluk dengan aura sensual dan memikat.
                             </p>
                         </div>
                         <form action="{{ route('user.product.cart') }}" method="POST">
