@@ -145,10 +145,10 @@
                             </div>
                             <label for="default" style="font-size: 14px">Referrals Default Position</label>
                         </div>
-                        <div class="col-md-3">
+                        {{-- <div class="col-md-3">
                             <a href="{{ route('user.sponsor.regist') }}" class="btn btn-outline-success w-100"
                                 type="button" id="button-addon2"><i class="fas fa-user"></i>Register New User</a>
-                        </div>
+                        </div> --}}
                         <div class="col-md-6"></div>
                     </div>
                 </form>
