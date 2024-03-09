@@ -26,7 +26,7 @@
             position: relative;
             width: 100%;
             height: 0;
-            padding-top: calc(145 / 300 * 100%);
+            padding-top: calc(145 / 100 * 100%);
             /* Maintain aspect ratio 145:300 */
             overflow: hidden;
             border-radius: 10px
