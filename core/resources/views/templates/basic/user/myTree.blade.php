@@ -143,7 +143,8 @@
                                         id="button-addon2"><i class="fas fa-save"></i> Update</button>
                                 </div>
                             </div>
-                            <label for="default" style="font-size: 14px">Referrals Default Position</label>
+                            <label for="default" style="font-size: 14px">Referrals Default Position By Refferal
+                                Link</label>
                         </div>
                         {{-- <div class="col-md-3">
                             <a href="{{ route('user.sponsor.regist') }}" class="btn btn-outline-success w-100"
