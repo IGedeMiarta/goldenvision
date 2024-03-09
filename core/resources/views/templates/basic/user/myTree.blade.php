@@ -184,7 +184,7 @@
                     </div>
                     <!-- <div class="col"> -->
                     <div class="w-4  ">
-                        @php echo showSingleUserNoLineInsideLeft($tree['f']); @endphp
+                        @php echo showSingleUserNoLineInsideRight($tree['f']); @endphp
                     </div>
                     <div class="w-4  ">
                         @php echo showSingleUserNoLine($tree['g']); @endphp
