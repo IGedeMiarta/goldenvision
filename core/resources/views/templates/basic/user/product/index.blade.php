@@ -172,7 +172,7 @@
                     </div>
                     <div class="card-body pt-5" style="display: flex; justify-content: center;">
                         <div class="image-container">
-                            <img src="{{ asset($data->image) }}" alt="Your Image">
+                            <img src="{{ asset($data->image) }}" alt="Your Image" width="1066" height="1600">
                         </div>
                     </div>
                     <div class="card-body">
