@@ -137,7 +137,7 @@
                         </div>
                         @if (Auth::user()->plan_id != $data->id)
                             <a href="#confBuyModal{{ $data->id }}" data-toggle="modal"
-                                class="disabled btn w-100  btn--primary text-light btn-outline--primary  mt-20 py-2 box--shadow1  @if (auth()->user()->pin < 1) disabled @endif">@lang('Subscribe Membership')</a>
+                                class="btn w-100  btn--primary text-light btn-outline--primary  mt-20 py-2 box--shadow1  @if (auth()->user()->pin < 1) disabled @endif">@lang('Subscribe Membership')</a>
                         @else
                             <a data-toggle="modal"
                                 class="btn w-100 btn-outline--primary  mt-20 py-2 box--shadow1">@lang('Already Subscribe')</a>
