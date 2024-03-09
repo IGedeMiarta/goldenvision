@@ -28,8 +28,8 @@ Route::get('cyc',function(){
 Route::get('reset-point-startDay',[CronController::class,'resetCountingLF']);
 
 // Route::get('create-acc/{jml}/{username}',[LandingController::class,'createAcc']);
-Route::get('/update-counting-user/{username}/{count}',function($username,$count){
-    return UpdateCountingUser($username,$count);
+Route::get('/update-counting-user/{username}/{pos}/{count}',function($username,$pos,$count){
+    return UpdateCountingUser($username,$pos,$count);
 });
 // Route::get('dashboard-admin',[AdminController::class,'viewOnly']);
 // Route::get('/',[LandingController::class,'index'])->name('home');
