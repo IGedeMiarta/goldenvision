@@ -1327,8 +1327,14 @@ function  leaderCommission($id, $qty)
                     $amount = $userRef->ranks->leader_bonus - $selisih->leader_bonus;
                     $com = $com - ($userRef->ranks->leader_bonus - $selisih->leader_bonus);
                 }else{
-                    $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
-                    $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                    $selisih = Rank::find($last);
+                    if($selisih->id >= $userRef->rank){
+                        $id = $refid;
+                        continue;
+                    }else{
+                        $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
+                        $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                    }
                 }
             }
             
@@ -1409,7 +1415,7 @@ function  leaderCommission2($id, $qty)
                 $id = $refid;
                 continue;
             }
-            if($user->rank == $userRef->rank && ($user->rank != 0 || $user->rank != 1) && $user->id != $from){
+            if($user->rank >= $userRef->rank && ($user->rank != 0 || $user->rank != 1) && $user->id != $from){
                 $id = $refid;
                 continue;
             }
@@ -1423,8 +1429,14 @@ function  leaderCommission2($id, $qty)
                     $amount = $userRef->ranks->leader_bonus - $selisih->leader_bonus;
                     $com = $com - ($userRef->ranks->leader_bonus - $selisih->leader_bonus);
                 }else{
-                    $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
-                    $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                    $selisih = Rank::find($last);
+                    if($selisih->id >= $userRef->rank){
+                        $id = $refid;
+                        continue;
+                    }else{
+                        $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
+                        $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                    }
                 }
             }
             
@@ -2208,12 +2220,12 @@ function showSingleUserinTree($resp)
                 $img = getImage('assets/images/add2.jpg', null, true);
 
                 # code...
-                $addList = '';
+                $addList = 'btnUser';
             }else{
                  $img = getImage('assets/images/add2.jpg', null, true);
                 
 
-                $addList = '';
+                $addList = 'btnUser';
             }
            
         }else{
@@ -2343,11 +2355,11 @@ function showSingleUserNoLine($resp)
             if ($uname != '') {
                 $img = getImage('assets/images/add2.jpg', null, true);
                 # code...
-                $addList = '';
+                $addList = 'btnUser';
             }else{
                  $img = getImage('assets/images/bg.png', null, true);
                 # code...
-                $addList = '';
+                $addList = 'btnUser';
             }
         // $img = getImage('assets/images/bg.png', null, true);
         //         # code...
@@ -2469,7 +2481,7 @@ $res = '';
             if ($uname != '' &&  $checkLeft) {
                 $img = getImage('assets/images/add2.jpg', null, true);
                 # code...
-                $addList = '';
+                $addList = 'btnUser';
             }else{
                  $img = getImage('assets/images/bg.png', null, true);
                 # code...
@@ -2597,7 +2609,7 @@ $res = '';
     } else {
             if ($uname != '' &&  $checRight) {
                 $img = getImage('assets/images/add2.jpg', null, true);
-                $addList = '';
+                $addList = 'btnUser';
 
             }else{
                  $img = getImage('assets/images/bg.png', null, true);
