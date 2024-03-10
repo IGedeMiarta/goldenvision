@@ -488,7 +488,7 @@
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">All Bonus </span>
                     <h6 class="text-dark" style="font-size: 18px">
-                        {{ nb(getAmount(auth()->user()->total_binary_com + auth()->user()->total_ref_com + nb(sumBonus('leader')))) }} IDR</h6>
+                        {{ nb(getAmount(auth()->user()->total_binary_com + auth()->user()->total_ref_com + sumBonus('leader'))) }} IDR</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <div class="icon-rp-total">
