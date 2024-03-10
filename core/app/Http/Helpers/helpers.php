@@ -1295,7 +1295,7 @@ function  leaderComCounter($id)
 function  leaderCommission($id, $qty)
 {
 
-    return true;
+    // return true;
     $from = $id;
     $gnl = GeneralSetting::first();
     $com = 75000;
@@ -1363,7 +1363,7 @@ function  leaderCommission($id, $qty)
 
 function  leaderCommission2($id, $qty)
 {
-    return true;
+    // return true;
     $from = $id;
     $gnl = GeneralSetting::first();
     $com = 75000;
@@ -2208,12 +2208,12 @@ function showSingleUserinTree($resp)
                 $img = getImage('assets/images/add2.jpg', null, true);
 
                 # code...
-                $addList = 'btnUser';
+                $addList = '';
             }else{
                  $img = getImage('assets/images/add2.jpg', null, true);
                 
 
-                $addList = 'btnUser';
+                $addList = '';
             }
            
         }else{
@@ -2343,11 +2343,11 @@ function showSingleUserNoLine($resp)
             if ($uname != '') {
                 $img = getImage('assets/images/add2.jpg', null, true);
                 # code...
-                $addList = 'btnUser';
+                $addList = '';
             }else{
                  $img = getImage('assets/images/bg.png', null, true);
                 # code...
-                $addList = 'btnUser';
+                $addList = '';
             }
         // $img = getImage('assets/images/bg.png', null, true);
         //         # code...
@@ -2469,7 +2469,7 @@ $res = '';
             if ($uname != '' &&  $checkLeft) {
                 $img = getImage('assets/images/add2.jpg', null, true);
                 # code...
-                $addList = 'btnUser';
+                $addList = '';
             }else{
                  $img = getImage('assets/images/bg.png', null, true);
                 # code...
@@ -2597,7 +2597,7 @@ $res = '';
     } else {
             if ($uname != '' &&  $checRight) {
                 $img = getImage('assets/images/add2.jpg', null, true);
-                $addList = 'btnUser';
+                $addList = '';
 
             }else{
                  $img = getImage('assets/images/bg.png', null, true);
