@@ -315,7 +315,7 @@ class NewCronController extends Controller
                         $uex->paid_left = $uex->paid_left - $weak;
                         $uex->paid_right = 0;
                     }
-                    $uex->level_binary = $pair;
+                    $uex->level_binary = 0;
                     $uex->save();
 
                     $gnl->last_paid = Carbon::now()->toDateTimeString();
@@ -325,7 +325,8 @@ class NewCronController extends Controller
                 }
             }
         }
-        return $cron;
+        // return $cron;
+        abort(404);
         // dd($dd);
 
     }
