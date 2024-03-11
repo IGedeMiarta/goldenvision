@@ -26,7 +26,7 @@ Route::get('cyc',function(){
     updateCycleNasional(1);
 });
 Route::get('cekjam',function(){
-    return now();
+    return Date('H');
 });
 
 
