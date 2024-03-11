@@ -25,9 +25,6 @@ use Illuminate\Support\Facades\URL;
 Route::get('cyc',function(){
     updateCycleNasional(1);
 });
-Route::get('cekjam',function(){
-    return Date('H');
-});
 
 
 Route::get('reset-point-startDay',[CronController::class,'resetCountingLF']);
