@@ -99,7 +99,7 @@ class NewCronController extends Controller
                 $trx->amount = $bonus;
                 $trx->charge = 0;
                 $trx->trx_type = '+';
-                $trx->post_balance = $payment->balance;
+                $trx->post_balance = $payment->b_balance;
                 $trx->remark = 'binary_commission';
                 $trx->trx = getTrx();
 
