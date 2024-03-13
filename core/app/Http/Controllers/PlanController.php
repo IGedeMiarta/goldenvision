@@ -76,7 +76,7 @@ class PlanController extends Controller
             $user->total_invest     += 500000;
             $user->save();
             
-            updatePaidCountRO($user->pos_id);
+            updatePaidCountRO($user->id);
             updateLimit($user->id);
             DB::commit();
             $notify[] = ['success', 'Reorder Point Success!'];
