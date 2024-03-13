@@ -24,6 +24,7 @@ use App\Models\Survey;
 use App\Models\UserExtra;
 use App\Models\UserGold;
 use App\Models\UserPin;
+use App\Models\UserPoint;
 use App\Models\WithdrawMethod;
 use App\Models\Withdrawal;
 use GuzzleHttp\Client;
@@ -471,6 +472,61 @@ class ManageUsersController extends Controller
                 //     'post_balance' => getAmount($user->balance)
                 // ]);
                 $notify[] = ['success', $request->pin . ' PIN has been subtracted from ' . $user->username ];
+            }
+            DB::commit();
+            return back()->withNotify($notify);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $notify[] = ['error', 'error: ' .$th->getMessage()];
+            return back()->withNotify($notify);
+        }
+    }
+    public function addSubPoint(Request $request, $id)
+    {
+        $request->validate(['amount' => 'required','point'=>'required']);
+        $amount = preg_replace("/[^0-9]/", "", $request->amount);
+        $amount = (int)$amount;
+        $user = User::findOrFail($id);
+        $amount = getAmount($amount);
+        $general = GeneralSetting::first(['cur_text','cur_sym']);
+
+        $point = new UserPoint();
+        $trx = getTrx();
+        DB::beginTransaction();
+        try {
+            if ($request->act) {
+                $point->user_id     = $user->id;
+                $point->point       = $request->point;
+                $point->type        = "+";
+                $point->start_point = $user->point;
+                $point->end_point   = $user->point + $request->point;
+                $point->desc         = 'Admin Added '.$request->point . ' POINT to ' . $user->username;
+                $point->save();
+
+                $user->point += $request->point;
+                $user->save();
+
+                $notify[] = ['success', $request->point . ' POINT has been added to ' . $user->username ];
+
+            } else {
+
+                if ($request->point > $user->point) {
+                    $notify[] = ['error', $user->username . ' has insufficient POINT.'];
+                    return back()->withNotify($notify);
+                }
+               
+
+                $point->user_id     = $id;
+                $point->point       = $request->point;
+                $point->type        = "-";
+                $point->start_point = $user->point;
+                $point->end_point   = $user->point - $request->point;
+                $point->desc         = 'Admin Subtract '.$request->point . ' PIN to ' . $user->username;
+                $point->save();
+
+                $user->point -= $request->point;
+                $user->save();
+                $notify[] = ['success', $request->point . ' POINT has been subtracted from ' . $user->username ];
             }
             DB::commit();
             return back()->withNotify($notify);

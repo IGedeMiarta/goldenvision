@@ -254,15 +254,24 @@ class UserController extends Controller
 
     public function submitProfile(Request $request)
     {
-        $request->validate([
+        $validate = [
             'firstname' => 'required|string|max:50',
             'lastname' => 'required|string|max:50',
             'address' => "nullable|max:80",
             'state' => 'nullable|max:80',
             'zip' => 'nullable|max:40',
             'city' => 'nullable|max:50',
-            'image' => 'mimes:png,jpg,jpeg'
-        ],[
+            'image' => 'mimes:png,jpg,jpeg',
+            'email_dinaran'=>'required|email',
+        ];
+        if(!is_numeric($request->kota)){
+            $validate[] = 
+            [ 'provinsi'=>'required|numeric',
+            'kota'=>'required|numeric',
+            'kecamatan'=>'required|numeric',
+            'desa'=>'required|numeric'];
+        }
+        $request->validate($validate,[
             'firstname.required'=>'First Name Field is required',
             'lastname.required'=>'Last Name Field is required'
         ]);
@@ -305,7 +314,11 @@ class UserController extends Controller
             $in['lat'] = auth()->user()->lat;
             $in['lng'] = auth()->user()->lng;
         }
+
+        $in['email_dinaran']= $request->email_dinaran;
+        
         $user = Auth::user();
+
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -1524,7 +1537,7 @@ class UserController extends Controller
 
     public function submitVerification(Request $request)
     {
-        $request->validate([
+       $validate = [
             'firstname' => 'required|string|max:50',
             'lastname' => 'required|string|max:50',
             'address' => "nullable|max:80",
@@ -1532,14 +1545,19 @@ class UserController extends Controller
             'zip' => 'nullable|max:40',
             'city' => 'nullable|max:50',
             'image' => 'mimes:png,jpg,jpeg',
-            'bank_name' => 'required',
-            'acc_name' => 'required',
-            'acc_number' => 'required'
-        ],[
+            'email_dinaran'=>'required|email',
+        ];
+        if(!is_numeric($request->kota)){
+            $validate[] = 
+            [ 'provinsi'=>'required|numeric',
+            'kota'=>'required|numeric',
+            'kecamatan'=>'required|numeric',
+            'desa'=>'required|numeric'];
+        }
+        $request->validate($validate,[
             'firstname.required'=>'First Name Field is required',
             'lastname.required'=>'Last Name Field is required'
         ]);
-
 
         $in['firstname'] = $request->firstname;
         $in['lastname'] = $request->lastname;
@@ -1587,14 +1605,15 @@ class UserController extends Controller
             $in['lng'] = auth()->user()->lng;
         }
         $user = Auth::user();
+        $in['email_dinaran'] = $request->email_dinaran;
         
-        $rek = new rekening();
-        $rek->user_id = $user->id;
-        $rek->nama_bank = $request->bank_name;
-        $rek->nama_akun = $request->acc_name;
-        $rek->no_rek = $request->acc_number;
-        $rek->kota_cabang = $request->kota_cabang;
-        $rek->save();
+        // $rek = new rekening();
+        // $rek->user_id = $user->id;
+        // $rek->nama_bank = $request->bank_name;
+        // $rek->nama_akun = $request->acc_name;
+        // $rek->no_rek = $request->acc_number;
+        // $rek->kota_cabang = $request->kota_cabang;
+        // $rek->save();
         // if ($request->hasFile('image')) {
         //     $image = $request->file('image');
         //     $filename = time() . '_' . $user->username . '.jpg';

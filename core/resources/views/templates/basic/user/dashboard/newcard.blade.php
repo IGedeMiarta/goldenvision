@@ -311,7 +311,7 @@
                             <p style="font-size: 20px; color: white">{{ auth()->user()->pin }}</p>
                         </div>
                         <div style="display: flex; align-items: center;" class="mb-3">
-                            <a data-toggle="modal" class="btn btn-sm mt-20 py-2 text-white"
+                            <a href="{{ route('user.pins.view') }}" class="btn btn-sm mt-20 py-2 text-white"
                                 style="background-color: #008C4F;border-radius: 10px;">@lang('Send PIN')</a>
                         </div>
 

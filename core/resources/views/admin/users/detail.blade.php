@@ -49,9 +49,9 @@
         }
 
         /* .btn-11:hover {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                text-decoration: none;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                color: #fff;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    text-decoration: none;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    color: #fff;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                } */
         .btn-11:before {
             position: absolute;
             content: '';
@@ -65,14 +65,14 @@
         }
 
         /* .btn-11:hover{
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              opacity: .7;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  opacity: .7;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                } */
         /* .btn-11:active{
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              box-shadow:  4px 4px 6px 0 rgba(255,255,255,.3),
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          -4px -4px 6px 0 rgba(116, 125, 136, .2),
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                inset -4px -4px 6px 0 rgba(255,255,255,.2),
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  box-shadow:  4px 4px 6px 0 rgba(255,255,255,.3),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              -4px -4px 6px 0 rgba(116, 125, 136, .2),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    inset -4px -4px 6px 0 rgba(255,255,255,.2),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                } */
 
 
         @-webkit-keyframes shiny-btn1 {
@@ -116,7 +116,7 @@
                                 class="text--small">@lang('Joined At ')<strong>{{ showDateTime(
                                     $user->created_at,
                                     'd M, Y
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                h:i A',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                h:i A',
                                 ) }}</strong></span>
                         </div>
                     </div>
@@ -215,6 +215,9 @@
                         class="btn btn--dark btn--shadow btn-block btn-lg">
                         <i class="las la-sign-in-alt"></i>@lang('Login as User')
                     </a>
+                    <a data-toggle="modal" href="#addSubPointModal" class="btn btn--info btn--shadow btn-block btn-lg">
+                        @lang('Add/Subtract POINT')
+                    </a>
 
                     <a data-toggle="modal" href="#addSubModal" class="btn btn--success btn--shadow btn-block btn-lg">
                         @lang('Add/Subtract PIN')
@@ -246,27 +249,7 @@
 
         <div class="col-xl-9 col-lg-7 col-md-7 mb-30">
             <div class="row mb-none-30">
-                <div class="col-xl-4 col-lg-6 col-sm-6 mb-30">
-                    <div class="dashboard-w1 bg--success b-radius--10 box-shadow has--link">
-                        <a href="{{ route('admin.users.transactions', $user->id) }}" class="item--link"></a>
-                        <div class="icon">
-                            <i class="la la-money"></i>
-                        </div>
-                        <div class="details">
-                            <div class="numbers">
-                                <span class="amount">{{ nb(getAmount($user->balance)) }} </span>
-                                {{-- <span class="amount">{{$user->bro_qty + 1}}</span> --}}
-                                <span class="currency-sign">{{ $general->cur_text }}</span>
-                            </div>
-                            <div class="desciption">
-                                <span>@lang('Available Balance')</span>
-                            </div>
-                        </div>
-                        <br>
-                        <a href="{{ route('admin.users.transactions', $user->id) }}"
-                            class="btn btn-sm btn-block text--small bg--white text--black box--shadow3 mt-3">@lang('View Log')</a>
-                    </div>
-                </div>
+
                 <div class="col-xl-4 col-lg-6 col-sm-6 mb-30">
                     <div class="dashboard-w1 bg--dark b-radius--10 box-shadow has--link">
                         <a href="#" class="item--link"></a>
@@ -285,47 +268,45 @@
                         </div>
                     </div>
                 </div>
-                @if ($user->plan_id != 0)
-                    <div class="col-xl-4 col-lg-6 col-sm-6 mb-30">
-                        <div class="dashboard-w1 bg--gradi-18 b-radius--10 box-shadow has--link">
-                            <a href="{{ route('admin.users.single.tree', $user->username) }}" class="item--link"></a>
-                            <div class="icon">
-                                <i class="fa fa-coins"></i>
+                <div class="col-xl-4 col-lg-6 col-sm-6 mb-30">
+                    <div class="dashboard-w1 bg--gradi-18 b-radius--10 box-shadow has--link">
+                        <a href="#" class="item--link"></a>
+                        <div class="icon">
+                            <i class="fa fa-coins"></i>
+                        </div>
+                        <div class="details">
+                            <div class="numbers">
+                                <span class="amount">{{ $user->point }}</span>
+                                <span class="currency-sign">POINT</span>
                             </div>
-                            <div class="details">
-                                <div class="numbers">
-                                    <span class="amount">{{ $user->userExtra->left + $user->userExtra->right }}</span>
-                                    {{-- <span class="amount">{{$user->bro_qty + 1}}</span> --}}
-                                    <span class="currency-sign">MP</span>
-                                </div>
-                                <div class="desciption">
-                                    <span>@lang('Total MP')</span>
-                                </div>
+                            <div class="desciption">
+                                <span>@lang('Total POINT')</span>
                             </div>
                         </div>
                     </div>
-                @endif
+                </div>
 
-                @if ($emas)
-                    <div class="col-xl-4 col-lg-6 col-sm-6 mb-30">
-                        <div class="dashboard-w1 bg--gradi-1 b-radius--10 box-shadow has--link">
-                            <a href="{{ route('admin.users.invest.detail', $user->id) }}" class="item--link"></a>
-                            <div class="icon">
-                                <i class="fa fa-coins"></i>
+                <div class="col-xl-4 col-lg-6 col-sm-6 mb-30">
+                    <div class="dashboard-w1 bg--success b-radius--10 box-shadow has--link">
+                        <a href="{{ route('admin.users.transactions', $user->id) }}" class="item--link"></a>
+                        <div class="icon">
+                            <i class="la la-money"></i>
+                        </div>
+                        <div class="details">
+                            <div class="numbers">
+                                <span class="amount">{{ nb(getAmount($user->balance)) }} </span>
+                                {{-- <span class="amount">{{$user->bro_qty + 1}}</span> --}}
+                                <span class="currency-sign">{{ $general->cur_text }}</span>
                             </div>
-                            <div class="details">
-                                <div class="numbers">
-                                    <span class="amount">{{ $emas->total_wg }} </span>
-                                    <span class="currency-sign">gr</span>
-                                </div>
-                                <div class="desciption">
-                                    <span>Equal To {{ $emas->total_rp }} IDR</span>
-                                </div>
+                            <div class="desciption">
+                                <span>@lang('Available Balance')</span>
                             </div>
                         </div>
+                        <br>
+                        {{-- <a href="{{ route('admin.users.transactions', $user->id) }}"
+                            class="btn btn-sm btn-block text--small bg--white text--black box--shadow3 mt-3">@lang('View Log')</a> --}}
                     </div>
-                @endif
-
+                </div>
                 <div class="col-xl-4 col-lg-6 col-sm-6 mb-30">
                     <div class="dashboard-w1 bg--primary b-radius--10 box-shadow has--link">
                         <a href="{{ route('admin.users.deposits', $user->id) }}" class="item--link"></a>
@@ -966,6 +947,55 @@
 
 
 
+    {{-- Add Sub POINT MODAL --}}
+    <div id="addSubPointModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@lang('Add / Subtract POINT')</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('admin.users.addSubPoint', $user->id) }}" class="formDisable" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <input type="checkbox" data-width="100%" data-height="44px" data-onstyle="-success"
+                                    data-offstyle="-danger" data-toggle="toggle" data-on="Add POINT"
+                                    data-off="Subtract POINT" name="act" checked>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>@lang('POINT')<span class="text-danger">*</span></label>
+                                <div class="input-group has_append">
+                                    <input type="text" id="titik" name="point"
+                                        class="form-control number-separator" placeholder="POINT">
+
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-12">
+                                <label>@lang('Amount')<span class="text-danger">*</span></label>
+                                <div class="input-group has_append">
+                                    <input type="text" name="amount" id="amountId"
+                                        class="form-control number-separator" placeholder="Please provide positive amount"
+                                        readonly>
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">{{ $general->cur_text }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
+                        <button type="submit" class="btn btn--success submitModal">@lang('Submit')</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     {{-- Add Sub PIN MODAL --}}
     <div id="addSubModal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">

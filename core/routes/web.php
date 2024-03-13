@@ -301,6 +301,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('user/update/{id}', 'ManageUsersController@update')->name('users.update');
         Route::post('user/rek/{id}', 'ManageUsersController@rek')->name('users.rek');
         Route::post('user/add-sub-pin/{id}', 'ManageUsersController@addSubPin')->name('users.addSubPin');
+        Route::post('user/add-sub-point/{id}', 'ManageUsersController@addSubPoint')->name('users.addSubPoint');
         Route::post('user/add-sub-balance/{id}', 'ManageUsersController@addSubBalance')->name('users.addSubBalance');
         Route::post('user/set-user-placement/{id}', 'ManageUsersController@setUserPlacement')->name('users.setUserPlacement');
         Route::post('user/update_counting/{id}', 'ManageUsersController@updateCounting')->name('users.updateCounting');

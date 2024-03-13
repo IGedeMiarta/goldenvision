@@ -152,8 +152,11 @@
                                             placeholder="@lang('Referrals username')" autocomplete="off" id="referrals"
                                             value="{{ $_GET['ref'] ?? old('referrals') }}" name="referrals"
                                             {{ isset($_GET['ref']) ? 'readonly' : '' }}>
-
                                         <small class="refInfo d-none"></small>
+                                        <br>
+                                        @error('referrals')
+                                            <small id="refError" class="text-danger">{{ $message }}</small>
+                                        @enderror
 
                                     </div>
 
@@ -219,10 +222,12 @@
                                     .fullname;
                                 info.removeClass('d-none').addClass('text-success').text(msg);
                                 input.addClass('is-valid')
+                                $('.refError').addClass('d-none');
                             } else {
                                 info.removeClass('d-none').addClass('text-danger').text(
                                     'User Not Found');
                                 input.addClass('is-invalid')
+
 
                             }
                         },

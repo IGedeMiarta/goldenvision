@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\UserExtra;
 use App\Models\UserLogin;
 use App\Providers\RouteServiceProvider;
+use App\Rules\ReferralsExist;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
@@ -117,6 +118,16 @@ class RegisterController extends Controller
             $agree = 'required';
         }
 
+        // Custom validation rule for checking if referrals exist
+        Validator::extend('referrals_exist', function ($attribute, $value, $parameters, $validator) {
+            foreach ($value as $username) {
+                if (!User::where('username', $username)->exists()) {
+                    return false;
+                }
+            }
+            return true;
+        });
+
         $validate = Validator::make($data, [
             'firstname'     => 'sometimes|required|string|max:60',
             'lastname'      => 'sometimes|required|string|max:60',
@@ -126,7 +137,8 @@ class RegisterController extends Controller
             'password'      => 'required|string|min:6|confirmed',
             'username'      => 'required|alpha_num|unique:users|min:6|not_regex:/\badmin\b/i',
             'country_code'  => 'required',
-            'agree' => $agree
+            'referrals'     => ['required','string',new ReferralsExist], // Using the custom rule here
+            'agree'         => $agree
         ]);
 
         return $validate;
@@ -136,10 +148,11 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-
+        
         $validator = $this->validator($request->all());
-
+        
         if ($validator->fails()) {
+
             $request->session()->flash('form', 'register');
         }
 
