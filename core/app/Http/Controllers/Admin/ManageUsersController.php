@@ -483,7 +483,7 @@ class ManageUsersController extends Controller
     }
     public function addSubPoint(Request $request, $id)
     {
-        $request->validate(['amount' => 'required']);
+        $request->validate(['point'=>'required']);
         $amount = preg_replace("/[^0-9]/", "", $request->amount);
         $amount = (int)$amount;
         $user = User::findOrFail($id);
