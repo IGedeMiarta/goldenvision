@@ -78,6 +78,9 @@ class PlanController extends Controller
             
             updatePaidCountRO($user->id);
             updateLimit($user->id);
+            
+            referralCommission2($user->id, $trx->details);
+
             DB::commit();
             $notify[] = ['success', 'Reorder Point Success!'];
             return back()->withNotify($notify);
