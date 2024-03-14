@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'admin.guest' => \App\Http\Middleware\RedirectIfAdmin::class,
 
         'regStatus' => \App\Http\Middleware\AllowRegistration::class,
+        'checkPlacement' => \App\Http\Middleware\AllowPlacemnet::class,
         'checkStatus' => \App\Http\Middleware\CheckStatus::class,
         'demo' => \App\Http\Middleware\Demo::class,
         'checkPaid' => \App\Http\Middleware\CheckPaid::class,

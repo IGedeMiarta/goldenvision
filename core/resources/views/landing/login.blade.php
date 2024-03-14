@@ -72,16 +72,19 @@
                                     </div>
                                 </div>
 
-                                <p class="mt-4 mb-0 text-sm-center size-16">
-                                    Belum Punya Akun?
-                                    <a href="{{ route('user.register') }}"
-                                        class="link link-dark-primary-2 link-normal animsition-link">
-                                        Buat Akun
-                                    </a>
-                                </p>
-                                {{-- <span class="text-secondary text-center"></span> --}}
-                                <center>-- atau --</center>
-                                <p class="mb-0 text-sm-center size-16">
+                                @if (!$general->disable_regist)
+                                    <p class="mt-4 mb-0 text-sm-center size-16">
+                                        Belum Punya Akun?
+                                        <a href="{{ route('user.register') }}"
+                                            class="link link-dark-primary-2 link-normal animsition-link">
+                                            Buat Akun
+                                        </a>
+                                    </p>
+                                    <center>-- atau --</center>
+                                @endif
+
+
+                                <p class="mb-0 text-sm-center size-16 mt-3">
                                     Lupa Password?
                                     <a href="{{ route('user.password.request') }}"
                                         class="link link-dark-primary-2 link-normal animsition-link">

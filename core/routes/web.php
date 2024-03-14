@@ -501,7 +501,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         // General Setting
         Route::get('general-setting', 'GeneralSettingController@index')->name('setting.index');
         Route::post('general-setting', 'GeneralSettingController@update')->name('setting.update');
-
+       
         // Logo-Icon
         Route::get('setting/logo-icon', 'GeneralSettingController@logoIcon')->name('setting.logo_icon');
         Route::post('setting/logo-icon', 'GeneralSettingController@logoIconUpdate')->name('setting.logo_icon');
@@ -685,8 +685,8 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::get('/tree/{user}', 'PlanController@otherTree')->name('other.tree');
             Route::get('/tree/search', 'PlanController@otherTree')->name('other.tree.search');
 
-            Route::get('/register-by-sponsor',[SponsorRegisterController::class,'index'])->name('sponsor.regist');
-            Route::get('/register-by-sponsor-up',[SponsorRegisterController::class,'sponsorSet'])->name('sponsor.regist.up');
+            Route::get('/register-by-sponsor',[SponsorRegisterController::class,'index'])->name('sponsor.regist')->middleware('checkPlacement');
+            Route::get('/register-by-sponsor-up',[SponsorRegisterController::class,'sponsorSet'])->name('sponsor.regist.up')->middleware('checkPlacement');
 
             Route::post('/register-by-sponsor-set',[SponsorRegisterController::class,'setSession'])->name('sponsor.set');
             Route::post('/register-by-sponsor-set-update',[SponsorRegisterController::class,'setSessionUpdate'])->name('sponsor.set.update');

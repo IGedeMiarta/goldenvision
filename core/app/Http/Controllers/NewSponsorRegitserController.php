@@ -16,7 +16,11 @@ use Illuminate\Support\Facades\Validator;
 class NewSponsorRegitserController extends Controller
 {
     public function register(Request $request){
-        // dd($request->all());
+        $general = GeneralSetting::orderByDesc('id')->first(); 
+        if($general->disable_placement){
+            $notify[] = ['error', 'Invalid Placement: Membership registration is currently unavailable.'];
+            return redirect()->back()->withNotify($notify);
+        }
         $general = GeneralSetting::first();
         $agree = 'nullable';
         if ($general->agree_policy) {

@@ -56,7 +56,8 @@ class RegisterController extends Controller
 
     public function showRegistrationForm(Request $request)
     {
-        return view('landing.register');
+        $data['general'] = GeneralSetting::orderByDesc('id')->first();
+        return view('landing.register',$data);
 
         $content = Frontend::where('data_keys', 'sign_up.content')->first();
         $info = json_decode(json_encode(getIpInfo()), true);

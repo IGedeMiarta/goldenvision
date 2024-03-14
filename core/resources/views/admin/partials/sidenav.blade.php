@@ -21,6 +21,12 @@
                             <span class="menu-title">@lang('Dashboard')</span>
                         </a>
                     </li>
+                    {{-- <li class="sidebar-menu-item">
+                        <a href="{{ route('admin.setting.emergency') }}" class="nav-link ">
+                            <i class="menu-icon las la-cog"></i>
+                            <span class="menu-title">@lang('Emergency Button')</span>
+                        </a>
+                    </li> --}}
 
                     {{-- <li class="sidebar-menu-item sidebar-dropdown">
                     <a href="javascript:void(0)" class="{{menuActive('admin.survey*',3)}}">
@@ -64,13 +70,7 @@
                             <span class="menu-title">@lang('Product')</span>
                         </a>
                     </li>
-                    {{-- <li class="sidebar-menu-item @if (Request::url() == url('admin/bonus-reward')) active @endif">
-                    <a href="{{ url('admin/bonus-reward') }}" class="nav-link ">
-                      
-                        <i class="menu-icon las la-coins"></i>
-                        <span class="menu-title">@lang('Reward')</span>
-                    </a>
-                </li> --}}
+
                     <li class="sidebar-menu-item sidebar-dropdown">
                         <a href="javascript:void(0)" class="{{ menuActive('admin.reward*', 3) }}">
                             <i class="menu-icon las la-coins"></i>
