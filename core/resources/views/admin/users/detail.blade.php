@@ -225,6 +225,9 @@
                     <a data-toggle="modal" href="#addSubBalance" class="btn btn--warning btn--shadow btn-block btn-lg">
                         @lang('Add/Subtract Balance')
                     </a>
+                    <a data-toggle="modal" href="#addSubBBalance" class="btn btn--primary btn--shadow btn-block btn-lg">
+                        @lang('Add/Subtract B Balance')
+                    </a>
                     <a href="{{ route('admin.users.login.history.single', $user->id) }}"
                         class="btn btn--primary btn--shadow btn-block btn-lg">
                         @lang('Login Logs')
@@ -1068,6 +1071,58 @@
                                 <label>@lang('Details')<span class="text-danger">*</span></label>
                                 <div class="input-group has_append">
                                     <textarea name="details" id="" class="form-control" placeholder="Details"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
+                        <button type="submit" class="btn btn--success submitModal">@lang('Submit')</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="addSubBBalance" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@lang('Add / Subtract B Balance')</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('admin.users.addSubBBalance', $user->id) }}" class="formDisable" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <input type="checkbox" data-width="100%" data-height="44px" data-onstyle="-success"
+                                    data-offstyle="-danger" data-toggle="toggle" data-on="Add Balance"
+                                    data-off="Subtract Balance" name="act" checked>
+                            </div>
+
+                            <div class="form-group col-md-12">
+                                <label>@lang('Balance')<span class="text-danger">*</span></label>
+                                <div class="input-group has_append">
+                                    <input type="text" name="amount" id="amountId"
+                                        class="form-control number-separator"
+                                        placeholder="Please provide positive amount">
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">{{ $general->cur_text }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>@lang('Details')<span class="text-danger">*</span></label>
+                                <div class="input-group has_append">
+                                    <textarea name="details" id="" class="form-control" placeholder="Details"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>@lang('Remark')</label>
+                                <div class="input-group has_append">
+                                    <input name="remark" id="" class="form-control" placeholder="remark"></input>
                                 </div>
                             </div>
                         </div>
