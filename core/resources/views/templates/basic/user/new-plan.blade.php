@@ -126,7 +126,7 @@
                         @if (Auth::user()->plan_id != $data->id)
                             <a href="#confBuyModal{{ $data->id }}" data-toggle="modal"
                                 style="background-color: #008C4F;"
-                                class="btn w-100 btn-sm  text-light  mt-20 py-2 @if (auth()->user()->pin < 1) disabled @endif">@lang('Subscribe')</a>
+                                class="btn w-100 btn-sm  text-light  mt-20 py-2 @if ($general->disable_placement) disabled @endif  @if (auth()->user()->pin < 1) disabled @endif">@lang('Subscribe')</a>
                         @else
                             <a data-toggle="modal" class="btn w-100 btn-sm mt-20 py-2 text-white"
                                 style="background-color: #008C4F">@lang('Already Subscribe')</a>

@@ -20,6 +20,7 @@ class GeneralSettingController extends Controller
 
     public function update(Request $request)
     {
+        // dd($request->all());
         $validation_rule = [
             'base_color' => ['nullable', 'regex:/^[a-f0-9]{6}$/i'],
             'secondary_color' => ['nullable', 'regex:/^[a-f0-9]{6}$/i'],
@@ -40,7 +41,7 @@ class GeneralSettingController extends Controller
         $general->per_question_paid         = $request->per_question_paid;
         $general->base_color                = $request->base_color;
         $general->secondary_color           = $request->secondary_color;
-        $general->registration              = $request->registration ? 1 : 0;
+        $general->registration              = $request->disable_regist ? 0 : 1;
         $general->secure_password           = $request->secure_password ? 1 : 0;
         $general->force_ssl                 = $request->force_ssl ? 1 : 0;
         $general->agree_policy              = $request->agree_policy ? 1 : 0;
@@ -48,6 +49,20 @@ class GeneralSettingController extends Controller
         $general->en                        = $request->en ? 1 : 0;
         $general->sv                        = $request->sv ? 1 : 0;
         $general->sn                        = $request->sn ? 1 : 0;
+        $general->disable_regist            = $request->disable_regist ? 1:0;
+        $general->disable_placement         = $request->disable_placement ? 1:0;
+       
+
+        if($general->registration==1){
+            $general->disable_regist = 0;
+        }else{
+            $general->disable_regist = 1;
+        }
+        if($general->disable_regist==1){
+            $general->registration = 0;
+        }else{
+            $general->registration = 1;
+        }
         $general->save();
 
         $notify[] = ['success', 'General Setting has been updated.'];

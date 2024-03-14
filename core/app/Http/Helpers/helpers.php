@@ -1327,8 +1327,14 @@ function  leaderCommission($id, $qty)
                     $amount = $userRef->ranks->leader_bonus - $selisih->leader_bonus;
                     $com = $com - ($userRef->ranks->leader_bonus - $selisih->leader_bonus);
                 }else{
-                    $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
-                    $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                    $selisih = Rank::find($last);
+                    if($selisih->id >= $userRef->rank){
+                        $id = $refid;
+                        continue;
+                    }else{
+                        $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
+                        $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                    }
                 }
             }
             
@@ -1409,7 +1415,7 @@ function  leaderCommission2($id, $qty)
                 $id = $refid;
                 continue;
             }
-            if($user->rank == $userRef->rank && ($user->rank != 0 || $user->rank != 1) && $user->id != $from){
+            if($user->rank >= $userRef->rank && ($user->rank != 0 || $user->rank != 1) && $user->id != $from){
                 $id = $refid;
                 continue;
             }
@@ -1423,8 +1429,14 @@ function  leaderCommission2($id, $qty)
                     $amount = $userRef->ranks->leader_bonus - $selisih->leader_bonus;
                     $com = $com - ($userRef->ranks->leader_bonus - $selisih->leader_bonus);
                 }else{
-                    $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
-                    $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                    $selisih = Rank::find($last);
+                    if($selisih->id >= $userRef->rank){
+                        $id = $refid;
+                        continue;
+                    }else{
+                        $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
+                        $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                    }
                 }
             }
             

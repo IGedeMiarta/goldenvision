@@ -284,7 +284,8 @@
             <div class="card-body mt-n4" style="position: relative; ">
                 <div class="" style="display: flex; justify-content: space-between">
                     <button type="button" data-toggle="modal" data-target="#roModal"
-                        class="btn btn-sm btn-block text--small bg-btn-success box--shadow3 mt-3 mr-2">@lang('Repeat Order')</button>
+                        class="btn btn-sm btn-block text--small bg-btn-success box--shadow3 mt-3 mr-2"
+                        disabled>@lang('Repeat Order')</button>
                     <button data-toggle="modal" data-target="#convertModal"
                         class="btn btn-sm btn-block text--small bg-btn-dark box--shadow3 mt-3">@lang('Convert') <svg
                             width="18" height="15" viewBox="0 0 18 15" fill="none"
@@ -487,7 +488,7 @@
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">All Bonus </span>
                     <h6 class="text-dark" style="font-size: 18px">
-                        {{ nb(getAmount(auth()->user()->total_binary_com + auth()->user()->total_ref_com)) }} IDR</h6>
+                        {{ nb(getAmount(auth()->user()->total_binary_com + auth()->user()->total_ref_com + sumBonus('leader'))) }} IDR</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <div class="icon-rp-total">
@@ -502,7 +503,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4 mb-30 text-center d-none">
+    <div class="col-md-4 mb-30 text-center">
         <div class="card"
             style="background-color: #ECBC13; height: 200px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
                 background-position: center;

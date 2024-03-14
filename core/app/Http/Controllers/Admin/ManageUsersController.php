@@ -607,6 +607,67 @@ class ManageUsersController extends Controller
             return back()->withNotify($notify);
         }
     }
+    public function addSubBBalance(Request $request, $id)
+    {
+        $request->validate(['amount' => 'required','details'=>'required']);
+        $amount = preg_replace("/[^0-9]/", "", $request->amount);
+        $amount = (int)$amount;
+        $user = User::findOrFail($id);
+        $amount = getAmount($amount);
+        $general = GeneralSetting::first(['cur_text','cur_sym']);
+        $details = $request->details;
+
+        $trx = getTrx();
+        DB::beginTransaction();
+        try {
+            if ($request->act) {
+
+                $user->b_balance += $amount;
+                $user->save();
+
+                $transaction = new Transaction();
+                $transaction->user_id = $user->id;
+                $transaction->amount = $amount;
+                $transaction->post_balance = getAmount($user->b_balance);
+                $transaction->charge = 0;
+                $transaction->trx_type = '+';
+                $transaction->details = $details;
+                $transaction->trx =  $trx;
+                $transaction->remark =  $request->remark ?? null;
+                $transaction->save();
+
+                $notify[] = ['success','Rp '. $request->amount. ' B Balance has been added to ' . $user->username ];
+
+            } else {
+
+                if ($amount > $user->b_balance) {
+                    $notify[] = ['error', $user->username . ' has insufficient Balance.'];
+                    return back()->withNotify($notify);
+                }
+                $user->b_balance -= $amount;
+                $user->save();
+
+                $transaction = new Transaction();
+                $transaction->user_id = $user->id;
+                $transaction->amount = $amount;
+                $transaction->post_balance = getAmount($user->b_balance);
+                $transaction->charge = 0;
+                $transaction->trx_type = '-';
+                $transaction->details = $details;
+                $transaction->trx =  $trx;
+                $transaction->remark =  $request->remark ?? null;
+                $transaction->save();
+
+                $notify[] = ['success','Rp '. $request->amount. ' B Balance has been subtracted from ' . $user->username ];
+            }
+            DB::commit();
+            return back()->withNotify($notify);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $notify[] = ['error', 'error: ' .$th->getMessage()];
+            return back()->withNotify($notify);
+        }
+    }
 
     public function userLoginHistory($id)
     {

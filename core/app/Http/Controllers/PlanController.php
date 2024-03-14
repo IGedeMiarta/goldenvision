@@ -27,6 +27,7 @@ class PlanController extends Controller
 
     function planIndex()
     {
+        $data['general'] = GeneralSetting::orderByDesc('id')->first(); 
         $sponsor = $_GET['sponsor'] ?? '';
         $pos = $_GET['pos'] ?? false;
         $findUser = User::with('userExtra')->where('username',$sponsor)->first();
@@ -158,6 +159,11 @@ class PlanController extends Controller
 
     function planStore(Request $request)
     {
+        $general = GeneralSetting::orderByDesc('id')->first(); 
+        if($general->disable_placement){
+            $notify[] = ['error', 'Invalid Placement: Membership registration is currently unavailable.'];
+            return redirect()->back()->withNotify($notify);
+        }
         $this->validate($request, [
             'plan_id' => 'required|integer', 
             'qty' => 'required',

@@ -26,6 +26,7 @@ Route::get('cyc',function(){
     updateCycleNasional(1);
 });
 
+
 Route::get('reset-point-startDay',[CronController::class,'resetCountingLF']);
 
 // Route::get('create-acc/{jml}/{username}',[LandingController::class,'createAcc']);
@@ -303,6 +304,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('user/add-sub-pin/{id}', 'ManageUsersController@addSubPin')->name('users.addSubPin');
         Route::post('user/add-sub-point/{id}', 'ManageUsersController@addSubPoint')->name('users.addSubPoint');
         Route::post('user/add-sub-balance/{id}', 'ManageUsersController@addSubBalance')->name('users.addSubBalance');
+        Route::post('user/add-sub-b-balance/{id}', 'ManageUsersController@addSubBBalance')->name('users.addSubBBalance');
         Route::post('user/set-user-placement/{id}', 'ManageUsersController@setUserPlacement')->name('users.setUserPlacement');
         Route::post('user/update_counting/{id}', 'ManageUsersController@updateCounting')->name('users.updateCounting');
         Route::get('user/send-email/{id}', 'ManageUsersController@showEmailSingleForm')->name('users.email.single');
@@ -499,7 +501,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         // General Setting
         Route::get('general-setting', 'GeneralSettingController@index')->name('setting.index');
         Route::post('general-setting', 'GeneralSettingController@update')->name('setting.update');
-
+       
         // Logo-Icon
         Route::get('setting/logo-icon', 'GeneralSettingController@logoIcon')->name('setting.logo_icon');
         Route::post('setting/logo-icon', 'GeneralSettingController@logoIconUpdate')->name('setting.logo_icon');
@@ -683,8 +685,8 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::get('/tree/{user}', 'PlanController@otherTree')->name('other.tree');
             Route::get('/tree/search', 'PlanController@otherTree')->name('other.tree.search');
 
-            Route::get('/register-by-sponsor',[SponsorRegisterController::class,'index'])->name('sponsor.regist');
-            Route::get('/register-by-sponsor-up',[SponsorRegisterController::class,'sponsorSet'])->name('sponsor.regist.up');
+            Route::get('/register-by-sponsor',[SponsorRegisterController::class,'index'])->name('sponsor.regist')->middleware('checkPlacement');
+            Route::get('/register-by-sponsor-up',[SponsorRegisterController::class,'sponsorSet'])->name('sponsor.regist.up')->middleware('checkPlacement');
 
             Route::post('/register-by-sponsor-set',[SponsorRegisterController::class,'setSession'])->name('sponsor.set');
             Route::post('/register-by-sponsor-set-update',[SponsorRegisterController::class,'setSessionUpdate'])->name('sponsor.set.update');

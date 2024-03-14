@@ -97,6 +97,17 @@
                                         name="secondary_color" value="{{ $general->secondary_color }}" />
                                 </div>
                             </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-control-label font-weight-bold">@lang('User Registration')</label>
+                                    <input type="checkbox" data-width="100%" data-size="large" data-onstyle="-success"
+                                        data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Enable')"
+                                        data-off="@lang('Disabled')" name="registration"
+                                        @if ($general->registration) checked @endif>
+                                </div>
+                            </div>
+
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="form-control-label font-weight-bold">@lang('Force Secure Password')</label>
@@ -152,27 +163,6 @@
                                 <input type="checkbox" data-width="100%" data-size="large" data-onstyle="-success"
                                     data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Enable')"
                                     data-off="Disable" name="sn" @if ($general->sn) checked @endif>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-control-label font-weight-bold">@lang('Disable Registration')</label>
-                                    <input type="checkbox" data-width="100%" data-size="large" data-onstyle="-success"
-                                        data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Enable')"
-                                        data-off="@lang('Disabled')" name="disable_regist"
-                                        @if ($general->disable_regist) checked @endif>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-control-label font-weight-bold">@lang('Disable Placement')</label>
-                                    <input type="checkbox" data-width="100%" data-size="large" data-onstyle="-success"
-                                        data-offstyle="-danger" data-toggle="toggle" data-on="@lang('Enable')"
-                                        data-off="@lang('Disabled')" name="disable_placement"
-                                        @if ($general->disable_placement) checked @endif>
-                                </div>
                             </div>
                         </div>
                         <div class="form-group">
