@@ -81,6 +81,7 @@ class PlanController extends Controller
             updateLimit($user->id);
             
             referralCommission2($user->id, $trx->details);
+            leaderCommission2RO($user->id,1);
 
             DB::commit();
             $notify[] = ['success', 'Reorder Point Success!'];
