@@ -33,7 +33,7 @@ class NewCronController extends Controller
 
             $us = User::where('id', $uex->user_id)->first();
 
-            if (Date('H') != "20") {
+            if (Date('H') != "00") {
                 continue;
             }
 
