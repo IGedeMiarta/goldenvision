@@ -48,8 +48,17 @@
                             </li>
                             <li class="sidebar-menu-item  ">
                                 <a href="{{ route('user.product.tracking') }}" class="nav-link ">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Tracking Product')</span>
+                                    <i
+                                        class="menu-icon las la-dot-circle {{ routeActive('user.product.tracking') }}"></i>
+                                    <span
+                                        class="menu-title {{ routeActive('user.product.tracking') }}">@lang('Tracking Product')</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item  ">
+                                <a href="{{ route('user.product.point') }}" class="nav-link ">
+                                    <i class="menu-icon las la-dot-circle {{ routeActive('user.product.point') }}"></i>
+                                    <span
+                                        class="menu-title {{ routeActive('user.product.point') }}">@lang('POINT Log')</span>
                                 </a>
                             </li>
                         </ul>

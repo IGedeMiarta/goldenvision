@@ -3,6 +3,25 @@
     <link rel="stylesheet" href="{{ asset('assets/assets/dropify/css/dropify.min.css') }}">
 @endpush
 @section('panel')
+    @php
+        function add_br_after_words($string)
+        {
+            // Split the string into an array of words
+            $words = preg_split('/\s+/', $string);
+
+            $result = '';
+            $count = 0;
+            foreach ($words as $word) {
+                $result .= $word . ' ';
+                $count++;
+                if ($count % 6 == 0) {
+                    $result .= '<br>';
+                }
+            }
+
+            return $result;
+        }
+    @endphp
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -14,6 +33,7 @@
                                     <th scope="col">@lang('Sl')</th>
                                     <th scope="col">@lang('Image')</th>
                                     <th scope="col">@lang('Name')</th>
+                                    <th scope="col">@lang('Weight')</th>
                                     <th scope="col">@lang('Price')</th>
                                     <th scope="col">@lang('Stock')</th>
                                     <th scope="col">@lang('Status')</th>
@@ -28,10 +48,14 @@
                                             <img style="width: 300px" src="{{ asset($product->image) }}"
                                                 alt="Image {{ $product->name }}" class="img-fluid">
                                         </td>
-                                        <td data-label="@lang('Name')">{{ __($product->name) }}</td>
-                                        {{-- <td data-label="@lang('Type')">{{ $product->weight }} Gram</td> --}}
-                                        <td data-label="@lang('Price')">{{ getAmount($product->price) }}
-                                            {{ $general->cur_text }}
+                                        <td class="">
+                                            <h5 style="text-align: start">{{ __($product->name) }}</h5><br>
+                                            <p style="text-align: start">{!! add_br_after_words($product->details) !!}</p>
+
+                                        </td>
+                                        <td data-label="@lang('Type')">{{ $product->weight ?? 0 }} Gram</td>
+                                        <td data-label="@lang('Price')">{{ getAmount($product->price) }} POINT
+
                                         <td data-label="@lang('Stock')">
                                             @if ($product->stok == 0)
                                                 <small class="text-danger font-italic font-weight-bold">out of
@@ -50,19 +74,13 @@
                                                     class="text--small badge font-weight-normal badge--danger">@lang('Inactive')</span>
                                             @endif
 
-                                            {{-- @if ($product->is_reseller == 1)
-                                                <span
-                                                    class="text--small badge font-weight-normal badge--primary">@lang('Reseller')</span>
-                                            @else
-                                                <span
-                                                    class="text--small badge font-weight-normal badge--warning">@lang('Public')</span>
-                                            @endif --}}
                                         </td>
 
                                         <td data-label="@lang('Action')">
                                             <button type="button" class="icon-btn edit" data-toggle="tooltip"
                                                 data-id="{{ $product->id }}" data-name="{{ $product->name }}"
                                                 data-status="{{ $product->status }}" data-weight="{{ $product->weight }}"
+                                                data-details="{{ __($product->details) }}"
                                                 data-image="{{ asset($product->image) }}"
                                                 data-price="{{ $product->price }}" data-stok="{{ $product->stok }}"
                                                 data-original-title="Edit">
@@ -129,7 +147,19 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <label class="font-weight-bold">@lang('Details')</label>
+                                <textarea name="details" class="form-control details" id="" cols="30" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <label class="font-weight-bold">@lang('Weight (gram)')</label>
+                                <input type="number" class="form-control weight" name="weight" step="0"
+                                    placeholder="0">
+                            </div>
+                        </div>
 
                         <div class="form-row">
                             <div class="form-group col">
@@ -194,6 +224,19 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col">
+                                <label class="font-weight-bold">@lang('Details')</label>
+                                <textarea name="details" class="form-control details" id="" cols="30" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <label class="font-weight-bold">@lang('Weight (gram)')</label>
+                                <input type="number" class="form-control weight" name="weight" step="0"
+                                    placeholder="0">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
                                 <label class="font-weight-bold">@lang('Stock')</label>
                                 <input type="number" class="form-control" name="stok" step="0"
                                     placeholder="0">
@@ -221,7 +264,7 @@
 @push('breadcrumb-plugins')
     <a href="javascript:void(0)" class="btn btn-sm btn--success add-product"><i
             class="fa fa-fw fa-plus"></i>@lang('Add
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            New')</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        New')</a>
 @endpush
 
 @push('script')
@@ -237,6 +280,7 @@
                 modal.find('.price').val($(this).data('price'));
                 modal.find('.stok').val($(this).data('stok'));
                 modal.find('.weight').val($(this).data('weight'));
+                modal.find('.details').val($(this).data('details'));
                 var input = modal.find('.image');
                 var image = $(this).data('image');
                 $('#editImage').attr('data-default-file', image).dropify();

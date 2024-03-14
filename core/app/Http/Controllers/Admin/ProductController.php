@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\ProductOrder;
 use Illuminate\Http\Request;
 use Image;
 
@@ -54,9 +55,10 @@ class ProductController extends Controller
             $image->move($path,$filename);
         }
 
-        // dd($request->file('images'));
         $prod->price            = $request->price;
         $prod->weight           = $request->weight;
+        $prod->details           = $request->details;
+
         $prod->stok             = $request->stok;
         $prod->status           = $request->status?1:0;
         $prod->is_reseller      = $request->reseller?1:0;
@@ -85,13 +87,20 @@ class ProductController extends Controller
         
         $prod->price            = $request->price;
         $prod->weight           = $request->weight;
-        $prod->stok           = $request->stok;
+        $prod->details          = $request->details;
+        $prod->stok             = $request->stok;
         $prod->status           = $request->status?1:0;
-        $prod->is_reseller         = $request->reseller?1:0;
+        $prod->is_reseller      = $request->reseller?1:0;
         $prod->save();
 
         $notify[] = ['success', 'Product edited successfully'];
         return back()->withNotify($notify);
+    }
+
+    public function order(){
+        $data['page_title'] = 'Product Order';
+        $data['tables'] = ProductOrder::orderByDesc('id')->paginate(10);
+        return view('admin.product.order',$data); 
     }
 
     /**

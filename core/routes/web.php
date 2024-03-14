@@ -337,9 +337,10 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('plan/update', 'MlmController@planUpdate')->name('plan.update');
 
         // mlm plan
-        Route::get('product', 'ProductController@products')->name('product');
+        Route::get('product', 'ProductController@products')->name('product.index');
         Route::post('products/store', 'ProductController@productsStore')->name('products.store');
         Route::post('products/update', 'ProductController@productsUpdate')->name('products.update');
+        Route::get('product-order', 'ProductController@order')->name('product.order');
 
         // admin product
         Route::get('admin-reward', 'AdminController@AdminReward')->name('adminReward');
@@ -667,11 +668,13 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::get('pin/log', 'UserReportController@PinDeliveriyLog')->name('pins.PinDeliveriyLog');
 
             Route::get('/Product', 'ProductController@productIndex')->name('product.index');
-            Route::post('/Product-purchase', 'ProductController@productPurchase')->name('product.purchase');
+            Route::post('/Product-purchase', 'ProductController@productPurchase')->name('product.purchase')->middleware('addressCheck');
             Route::post('/Product-cart', 'ProductController@productCart')->name('product.cart');
             Route::post('/Product-cart/{id}', 'ProductController@productCartUpdate')->name('product.cart.update');
             Route::get('/Product-invoice', 'ProductController@productInvoice')->name('product.inv');
+            Route::get('/invoice-details/{inv}', 'ProductController@inv')->name('product.inv.details');
             Route::get('/Product-tracking', 'ProductController@productTracking')->name('product.tracking');
+            Route::get('point/log', 'ProductController@PointDeliveriyLog')->name('product.point');
             
             Route::get('/referral-log', 'UserController@referralCom')->name('referral.log');
 

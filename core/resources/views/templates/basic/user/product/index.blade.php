@@ -179,7 +179,8 @@
                         <p style="font-size: 14px;color: #000">Product Detail</p>
                         <div style="background-color: #EDEDED; padding: 15px; border-radius: 10px;margin-top: 5px;">
                             <p style="font-size: 12px">
-                                Parfum ini didatangkan langsung dari laboratorium yang telah berusia 77 tahun di paris. Aroma dari enzim "Pheromon" memancarkan kesan penakluk dengan aura sensual dan memikat.
+                                Parfum ini didatangkan langsung dari laboratorium yang telah berusia 77 tahun di paris.
+                                Aroma dari enzim "Pheromon" memancarkan kesan penakluk dengan aura sensual dan memikat.
                             </p>
                         </div>
                         <form action="{{ route('user.product.cart') }}" method="POST">
@@ -220,22 +221,18 @@
                         @foreach ($cart as $item)
                             <tr>
                                 <td>
-                                    <div class="row">
-                                        <div class="col-md-2">
-                                            <img src="{{ asset($item->product->image) }}" alt="@lang('Product Image')"
-                                                style="max-width: 100px">
-                                        </div>
-                                        <div class="col-md-10">
-                                            {{ $item->product->name }}
+                                    <div class="text-center">
+                                        <img src="{{ asset($item->product->image) }}" alt="@lang('Product Image')"
+                                            style="max-width: 100px"> <br>
+                                        <h5 class="mt-2">{{ $item->product->name }}</h5>
 
-                                        </div>
                                     </div>
                                 </td>
                                 <td>
                                     {{ $item->product->price }} POINT
                                 </td>
 
-                                <td class="d-flex justify-content-center">
+                                <td class="d-flex justify-content-center ">
                                     <input type="number" class="form-control qtyinp" name="qty"
                                         id="qtyinp{{ $item->id }}" data-id="{{ $item->id }}"
                                         value="{{ $item->qty }}" style="width: 100px">

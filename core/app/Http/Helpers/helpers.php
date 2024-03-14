@@ -1972,7 +1972,6 @@ function referralCommission2($user_id, $details)
         $plan = Plan::find($refer->plan_id);
         if ($plan) {
             $uex = UserExtra::where('user_id',$refer->id)->first();
-            // if ($uex->left > 3 && $uex->right > 3 || $uex->is_gold == 1) {
             if ($uex->is_gold == 1) {
                 $amount = $plan->ref_com;
             }else{
@@ -3534,6 +3533,9 @@ function generateUniqueNoBro()
 
 function nb($number){
     return number_format($number,0,',','.');
+}
+function num($number){
+    return number_format($number,0,'.',',');
 }
 function nbk($number){
     return number_format($number,3,',','.');

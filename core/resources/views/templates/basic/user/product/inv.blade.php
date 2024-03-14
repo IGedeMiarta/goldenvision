@@ -105,10 +105,10 @@
                 </tr>
             </thead>
             <tbody style="background-color: white">
-                @foreach ($inv as $item)
+                @forelse ($inv as $item)
                     <tr>
                         <td>
-                            1
+                            {{ $loop->iteration }}
                         </td>
                         <td style="white-space:nowrap;">
                             {{ $item->inv }}
@@ -131,11 +131,16 @@
                             {{ $item->total_order }} POINT
                         </td>
                         <td style="white-space:nowrap;">
-                            <a href="#" style="color: #8C8C8C;text-decoration: underline;">View Invoice</a>
+                            <a href="{{ route('user.product.inv.details', $item->inv) }}"
+                                style="color: #8C8C8C;text-decoration: underline;" target="_blank">View Invoice</a>
                         </td>
 
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="6" class="text-center">empty order data...</td>
+                    </tr>
+                @endforelse
             </tbody>
 
         </table>

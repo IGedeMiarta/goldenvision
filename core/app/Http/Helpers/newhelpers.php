@@ -26,7 +26,7 @@ function allUserPin(){
 }
 
 
-function fnRegisterUser($sponsor,$broUpline,$position,$firstname,$lastname,$username,$email,$phone,$pin,$bank_name=null,$kota_cabang=null,$acc_name=null,$acc_number=null){
+function fnRegisterUser($sponsor,$broUpline,$position,$firstname,$lastname,$username,$email,$phone,$pin,$group=null){
     
     $ref_user = User::where('username', $broUpline)->first();
     try {
@@ -47,10 +47,7 @@ function fnRegisterUser($sponsor,$broUpline,$position,$firstname,$lastname,$user
             'email'     => $email,
             'phone'     => $phone,
             'pin'       => $pin,
-            'bank_name' => $bank_name,
-            'kota_cabang' => $kota_cabang,
-            'acc_name' => $acc_name,
-            'acc_number' => $acc_number,
+            'group'     => $group==null?auth()->user()->id:$group
         ];
         
         $user = fnCreateNewUser($data);
@@ -128,6 +125,24 @@ function fnPlanStore(array $data,$user)
     }
    
 }
+function findFirstUsername($username) {
+    // Find the position of the underscore
+    $underscorePos = strpos($username, '_');
+
+    // If underscore is found, extract the substring before it
+    if ($underscorePos !== false) {
+        $firstUsername = substr($username, 0, $underscorePos);
+
+        // Check if the user exists with the extracted username
+        $user = User::where('username', $firstUsername)->first();
+
+        // If user found, return their ID, otherwise return false
+        return $user ? $user->id : false;
+    }
+
+    // If underscore is not found, return false
+    return false;
+}
 function fnCreateNewUser(array $data)
 {
     $gnl = GeneralSetting::first();
@@ -143,7 +158,7 @@ function fnCreateNewUser(array $data)
             }
         }
         $user = User::create([
-            'group'     => auth()->user()->id,
+            'group'     => $data['group'],
             'firstname' => isset($data['firstname']) ? $data['firstname'] : null,
             'lastname'  => isset($data['lastname']) ? $data['lastname'] : null,
             'email'     => strtolower(trim($data['email'])),
@@ -309,6 +324,23 @@ function deliverPoint($user_id,$qty)
     $log->start_point = $user->point;
     $log->end_point = $user->point + $qty;
     $log->desc = 'User subsribe for ' . $qty/2 . ' ID and get '  . $qty  .' POINT';
+    $log->save();
+
+    $user->point += $qty;
+    $user->save();
+
+}
+function deliverPointRO($Firstuser,$user_id,$qty)
+{
+    $user = User::find($user_id);
+
+    $log = new UserPoint();
+    $log->user_id = $user->id;
+    $log->point = $qty;
+    $log->type = '+';
+    $log->start_point = $user->point;
+    $log->end_point = $user->point + $qty;
+    $log->desc ='User: <b>'. $Firstuser->username. '</b> RepeatOrder 1 ID. Get '  . $qty  .' POINT';
     $log->save();
 
     $user->point += $qty;
