@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GeneralSetting;
+use App\Models\PoolLog;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserExtra;
@@ -333,5 +334,69 @@ class NewCronController extends Controller
 
     public function resetStartDay(){
         
+    }
+
+    public function poolSharing(){
+        $gnl = GeneralSetting::first();
+        $currentDate = Carbon::now();
+        $users = User::where('rank', '>',3)->get();
+        $omset = omsetLastMonth();
+
+        $now = Carbon::now(); // Mendapatkan tanggal dan waktu saat ini
+        $year = $now->year; // Mendapatkan tahun saat ini
+        $month = $now->month; // Mendapatkan bulan saat ini
+
+        $poolLogs = PoolLog::whereYear('created_at', $year)
+        ->whereMonth('created_at', $month)
+        ->first();
+
+        // if ($poolLogs) {
+        //     return true;
+        // }
+
+        $cron = array();
+        foreach ($users as $user) {
+            $userx = UserExtra::where('user_id', $user->id)->first();
+            $weak = $userx->left < $userx->right ? $userx->left : $userx->right;
+            if ($weak < 100) {
+                continue;
+            }
+
+            // if (Date('H') != "23" && $currentDate->day != 14) {
+            //     continue;
+            // }
+
+            if ($weak >= 100 && $weak < 500) {
+                $bonus = ($omset * 0.005) / $weak;
+            }else if ($weak >= 500 && $weak < 1000) {
+                $bonus = ($omset * 0.01) / $weak;
+            }else if ($weak >= 1000 && $weak < 3000) {
+                $bonus = ($omset * 0.015) / $weak;
+            }else if ($weak >= 3000) {
+                $bonus = ($omset * 0.02) / $weak;
+            }
+
+            $payment = User::find($user->id);
+            $payment->b_balance += intval($bonus);
+            $payment->save();
+
+            $trx = new Transaction();
+            $trx->user_id = $payment->id;
+            $trx->amount = intval($bonus);
+            $trx->charge = 0;
+            $trx->trx_type = '+';
+            $trx->post_balance = $payment->b_balance;
+            $trx->remark = 'pool_commission';
+            $trx->trx = getTrx();
+            $trx->details = 'Paid ' . $bonus . ' ' . $gnl->cur_text . ' Global Sharing Pool';
+            $trx->save();                
+
+            $cron[] = $user->id.'/' . $user->ranks->name.'/' . $weak .'/' . intval($bonus);
+        }
+
+        PoolLog($omset);
+
+        // return $cron;
+        abort(404);
     }
 }
