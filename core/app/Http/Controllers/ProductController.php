@@ -153,7 +153,7 @@ class ProductController extends Controller
     }
     public function PointDeliveriyLog(Request $request){
         $search = $request->search;
-        $data['page_title'] = "PIN Delivery Log";
+        $data['page_title'] = "Redemption Delivery Point Log";
         $data['transactions'] = UserPoint::where('user_id',Auth::user()->id)
                             ->orderBy('id','DESC')
                             ->paginate(getPaginate());
