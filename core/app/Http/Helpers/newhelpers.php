@@ -26,7 +26,7 @@ function allUserPin(){
 }
 
 
-function fnRegisterUser($sponsor,$broUpline,$position,$firstname,$lastname,$username,$email,$phone,$pin,$bank_name=null,$kota_cabang=null,$acc_name=null,$acc_number=null){
+function fnRegisterUser($sponsor,$broUpline,$position,$firstname,$lastname,$username,$email,$phone,$pin,$group=null){
     
     $ref_user = User::where('username', $broUpline)->first();
     try {
@@ -47,10 +47,7 @@ function fnRegisterUser($sponsor,$broUpline,$position,$firstname,$lastname,$user
             'email'     => $email,
             'phone'     => $phone,
             'pin'       => $pin,
-            'bank_name' => $bank_name,
-            'kota_cabang' => $kota_cabang,
-            'acc_name' => $acc_name,
-            'acc_number' => $acc_number,
+            'group'     => $group==null?auth()->user()->id:$group
         ];
         
         $user = fnCreateNewUser($data);
@@ -128,6 +125,24 @@ function fnPlanStore(array $data,$user)
     }
    
 }
+function findFirstUsername($username) {
+    // Find the position of the underscore
+    $underscorePos = strpos($username, '_');
+
+    // If underscore is found, extract the substring before it
+    if ($underscorePos !== false) {
+        $firstUsername = substr($username, 0, $underscorePos);
+
+        // Check if the user exists with the extracted username
+        $user = User::where('username', $firstUsername)->first();
+
+        // If user found, return their ID, otherwise return false
+        return $user ? $user->id : false;
+    }
+
+    // If underscore is not found, return false
+    return false;
+}
 function fnCreateNewUser(array $data)
 {
     $gnl = GeneralSetting::first();
@@ -143,7 +158,7 @@ function fnCreateNewUser(array $data)
             }
         }
         $user = User::create([
-            'group'     => auth()->user()->id,
+            'group'     => $data['group'],
             'firstname' => isset($data['firstname']) ? $data['firstname'] : null,
             'lastname'  => isset($data['lastname']) ? $data['lastname'] : null,
             'email'     => strtolower(trim($data['email'])),

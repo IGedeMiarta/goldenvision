@@ -193,7 +193,7 @@ class SponsorRegisterController extends Controller
                         $usernameNewUser,
                         $emailNewUser,
                         $phoneNewUser,
-                        $pinNewUser,
+                        $pinNewUser, $firstUpline->id,
                     );
                     // dd($nextUser);
                     if($nextUser == false){

@@ -83,7 +83,13 @@ class PlanController extends Controller
             referralCommission2($user->id, $trx->details);
             leaderCommission2RO($user->id,1);
 
-            $deliferPointTo = $user->group == 0 ? $user->id:$user->group;
+            // $deliferPointTo = $user->group == 0 ? $user->id:$user->group;
+            $firstUsername = findFirstUsername($user->username);
+            if(!$firstUsername){
+                $deliferPointTo  = $user->id;
+            }else{
+                $deliferPointTo = $firstUsername;
+            }
             deliverPointRO($user,$deliferPointTo,2);
 
             DB::commit();
