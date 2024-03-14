@@ -26,7 +26,7 @@
             position: relative;
             width: 100%;
             height: 0;
-            padding-top: calc(145 / 300 * 100%);
+            padding-top: calc(145 / 100 * 100%);
             /* Maintain aspect ratio 145:300 */
             overflow: hidden;
             border-radius: 10px
@@ -172,15 +172,14 @@
                     </div>
                     <div class="card-body pt-5" style="display: flex; justify-content: center;">
                         <div class="image-container">
-                            <img src="{{ asset($data->image) }}" alt="Your Image">
+                            <img src="{{ asset($data->image) }}" alt="Your Image" width="1066" height="1600">
                         </div>
                     </div>
                     <div class="card-body">
                         <p style="font-size: 14px;color: #000">Product Detail</p>
                         <div style="background-color: #EDEDED; padding: 15px; border-radius: 10px;margin-top: 5px;">
                             <p style="font-size: 12px">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde illum laudantium tempora,
-                                assumenda eveniet debitis nesciunt voluptatem in
+                                Parfum ini didatangkan langsung dari laboratorium yang telah berusia 77 tahun di paris. Aroma dari enzim "Pheromon" memancarkan kesan penakluk dengan aura sensual dan memikat.
                             </p>
                         </div>
                         <form action="{{ route('user.product.cart') }}" method="POST">
