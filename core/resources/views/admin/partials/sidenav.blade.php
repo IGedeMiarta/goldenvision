@@ -63,15 +63,30 @@
                             <span class="menu-title">@lang('Plans')</span>
                         </a>
                     </li>
-                    <li class="sidebar-menu-item {{ menuActive('admin.product*') }}">
-                        <a href="{{ route('admin.product') }}" class="nav-link ">
-                            {{-- <i class="las la-paper-plane"></i> --}}
+                    <li class="sidebar-menu-item sidebar-dropdown">
+                        <a href="javascript:void(0)" class="{{ menuActive('admin.product*', 3) }}">
                             <i class="menu-icon las la-archive"></i>
-                            <span class="menu-title">@lang('Product')</span>
+                            <span class="menu-title">@lang('Product & Order')</span>
                         </a>
+                        <div class="sidebar-submenu {{ menuActive('admin.product*', 2) }} ">
+                            <ul>
+                                <li class="sidebar-menu-item {{ menuActive('admin.product.index') }} ">
+                                    <a href="{{ route('admin.product.index') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('All Product')</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item {{ menuActive('admin.product.order') }} ">
+                                    <a href="{{ route('admin.product.order') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('Product Order')</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
 
-                    <li class="sidebar-menu-item sidebar-dropdown">
+                    {{-- <li class="sidebar-menu-item sidebar-dropdown">
                         <a href="javascript:void(0)" class="{{ menuActive('admin.reward*', 3) }}">
                             <i class="menu-icon las la-coins"></i>
                             <span class="menu-title">@lang('Bonus Reward')</span>
@@ -106,7 +121,7 @@
 
                             </ul>
                         </div>
-                    </li>
+                    </li> --}}
 
                     <li class="sidebar-menu-item sidebar-dropdown">
                         <a href="javascript:void(0)" class="{{ menuActive('admin.users*', 3) }}">
@@ -191,8 +206,9 @@
                                         <i class="menu-icon las la-dot-circle"></i>
                                         <span class="menu-title">@lang('Verified Data Users')</span>
                                         {{-- @if ($reject_users_count)
-                                        <span class="menu-badge pill bg--primary ml-auto">{{$reject_users_count}}</span>
-                                    @endif --}}
+                                            <span
+                                                class="menu-badge pill bg--primary ml-auto">{{ $reject_users_count }}</span>
+                                        @endif --}}
                                     </a>
                                 </li>
                                 <li class="sidebar-menu-item {{ menuActive('admin.users.datareject') }} ">
@@ -324,54 +340,48 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="sidebar-menu-item {{ menuActive('admin.adminReward*') }}">
+                    {{-- <li class="sidebar-menu-item {{ menuActive('admin.adminReward*') }}">
                         <a href="{{ route('admin.adminReward') }}" class="nav-link ">
-                            {{-- <i class="las la-paper-plane"></i> --}}
                             <i class="menu-icon las la-archive"></i>
                             <span class="menu-title">@lang('Admin Reward')</span>
                         </a>
-                    </li>
+                    </li> --}}
                     {{-- <li class="sidebar-menu-item {{ menuActive('admin.invest.gdetail*') }}">
                         <a href="{{ route('admin.invest.gdetail') }}" class="nav-link ">
                             <i class="menu-icon las la-coins"></i>
                             <span class="menu-title">@lang('User Golds')</span>
                         </a>
                     </li> --}}
-                    <li class="sidebar-menu-item {{ menuActive('admin.users.reward.gold*') }}">
+                    {{-- <li class="sidebar-menu-item {{ menuActive('admin.users.reward.gold*') }}">
                         <a href="{{ route('admin.users.reward.gold') }}" class="nav-link ">
-                            {{-- <i class="las la-paper-plane"></i> --}}
                             <i class="menu-icon las la-gem"></i>
                             <span class="menu-title">@lang('User Gold Reward')</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item {{ menuActive('admin.custom.order*') }}">
                         <a href="{{ route('admin.custom.order') }}" class="nav-link ">
-                            {{-- <i class="las la-paper-plane"></i> --}}
                             <i class="menu-icon las la-shopping-cart"></i>
                             <span class="menu-title">@lang('Custom Order')</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item {{ menuActive('admin.exchange*') }}">
                         <a href="{{ route('admin.exchange') }}" class="nav-link ">
-                            {{-- <i class="las la-paper-plane"></i> --}}
                             <i class="menu-icon las la-sync"></i>
                             <span class="menu-title">@lang('Exchange')</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item {{ menuActive('admin.delivery*') }}">
                         <a href="{{ route('admin.delivery') }}" class="nav-link ">
-                            {{-- <i class="las la-paper-plane"></i> --}}
                             <i class="menu-icon las la-truck"></i>
                             <span class="menu-title">@lang('Delivery')</span>
                         </a>
                     </li>
                     <li class="sidebar-menu-item {{ menuActive('admin.BroDelivery*') }}">
                         <a href="{{ route('admin.BroDelivery') }}" class="nav-link ">
-                            {{-- <i class="las la-paper-plane"></i> --}}
                             <i class="menu-icon las la-truck"></i>
                             <span class="menu-title">@lang('MP Pack Delivery')</span>
                         </a>
-                    </li>
+                    </li> --}}
 
 
                     <li class="sidebar-menu-item sidebar-dropdown">

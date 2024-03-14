@@ -106,10 +106,10 @@
                 </tr>
             </thead>
             <tbody style="background-color: white">
-                @foreach ($inv as $item)
+                @forelse ($inv as $item)
                     <tr>
                         <td>
-                            1
+                            {{ $loop->iteration }}
                         </td>
                         <td style="white-space:nowrap;">
                             {{ $item->inv }}
@@ -138,8 +138,14 @@
                             <a href="#" style="color: #8C8C8C;text-decoration: underline;">Check Agent</a>
                         </td>
 
+
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="7" class="text-center">empty tracking data...</td>
+                    </tr>
+                @endforelse
+
             </tbody>
 
         </table>

@@ -3468,6 +3468,9 @@ function generateUniqueNoBro()
 function nb($number){
     return number_format($number,0,',','.');
 }
+function num($number){
+    return number_format($number,0,'.',',');
+}
 function nbk($number){
     return number_format($number,3,',','.');
 }
