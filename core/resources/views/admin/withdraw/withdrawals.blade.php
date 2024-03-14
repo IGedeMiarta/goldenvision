@@ -42,7 +42,6 @@
                         <table class="table table--light style--two">
                             <thead>
                                 <tr>
-                                    <th scope="col">@lang('Status')</th>
                                     <th scope="col">@lang('Date')</th>
                                     <th scope="col">@lang('Trx Number')</th>
                                     @if (!request()->routeIs('admin.users.withdrawals') && !request()->routeIs('admin.users.withdrawals.method'))
@@ -75,14 +74,12 @@
                             <tbody>
                                 @forelse($withdrawals as $withdraw)
                                     @php
-                                        $details = $withdraw->withdraw_information != null ? json_encode($withdraw->withdraw_information) : null;
+                                        $details =
+                                            $withdraw->withdraw_information != null
+                                                ? json_encode($withdraw->withdraw_information)
+                                                : null;
                                     @endphp
                                     <tr>
-                                        <td data-label="@lang('Date')">
-                                            {!! $withdraw->user->userExtra->is_gold
-                                                ? '<span class="badge badge-success">Qualified</span>'
-                                                : '<span class="badge badge-danger">Not Qualified</span>' !!}
-                                        </td>
                                         <td data-label="@lang('Date')">{{ showDateTime($withdraw->created_at) }}</td>
                                         <td data-label="@lang('Trx Number')" class="font-weight-bold">
                                             {{ strtoupper($withdraw->trx) }}</td>
@@ -190,7 +187,7 @@
 
     @if (!request()->routeIs('admin.users.withdrawals') && !request()->routeIs('admin.users.withdrawals.method'))
         <form
-            action="{{ route('admin.withdraw.search',$scope ??str_replace('admin.withdraw.','',request()->route()->getName())) }}"
+            action="{{ route('admin.withdraw.search', $scope ?? str_replace('admin.withdraw.', '', request()->route()->getName())) }}"
             method="GET" class="form-inline float-sm-right bg--white">
             <div class="input-group has_append">
                 <input type="text" name="search" class="form-control" placeholder="@lang('Withdrawal code/Username')"
@@ -201,7 +198,7 @@
             </div>
         </form>
         <form
-            action="{{ route('admin.withdraw.dateSearch',$scope ??str_replace('admin.withdraw.','',request()->route()->getName())) }}"
+            action="{{ route('admin.withdraw.dateSearch', $scope ?? str_replace('admin.withdraw.', '', request()->route()->getName())) }}"
             method="GET" class="form-inline float-sm-right bg--white mr-0 mr-xl-2 mr-lg-0">
             <div class="input-group has_append">
                 <input name="date" type="date" data-range="true" data-multiple-dates-separator=" - "
