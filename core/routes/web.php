@@ -673,6 +673,7 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::get('/Product-invoice', 'ProductController@productInvoice')->name('product.inv');
             Route::get('/invoice-details/{inv}', 'ProductController@inv')->name('product.inv.details');
             Route::get('/Product-tracking', 'ProductController@productTracking')->name('product.tracking');
+            Route::get('point/log', 'ProductController@PointDeliveriyLog')->name('product.point');
             
             Route::get('/referral-log', 'UserController@referralCom')->name('referral.log');
 

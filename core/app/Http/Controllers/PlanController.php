@@ -66,7 +66,7 @@ class PlanController extends Controller
             $trx = $user->transactions()->create([
                 'amount' => $plan->price *  1 ,
                 'trx_type' => '-',
-                'details' => 'Repeat Order ' . $plan->name . ' For '. 1 .' MP',
+                'details' => 'Repeat Order ' . $plan->name . ' For '. 1 .' Membership POINT',
                 'remark' => 'repeat_order',
                 'trx' => getTrx(),
                 'post_balance' => 0,
@@ -82,6 +82,9 @@ class PlanController extends Controller
             
             referralCommission2($user->id, $trx->details);
             leaderCommission2RO($user->id,1);
+
+            $deliferPointTo = $user->group == 0 ? $user->id:$user->group;
+            deliverPointRO($user,$deliferPointTo,2);
 
             DB::commit();
             $notify[] = ['success', 'Reorder Point Success!'];

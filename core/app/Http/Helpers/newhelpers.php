@@ -315,6 +315,23 @@ function deliverPoint($user_id,$qty)
     $user->save();
 
 }
+function deliverPointRO($Firstuser,$user_id,$qty)
+{
+    $user = User::find($user_id);
+
+    $log = new UserPoint();
+    $log->user_id = $user->id;
+    $log->point = $qty;
+    $log->type = '+';
+    $log->start_point = $user->point;
+    $log->end_point = $user->point + $qty;
+    $log->desc ='User: <b>'. $Firstuser->username. '</b> RepeatOrder 1 ID. Get '  . $qty  .' POINT';
+    $log->save();
+
+    $user->point += $qty;
+    $user->save();
+
+}
 function checkCart(){
     $user =  Auth::user();
     $cart = UserChart::with('product')->where('user_id',$user->id)->get();

@@ -18,6 +18,11 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->activeTemplate = activeTemplate();
+    }
+
     //
     public function productIndex(){
         $data['page_title'] = "Reedem Product";
@@ -145,5 +150,15 @@ class ProductController extends Controller
         $data['title'] = 'Invoice ' . $inv;
         $data['inv'] = ProductOrder::with('detail','detail.product')->where('inv',$inv)->first();
         return view('invoice.index',$data);
+    }
+    public function PointDeliveriyLog(Request $request){
+        $search = $request->search;
+        $data['page_title'] = "PIN Delivery Log";
+        $data['transactions'] = UserPoint::where('user_id',Auth::user()->id)
+                            ->orderBy('id','DESC')
+                            ->paginate(getPaginate());
+        $data['search'] = $search;
+        $data['empty_message'] = "No Data Found!";
+        return view($this->activeTemplate . 'user.pointLog', $data);
     }
 }
