@@ -51,13 +51,15 @@ function fnRegisterUser($sponsor,$broUpline,$position,$firstname,$lastname,$user
         ];
         
         $user = fnCreateNewUser($data);
-
-        updateLimit($user->id); //update limit RO
-
+        // dd($user);
         $plan = fnPlanStore($data,$user);
         if(!$plan){
             return false;
         }
+
+        updateLimit($user->id); //update limit RO
+
+        
 
         // updateCycleNasional($user->id);
         checkRank($user->id);
@@ -178,21 +180,21 @@ function fnCreateNewUser(array $data)
         UserExtra::create([
             'user_id' => $user->id
         ]);
-        if($data['bank_name'] !== null){
-            $rek = new rekening();  
-            $rek->user_id = $user->id;
-            $rek->nama_bank = $data['bank_name'];
-            $rek->nama_akun = $data['acc_name'];
-            $rek->no_rek = $data['acc_number'];
-            $rek->kota_cabang = $data['kota_cabang'];
-            $rek->save();
-        }
+        // if($data['bank_name'] !== null){
+        //     $rek = new rekening();  
+        //     $rek->user_id = $user->id;
+        //     $rek->nama_bank = $data['bank_name'];
+        //     $rek->nama_akun = $data['acc_name'];
+        //     $rek->no_rek = $data['acc_number'];
+        //     $rek->kota_cabang = $data['kota_cabang'];
+        //     $rek->save();
+        // }
         
-        $adminNotification = new AdminNotification();
-        $adminNotification->user_id = $user->id;
-        $adminNotification->title = 'New member registered By Sponsor: '.$data['sponsor']->username;
-        $adminNotification->click_url = route('admin.users.detail', $user->id);
-        $adminNotification->save();
+        // $adminNotification = new AdminNotification();
+        // $adminNotification->user_id = $user->id;
+        // $adminNotification->title = 'New member registered By Sponsor: '.$data['sponsor']->username;
+        // $adminNotification->click_url = route('admin.users.detail', $user->id);
+        // $adminNotification->save();
     
        return $user;
     } catch (\Throwable $th) {

@@ -193,9 +193,10 @@ class SponsorRegisterController extends Controller
                         $usernameNewUser,
                         $emailNewUser,
                         $phoneNewUser,
-                        $pinNewUser, $firstUpline->id,
+                        $pinNewUser, 
+                        $firstUpline->id,
                     );
-                    // dd($nextUser);
+                    dd($nextUser);
                     if($nextUser == false){
                         $notify[] = ['error', 'Invalid On Create Downline, Rollback'];
                         return redirect()->back()->withNotify($notify);
