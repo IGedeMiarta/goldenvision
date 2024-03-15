@@ -11,6 +11,7 @@ use App\Models\GeneralSetting;
 use App\Models\LogActivity;
 use App\Models\MemberGrow;
 use App\Models\Plan;
+use App\Models\PoolLog;
 use App\Models\Rank;
 use App\Models\rekening;
 use App\Models\SmsTemplate;
@@ -3595,6 +3596,39 @@ function userRegiteredChart(){
     return $response;
 }
 
+function omsetThisMonth(){
+    $currentMonth = Carbon::now()->format('m');
+    $currentYear = Carbon::now()->format('Y');
+    $omset = Transaction::whereYear('created_at', $currentYear)
+        ->whereMonth('created_at', $currentMonth)
+        ->where('remark', 'purchased_plan')
+        ->orWhere('remark', 'repeat_order')
+        ->whereYear('created_at', $currentYear)
+        ->whereMonth('created_at', $currentMonth)
+        ->sum('amount');
+
+    return $omset;
+}
+function omsetLastMonth(){
+    $startDate = Carbon::now()->subMonth()->startOfMonth();
+    $endDate = Carbon::now()->subMonth()->endOfMonth();
+
+    // Mendapatkan bulan lalu
+    $currentMonth = $startDate->format('m');
+    $currentYear = $startDate->format('Y');
+
+    // Mendapatkan omset dari bulan lalu
+    $omset = Transaction::whereYear('created_at', $currentYear)
+                ->whereMonth('created_at', $currentMonth)
+                ->where('remark', 'purchased_plan')
+                ->orWhere('remark', 'repeat_order')
+                ->whereYear('created_at', $currentYear)
+                ->whereMonth('created_at', $currentMonth)
+                ->sum('amount');
+
+    return $omset;
+}
+
 function registerThisMount()
 {
     $currentMonth = Carbon::now()->format('m');
@@ -4827,4 +4861,32 @@ function cekOngkir($kodepos,$berat){
 
     return $ongkir;
 
+}
+function PoolLog($amount) {
+    $currentDate = Carbon::now();
+
+    // Mendefinisikan nama bulan secara manual dalam bahasa Indonesia
+    $namaBulan = [
+        1 => 'Januari',
+        2 => 'Februari',
+        3 => 'Maret',
+        4 => 'April',
+        5 => 'Mei',
+        6 => 'Juni',
+        7 => 'Juli',
+        8 => 'Agustus',
+        9 => 'September',
+        10 => 'Oktober',
+        11 => 'November',
+        12 => 'Desember',
+    ];
+
+    // Mendapatkan nama bulan berdasarkan nomor bulan saat ini
+    $bulan = $namaBulan[$currentDate->month];
+
+    $pool = new PoolLog();
+    $pool->bulan = $bulan;
+    $pool->tahun = $currentDate->year;
+    $pool->amount = $amount;
+    $pool->save();
 }

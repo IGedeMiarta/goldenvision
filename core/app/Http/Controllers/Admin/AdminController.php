@@ -66,6 +66,8 @@ class AdminController extends Controller
         $widget['totalPurchasedPlan'] = sumPurchasedPlan(); //sum semua purched plan dari amount transaksi;
         $widget['totalReferalsCommision'] = sumRefComm();
         $widget['users_invest'] = User::where('comp',0)->sum('total_invest');
+        $widget['omset_this_month'] = omsetThisMonth();
+        $widget['omset_last_month'] = omsetLastMonth();
         $widget['last7days_invest'] = Transaction::whereDate('created_at', '>=', Carbon::now()->subDays(6))->where('remark', 'purchased_plan')->sum('amount');
         $widget['total_binary_com'] = User::where('comp',0)->sum('total_binary_com');
         $widget['total_ref_com'] = User::where('comp',0)->sum('total_ref_com');
