@@ -363,7 +363,7 @@ function checkRank($userID,$type=null){
      while ($userID != "" || $userID != "0") {
          if (isUserExists($userID)) {
             $user = User::with('userExtra')->find($userID);
-            $directSponsor = User::where('ref_id',$userID)->count();
+            $directSponsor = User::where('ref_id',$userID)->where('plan_id',1)->count();
             $left = $user->userExtra->left;
             $right = $user->userExtra->right;
 

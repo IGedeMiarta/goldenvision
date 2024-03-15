@@ -475,11 +475,11 @@ class UserController extends Controller
         $method = WithdrawMethod::where('id', $request->method_code)->where('status', 1)->firstOrFail();
         $user = auth()->user();
         // $rek = rekening::with('bank')->where('user_id',$user->id)->first();
-        $rek = rekening::where('user_id',$user->id)->first();
+        $rek = $user->email_dinaran;
        
         if (!$rek) {
             # code...
-            $notify[] = ['error', 'You Don`t Have Bank Account, Please Enter Your Bank Account.'];
+            $notify[] = ['error', 'You Don`t Have Dinaran Account?, Please Enter Your Dinaran Email.'];
             return redirect()->route('user.profile-setting')->withNotify($notify);
         }
 
@@ -603,7 +603,7 @@ class UserController extends Controller
         $data['withdraw'] = Withdrawal::with('method','user')->where('trx', session()->get('wtrx'))->where('status', 0)->latest()->firstOrFail();
         $data['user'] = Auth::user();
         $data['page_title'] = "Withdraw Preview";
-        addToLog('Preview Withdraw');
+        // addToLog('Preview Withdraw');
         return view($this->activeTemplate . 'user.withdraw.preview', $data);
     }
 
