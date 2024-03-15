@@ -266,7 +266,7 @@ class User extends Authenticatable
     public static function userTree($id){
         $group = [];
         $user = User::find($id);
-        $group[1] = User::where('ref_id',$user->id)->get();
+        $group[1] = User::where('ref_id',$user->id)->where('plan_id',1) ->get();
         $id2 = [];
         $id3 = [];
         $id4 = [];
