@@ -360,7 +360,7 @@
             </div>
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
-                    <span style="font-size: 12px; color: #07FFB8">Complate</span>
+                    <span style="font-size: 12px; color: #07FFB8">Completed</span>
                     <h6 class="text-white" style="font-size: 18px">{{ nb($completeWithdraw) }} IDR</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
