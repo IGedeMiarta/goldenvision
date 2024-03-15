@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductOrder;
+use App\Models\User;
+use App\Models\UserPoint;
 use Illuminate\Http\Request;
 use Image;
 
@@ -99,8 +101,38 @@ class ProductController extends Controller
 
     public function order(){
         $data['page_title'] = 'Product Order';
-        $data['tables'] = ProductOrder::orderByDesc('id')->paginate(10);
+        $data['tables'] = ProductOrder::orderBy('status')->paginate(10);
         return view('admin.product.order',$data); 
+    }
+    public function orderUp(Request $request){
+        
+        $order = ProductOrder::find($request->id);
+        $user = User::find($order->user_id);
+        if($request->action=='Reject'){
+            
+            $order->status = 4;
+            $order->admin_feedback = $request->admin_feedback;
+            
+            $totalOrder = $order->total_order;
+            $order->save();
+
+            $log = new UserPoint();
+            $log->user_id = $user->id;
+            $log->point = $totalOrder;
+            $log->type = '+';
+            $log->start_point = $user->point;
+            $log->end_point = $user->point + $totalOrder;
+            $log->desc = 'Order Product Rejected  Invoice : #'  . $order->inv .' Return '. $totalOrder.' POINT'; 
+            $log->save();
+            
+            $user->point += $totalOrder;
+            $user->save();
+            $notify[] = ['success', 'Rejected Order successfully'];
+            return back()->withNotify($notify);
+        }else{
+            dd($request->all());
+
+        }
     }
 
     /**

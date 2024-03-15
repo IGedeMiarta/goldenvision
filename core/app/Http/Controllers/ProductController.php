@@ -51,6 +51,11 @@ class ProductController extends Controller
         $cart->save();
         return $cart;
     }
+    public function productCartDelete($id){
+        $cart = UserChart::find($id);
+        $cart->delete();
+        return true;
+    }
 
     public function productPurchase(Request $request){
         $zip = auth()->user()->address->zip;
@@ -139,7 +144,7 @@ class ProductController extends Controller
     }
     public function productTracking(){
         $data['page_title'] = "Tracking Product";
-        $data['inv'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status','!=',1)->get();
+        $data['inv'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status','!=',1)->where('status','!=',4)->get();
         $data['wait'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',1)->count();
         $data['deliver'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',2)->count();
         $data['accept'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',3)->count();
@@ -148,7 +153,7 @@ class ProductController extends Controller
     }
     public function inv($inv){
         $data['title'] = 'Invoice ' . $inv;
-        $data['inv'] = ProductOrder::with('detail','detail.product')->where('inv',$inv)->first();
+        $data['inv'] = ProductOrder::with('detail','detail.product','user')->where('inv',$inv)->first();
         return view('invoice.index',$data);
     }
     public function PointDeliveriyLog(Request $request){

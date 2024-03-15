@@ -56,39 +56,40 @@
                                                 Agent</a>
                                         </td>
                                         <td>
-                                            <button class="btn btn-sm btn--warning edit"><i
-                                                    class="las la-edit"></i></button>
+                                            @php
+                                                $rs = '<tr>';
+                                                foreach ($item->detail as $value) {
+                                                    $rs .= '<td>' . $value->product->name . '</td>';
+                                                    $rs .= '<td>' . $value->qty . '</td>';
+                                                    $rs .= '<td>' . $value->total . '</td>';
+                                                }
+                                                $rs .= '</tr>';
+
+                                                if ($item->status == 1) {
+                                                    $sts = '<span class="badge badge-warning">Waiting Approve</span>';
+                                                } elseif ($item->status == 2) {
+                                                    $sts = '<span class="badge badge-warning">On Delivery</span>';
+                                                } elseif ($item->status == 3) {
+                                                    $sts = '<span class="badge badge-success">Completed</span>';
+                                                } else {
+                                                    $sts = '<span class="badge badge-danger">Rejected</span>';
+                                                }
+                                            @endphp
+                                            <button data-id="{{ $item->id }}",
+                                                data-total_order="{{ $item->total_order }}" data-inv="{{ $item->inv }}"
+                                                data-resi="{{ $item->resi }}" data-agen="{{ $item->agen }}"
+                                                data-expect_ongkir="{{ $item->expect_ongkir }}"
+                                                data-ongkir="{{ $item->ongkir }}" data-status="{{ $item->status }}"
+                                                data-admin_feedback="{{ $item->admin_feedback }}"
+                                                data-details="{{ $rs }}"
+                                                data-name="{{ $item->user->firstname . ' ' . $item->user->lastname }}"
+                                                data-address="{{ $item->user->address->address }}"
+                                                data-zip="{{ $item->user->address->zip }}" data-sts="{{ $sts }}"
+                                                class="btn btn-sm btn--warning edit"><i class="las la-edit"></i></button>
                                         </td>
                                     </tr>
-                                    <div id="editOrder" class="modal fade" tabindex="-1" role="dialog">
-                                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">@lang('Edit Product')</h5>
 
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
 
-                                                </div>
-                                                <form method="post" action="{{ route('admin.products.update') }}"
-                                                    enctype="multipart/form-data">
-                                                    @csrf
-                                                    <div class="modal-body">
-                                                        <div>
-
-                                                        </div>
-                                                        <input class="form-control plan_id" type="hidden" name="id">
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="submit"
-                                                            class="btn btn-block btn--primary">@lang('Update')</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
                                 @empty
                                     <tr>
                                         <td colspan="7" class="text-center">empty tracking data...</td>
@@ -96,13 +97,94 @@
                                 @endforelse
 
                             </tbody>
-
                         </table>
                     </div>
                 </div>
                 <div class="card-footer py-4">
                     {{ $tables->links('admin.partials.paginate') }}
                 </div>
+            </div>
+        </div>
+    </div>
+    <div id="edit-product" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@lang('Detail Order')</h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                </div>
+                <form action="{{ route('admin.product.order.up') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="header">
+                            <h4 class="text-center" id="inv"></h4>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="name">
+                                    <b>Name:</b> <span id="name"></span>
+                                </div>
+                                <div class="address">
+                                    <b>Alamat:</b> <span id="address"></span>
+                                </div>
+                                <div class="zip">
+                                    <b>Kode Pos:</b> <span id="zip"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="display: flex;justify-content: end">
+                                <div id="StatusInfo"></div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <span>#Product Details</span>
+                            <table class="table table-bordered">
+                                <thead class="bg-primary">
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>QTY</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="detailsProduct">
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="2" style="text-align: end;">Total order</td>
+                                        <td id="total_order"></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <input class="form-control" id="id" type="hidden" name="id">
+                        <div class="form-group mt-4">
+                            <label for="agent">Agent</label>
+                            <input class="form-control" id="agent" type="text" name="agent" placeholder="POS">
+                        </div>
+                        <div class="form-group mt-1">
+                            <label for="expect_ongkir">Expect Ongkir</label>
+                            <input class="form-control" id="expect_ongkir" type="number" name="expect_ongkir"
+                                placeholder="000.000" readonly>
+                        </div>
+                        <div class="form-group mt-1">
+                            <label for="ongkir">Ongkir</label>
+                            <input class="form-control" id="ongkir" type="number" name="ongkir" placeholder="000.000">
+                        </div>
+                        <div class="form-group mt-1">
+                            <label for="admin_feedback">Admin Notes</label>
+                            <textarea name="admin_feedback" id="admin_feedback" class="form-control" cols="30" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-body" style="display: flex;justify-content: space-between">
+                        <input type="submit" name="action" value="Reject" class="btn btn--danger"
+                            style="width: 100%; margin-right: 20px;" />
+                        <input type="submit" name="action" value="Approve" class="btn btn--success"
+                            style="width: 100%" disabled />
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -118,30 +200,32 @@
 
             $('.edit').on('click', function() {
                 var modal = $('#edit-product');
-                modal.find('.name').val($(this).data('name'));
-                modal.find('.price').val($(this).data('price'));
-                modal.find('.stok').val($(this).data('stok'));
-                modal.find('.weight').val($(this).data('weight'));
-                modal.find('.details').val($(this).data('details'));
-                var input = modal.find('.image');
-                var image = $(this).data('image');
-                $('#editImage').attr('data-default-file', image).dropify();
-                if ($(this).data('status')) {
-                    modal.find('.toggle').removeClass('btn--danger off').addClass('btn--success');
-                    modal.find('input[name="status"]').prop('checked', true);
-
-                } else {
-                    modal.find('.toggle').addClass('btn--danger off').removeClass('btn--success');
-                    modal.find('input[name="status"]').prop('checked', false);
-                }
-
-                modal.find('input[name=id]').val($(this).data('id'));
                 modal.modal('show');
-            });
 
-            $('.add-product').on('click', function() {
-                var modal = $('#add-product');
-                modal.modal('show');
+                var id = $(this).data('id');
+                var inv = $(this).data('inv');
+                var total_order = $(this).data('total_order');
+                var resi = $(this).data('resi');
+                var agen = $(this).data('agen');
+                var expect_ongkir = $(this).data('expect_ongkir');
+                var ongkir = $(this).data('ongkir');
+                var status = $(this).data('status');
+                var admin_feedback = $(this).data('admin_feedback');
+                var details = $(this).data('details');
+                var name = $(this).data('name');
+                var address = $(this).data('address');
+                var zip = $(this).data('zip');
+                var sts = $(this).data('sts');
+
+                $('#id').val(id);
+                $('#inv').html(inv);
+                $('#total_order').html(total_order)
+                $('#detailsProduct').html(details);
+                $('#name').html(name);
+                $('#address').html(address);
+                $('#zip').html(zip);
+                $('#expect_ongkir').val(expect_ongkir)
+                $('#StatusInfo').html(sts)
             });
         })(jQuery);
     </script>

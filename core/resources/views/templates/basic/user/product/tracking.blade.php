@@ -90,7 +90,7 @@
     <div class="mb-3">
         <button class=" btn btn-warning mr-2 mt-2">On Delivery: {{ $deliver }}</button>
         <button class=" btn btn-success  mr-2 mt-2">Completed : {{ $accept }}</button>
-        <button class=" btn btn-danger mt-2">Rejected : {{ $reject }}</button>
+        {{-- <button class=" btn btn-danger mt-2">Rejected : {{ $reject }}</button> --}}
     </div>
     <div class="table-responsive">
         <table class="table">

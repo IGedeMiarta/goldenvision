@@ -154,7 +154,8 @@
                 <div class="card-body" style="position: relative;">
                     <form action="{{ route('user.product.purchase') }}" method="POST">
                         @csrf
-                        <button type="submit" class="btn btn-sm btn-block text--small box--shadow3 mt-3"
+                        <button type="submit"
+                            class="btn btn-sm btn-block text--small box--shadow3 mt-3 {{ LoopCart()->count() < 1 ? 'd-none' : '' }}"
                             style="background-color: #000;color:white">@lang('Submit')</button>
                     </form>
                 </div>
@@ -247,7 +248,8 @@
                                     {{ $item->product->price * $item->qty }} POINT
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                    <button type="button" class="btn btn-danger delete"
+                                        data-id="{{ $item->id }}"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                             @php
@@ -321,10 +323,25 @@
                     }
                 });
             });
+            $('.delete').on('click', function() {
+                var id = $(this).data('id');
+                console.log(id);
+                var url = "{{ url('user/Product-cart-del') }}" + '/' + id;
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    success: function(msg) {
+                        location.reload();
+                    }
+                });
+            })
 
-            // $('#savePurchase').on('click', function) {
 
-            // }
         })(jQuery);
     </script>
 @endpush
