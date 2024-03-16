@@ -269,6 +269,7 @@ class ManageUsersController extends Controller
 
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         $user = User::where('comp',0)->findOrFail($id);
         $request->validate([
             'firstname' => 'required|max:60',
@@ -276,10 +277,6 @@ class ManageUsersController extends Controller
             'email' => 'required|email|max:160,' . $user->id,
         ]);
 
-        // if ($request->email != $user->email && User::whereEmail($request->email)->whereId('!=', $user->id)->count() > 0) {
-        //     $notify[] = ['error', 'Email already exists.'];
-        //     return back()->withNotify($notify);
-        // }
         if ($request->mobile != $user->mobile && User::where('mobile', $request->mobile)->whereId('!=', $user->id)->count() > 0) {
             $notify[] = ['error', 'Phone number already exists.'];
             return back()->withNotify($notify);
@@ -334,6 +331,7 @@ class ManageUsersController extends Controller
         // $user->is_leader = $request->is_leader ? 1 : 0 ;
         $user->ts = $request->ts ? 1 : 0;
         $user->tv = $request->tv ? 1 : 0;
+        $user->email_dinaran = $request->email_dinaran;
         $user->save();
 
         $notify[] = ['success', 'User detail has been updated'];

@@ -49,9 +49,9 @@
         }
 
         /* .btn-11:hover {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        text-decoration: none;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        color: #fff;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                text-decoration: none;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                color: #fff;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            } */
         .btn-11:before {
             position: absolute;
             content: '';
@@ -65,14 +65,14 @@
         }
 
         /* .btn-11:hover{
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      opacity: .7;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              opacity: .7;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            } */
         /* .btn-11:active{
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      box-shadow:  4px 4px 6px 0 rgba(255,255,255,.3),
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  -4px -4px 6px 0 rgba(116, 125, 136, .2),
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        inset -4px -4px 6px 0 rgba(255,255,255,.2),
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    } */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              box-shadow:  4px 4px 6px 0 rgba(255,255,255,.3),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          -4px -4px 6px 0 rgba(116, 125, 136, .2),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                inset -4px -4px 6px 0 rgba(255,255,255,.2),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            } */
 
 
         @-webkit-keyframes shiny-btn1 {
@@ -116,7 +116,7 @@
                                 class="text--small">@lang('Joined At ')<strong>{{ showDateTime(
                                     $user->created_at,
                                     'd M, Y
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                h:i A',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                h:i A',
                                 ) }}</strong></span>
                         </div>
                     </div>
@@ -421,7 +421,7 @@
                     </div>
                 </div>
 
-                <div class="col-xl-4 col-lg-6 col-sm-6 mb-30">
+                {{-- <div class="col-xl-4 col-lg-6 col-sm-6 mb-30">
                     <div class="dashboard-w1 bg--21 b-radius--10 box-shadow has--link">
                         <a href="#" class="item--link"></a>
                         <div class="icon">
@@ -438,7 +438,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 {{-- <div class="col-xl-4 col-lg-6 col-sm-6 mb-30">
                 <div class="dashboard-w1 bg--19 b-radius--10 box-shadow has--link">
@@ -515,8 +515,13 @@
                     <form action="{{ route('admin.users.update', [$user->id]) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
+                        <div style="display: flex; align-items: center; margin-top: 15px; margin-bottom: 5px;">
+                            <p style="font-size: 14px; margin-right: 5px; color: rgb(72, 71, 71)">User Section<span
+                                    class="text-danger">*</span></p>
+                            <hr style="flex: 1; margin: 2; color: black">
+                        </div>
 
-                        <div class="row">
+                        <div class="row ml-3">
                             <div class="col-md-6">
                                 <div class="form-group ">
                                     <label class="form-control-label font-weight-bold">@lang('First Name')<span
@@ -536,14 +541,14 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row ml-3">
                             @if ($user->plan_id != 0)
                                 <div class="col-md-6">
                                     <div class="form-group ">
-                                        <label class="form-control-label font-weight-bold">@lang('No MP') <span
+                                        <label class="form-control-label font-weight-bold">@lang('Refferals') <span
                                                 class="text-danger">*</span></label>
                                         <input class="form-control" type="text" name="no_bro"
-                                            value="{{ $user->no_bro }}" readonly>
+                                            value="{{ $user->username }}" readonly>
                                     </div>
                                 </div>
                             @endif
@@ -558,7 +563,7 @@
 
 
                         </div>
-                        <div class="row">
+                        <div class="row ml-3">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-control-label  font-weight-bold">@lang('Mobile Number') <span
@@ -614,17 +619,7 @@
                                 </div>
                             </div>
                         </div> --}}
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="form-control-label font-weight-bold">@lang('Alamat') </label>
-                                    <input class="form-control form-control-lg" type="text" name="alamat"
-                                        value="{{ $user->address->address }}">
-                                    <small class="form-text text-muted"><i
-                                            class="las la-info-circle"></i>@lang(' Alamat Lengkap Rumah')
-                                    </small>
-                                </div>
-                            </div>
+                        <div class="row ml-3">
                             <div class="col-md-6">
                                 <div class="form-group ">
                                     <label class="form-control-label font-weight-bold">@lang('Provinsi')<span
@@ -680,6 +675,16 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-control-label font-weight-bold">@lang('Alamat') </label>
+                                    <textarea name="alamat" id="alamat" cols="30" rows="5" class="form-control">{{ $user->address->address }}</textarea>
+
+                                    <small class="form-text text-muted"><i
+                                            class="las la-info-circle"></i>@lang(' Alamat Lengkap Rumah')
+                                    </small>
+                                </div>
+                            </div>
                             <div class="col-md-4">
                                 <div class="form-group ">
                                     <label class="form-control-label font-weight-bold">@lang('Kode Pos')</label>
@@ -696,7 +701,30 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div style="display: flex; align-items: center; margin-top: 15px; margin-bottom: 5px;">
+                            <p style="font-size: 14px; margin-right: 5px; color: rgb(72, 71, 71)">Dinaran Section<span
+                                    class="text-danger">*</span></p>
+                            <hr style="flex: 1; margin: 2; color: black">
+                        </div>
+                        <div class="row ml-3">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-control-label font-weight-bold">@lang('Dinaran Email')<i
+                                            class="text-danger">*</i> </label>
+                                    <input class="form-control form-control-lg" type="email" name="email_dinaran"
+                                        value="{{ $user->email_dinaran }}">
+                                    <small class="form-text text-muted"><i
+                                            class="las la-info-circle"></i>@lang('Pastikan Email Dinaran sudah benar untuk melakukan penarikan ')
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; margin-top: 15px; margin-bottom: 5px;">
+                            <p style="font-size: 14px; margin-right: 5px; color: rgb(72, 71, 71)">Checklist Section<span
+                                    class="text-danger">*</span></p>
+                            <hr style="flex: 1; margin: 2; color: black">
+                        </div>
+                        <div class="row ml-3">
                             <div class="form-group col-xl-4 col-md-6  col-sm-3 col-12">
                                 <label class="form-control-label font-weight-bold">@lang('Status') </label>
                                 <input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger"
@@ -719,18 +747,18 @@
                                     @if ($user->sv) checked @endif>
 
                             </div>
-                            <div class="form-group  col-xl-4 col-md-6  col-sm-3 col-12">
+                            {{-- <div class="form-group  col-xl-4 col-md-6  col-sm-3 col-12">
                                 <label class="form-control-label font-weight-bold">@lang('Leader Status') </label>
                                 <input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger"
                                     data-toggle="toggle" data-on="Active" data-off="Deactive" name="is_leader"
                                     @if ($user->is_leader) checked @endif>
-                            </div>
-                            <div class="form-group  col-xl-4 col-md-6  col-sm-3 col-12">
+                            </div> --}}
+                            {{-- <div class="form-group  col-xl-4 col-md-6  col-sm-3 col-12">
                                 <label class="form-control-label font-weight-bold">@lang('Stockiest Status') </label>
                                 <input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger"
                                     data-toggle="toggle" data-on="Active" data-off="Deactive" name="is_stockiest"
                                     @if ($user->is_stockiest) checked @endif>
-                            </div>
+                            </div> --}}
                             <div class="form-group  col-xl-4 col-md-6  col-sm-3 col-12">
                                 <label class="form-control-label font-weight-bold">@lang('2FA Status') </label>
                                 <input type="checkbox" data-width="100%" data-onstyle="-success" data-offstyle="-danger"
@@ -762,7 +790,7 @@
             </div>
 
             {{-- user bank form --}}
-            <div class="card mt-50">
+            {{-- <div class="card mt-50">
                 <div class="card-body">
                     <h5 class="card-title mb-50 border-bottom pb-2">@lang('Bank Account Information')</h5>
                     @if ($user->userBank)
@@ -887,9 +915,9 @@
                     @endif
 
                 </div>
-            </div>
+            </div> --}}
 
-            <div class="card mt-4">
+            {{-- <div class="card mt-4">
                 <div class="card-body">
                     <h5 class="card-title mb-50 border-bottom pb-2">@lang('Data Verification')</h5>
                     <div class="row">
@@ -944,7 +972,7 @@
 
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 
@@ -1122,7 +1150,8 @@
                             <div class="form-group col-md-12">
                                 <label>@lang('Remark')</label>
                                 <div class="input-group has_append">
-                                    <input name="remark" id="" class="form-control" placeholder="remark"></input>
+                                    <input name="remark" id="" class="form-control"
+                                        placeholder="remark"></input>
                                 </div>
                             </div>
                         </div>
