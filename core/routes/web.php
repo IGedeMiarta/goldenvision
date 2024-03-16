@@ -673,7 +673,7 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::post('/Product-cart', 'ProductController@productCart')->name('product.cart');
             Route::post('/Product-cart/{id}', 'ProductController@productCartUpdate')->name('product.cart.update');
             Route::post('/Product-cart-del/{id}', 'ProductController@productCartDelete')->name('product.cart.delete');
-            Route::get('/Product-invoice', 'ProductController@productInvoice')->name('product.inv');
+            Route::get('/product-invoice', 'ProductController@productInvoice')->name('product.inv');
             Route::get('/invoice-details/{inv}', 'ProductController@inv')->name('product.inv.details');
             Route::get('/Product-tracking', 'ProductController@productTracking')->name('product.tracking');
             Route::get('point/log', 'ProductController@PointDeliveriyLog')->name('product.point');

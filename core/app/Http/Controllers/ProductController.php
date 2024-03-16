@@ -135,11 +135,11 @@ class ProductController extends Controller
     }
     public function productInvoice(){
         $data['page_title'] = "Invoice";
-        $data['inv'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->orderByDesc('id')->get();
-        $data['wait'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',1)->count();
-        $data['deliver'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',2)->count();
-        $data['accept'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',3)->count();
-        $data['reject'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',4)->count();
+        $data['inv'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('total_order','>',0)->orderByDesc('id')->get();
+        $data['wait'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('total_order','>',0)->where('status',1)->count();
+        $data['deliver'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('total_order','>',0)->where('status',2)->count();
+        $data['accept'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('total_order','>',0)->where('status',3)->count();
+        $data['reject'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('total_order','>',0)->where('status',4)->count();
         return view('templates.basic.user.product.inv',$data);
     }
     public function productTracking(){
