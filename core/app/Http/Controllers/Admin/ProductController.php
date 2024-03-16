@@ -101,7 +101,7 @@ class ProductController extends Controller
 
     public function order(){
         $data['page_title'] = 'Product Order';
-        $data['tables'] = ProductOrder::orderBy('status')->paginate(10);
+        $data['tables'] = ProductOrder::orderBy('status')->where('total_order','>',0)->paginate(10);
         return view('admin.product.order',$data); 
     }
     public function orderUp(Request $request){
