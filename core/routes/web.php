@@ -164,7 +164,7 @@ Route::get('/clauseter-maps',[AdminController::class,'maps']);
 |--------------------------------------------------------------------------
 */
 Route::get('/cron', [NewCronController::class,'bonusPasangan'])->name('bv.matching.cron');
-Route::get('/pool', [NewCronController::class,'poolSharing'])->name('bv.matching.pool');
+// Route::get('/pool', [NewCronController::class,'poolSharing'])->name('bv.matching.pool');
 Route::get('/monoleg', 'CronController@monoleg')->name('bv.matching.monoleg');
 Route::get('/monoleg_saving', 'CronController@monolegSaving')->name('bv.matching.monoleg_saving');
 Route::get('/is-gold-cron', 'CronController@isGold');
