@@ -45,7 +45,7 @@
                                     <th scope="col">@lang('Date')</th>
                                     <th scope="col">@lang('Trx Number')</th>
                                     @if (!request()->routeIs('admin.users.withdrawals') && !request()->routeIs('admin.users.withdrawals.method'))
-                                        <th scope="col">@lang('Username')</th>
+                                        <th scope="col">@lang('User')</th>
                                     @endif
                                     <th scope="col">@lang('Method')</th>
                                     {{-- <th scope="col">@lang('Amount')</th>
@@ -86,9 +86,14 @@
                                         <td data-label="@lang('Trx Number')" class="font-weight-bold">
                                             {{ strtoupper($withdraw->trx) }}</td>
                                         @if (!request()->routeIs('admin.users.withdrawals') && !request()->routeIs('admin.users.withdrawals.method'))
-                                            <td data-label="@lang('Username')">
-                                                <a
+                                            <td data-label="@lang('User')" style="text-align: start">
+                                                <span style="font-size: 12px">Username:</span> <a
                                                     href="{{ route('admin.users.detail', $withdraw->user_id) }}">{{ @$withdraw->user->username }}</a>
+                                                <br>
+                                                <span style="font-size: 12px">Fullname:</span>
+                                                <b>{{ $withdraw->user->fullname }}</b> <br>
+                                                <span style="font-size: 12px">Username:</span>
+                                                <b>{{ $withdraw->user->mobile }}</b>
                                             </td>
                                         @endif
                                         <td data-label="@lang('Method')">
@@ -102,14 +107,6 @@
                                                     {{ __(@$withdraw->method->name) }}</a>
                                             @endif
                                         </td>
-                                        {{-- <td data-label="@lang('Amount')" class="budget font-weight-bold">
-                                            {{ nb(getAmount($withdraw->amount)) }} {{ __($general->cur_text) }}</td>
-                                        <td data-label="@lang('Charge')" class="budget text-danger">
-                                            {{ nb(getAmount($withdraw->charge)) }} {{ __($general->cur_text) }}</td>
-                                        <td data-label="@lang('After Charge')" class="budget">
-                                            {{ nb(getAmount($withdraw->after_charge)) }} {{ __($general->cur_text) }}</td>
-                                        <td data-label="@lang('Rate')" class="budget">{{ getAmount($withdraw->rate) }}
-                                            {{ __($withdraw->currency) }}</td> --}}
 
                                         <td data-label="@lang('Payable')" class="budget font-weight-bold">
                                             {{ nb(getAmount($withdraw->final_amount)) }} {{ __($withdraw->currency) }}
