@@ -327,8 +327,12 @@ class NewCronController extends Controller
             }
         }
         // return $cron;
-        abort(404);
+        // abort(404);
         // dd($dd);
+        return response()->json([
+            'http_code' => 200,
+            'response' => 'ok'
+        ]);
 
     }
 
@@ -397,6 +401,10 @@ class NewCronController extends Controller
         PoolLog($omset);
 
         // return $cron;
-        abort(404);
+        // abort(404);
+        return response()->json([
+            'http_code' => 200,
+            'response' => 'ok'
+        ]);
     }
 }
