@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\AdminNotification;
+use App\Models\Deposit;
 use App\Models\GeneralSetting;
 use App\Models\Plan;
 use App\Models\Rank;
@@ -418,4 +419,17 @@ function sumBonus($type){
     }
 
     return Transaction::where('remark',$mark)->where('user_id',auth()->user()->id)->sum('amount');
+}
+function generateTrxCode() {
+    $numOfTrx= Deposit::count() +1;
+    // Get the current date
+    $date = date('ymd');
+
+    // Pad the number of transactions with leading zeros to make it 5 digits long
+    $paddedNumOfTrx = str_pad($numOfTrx, 5, '0', STR_PAD_LEFT);
+
+    // Concatenate the parts to form the transaction code
+    $trxCode = 'TRX' . $date . $paddedNumOfTrx;
+
+    return $trxCode;
 }

@@ -500,6 +500,12 @@ class SponsorRegisterController extends Controller
         $data['page_title'] = "Send PINs";
         return view($this->activeTemplate . 'user.sendPin', $data);
     }
+
+    public function userOrderPin(){
+         $data['page_title'] = "Order PINs";
+        return view($this->activeTemplate . 'user.orderPin', $data);
+    }
+
     public function findUname($uname){
         $find = User::where('username','=',$uname)->first();
        
