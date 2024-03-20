@@ -22,7 +22,7 @@ class DepositController extends Controller
         $page_title = 'Pending Deposits';
         $empty_message = 'No pending deposits.';
         $type = 'pending';
-        $deposits = Deposit::where('method_code', '>=', 1000)->where('status', 2)->with(['user', 'gateway'])->latest()->paginate(getPaginate());
+        $deposits = Deposit::where('status', 2)->with(['user'])->latest()->paginate(getPaginate());
         return view('admin.deposit.log', compact('page_title', 'empty_message', 'deposits','type'));
     }
 
@@ -31,7 +31,7 @@ class DepositController extends Controller
     {
         $page_title = 'Approved Deposits';
         $empty_message = 'No approved deposits.';
-        $deposits = Deposit::where('method_code','>=',1000)->where('status', 1)->with(['user', 'gateway'])->latest()->paginate(getPaginate());
+        $deposits = Deposit::where('method_code','>=',1000)->where('status', 1)->with(['user'])->latest()->paginate(getPaginate());
         $type = 'approved';
         return view('admin.deposit.log', compact('page_title', 'empty_message', 'deposits','type'));
     }
@@ -40,7 +40,7 @@ class DepositController extends Controller
     {
         $page_title = 'Successful Deposits';
         $empty_message = 'No successful deposits.';
-        $deposits = Deposit::where('status', 1)->with(['user', 'gateway'])->latest()->paginate(getPaginate());
+        $deposits = Deposit::where('status', 1)->with(['user'])->latest()->paginate(getPaginate());
         $type = 'successful';
         return view('admin.deposit.log', compact('page_title', 'empty_message', 'deposits','type'));
     }
@@ -50,7 +50,7 @@ class DepositController extends Controller
         $page_title = 'Rejected Deposits';
         $empty_message = 'No rejected deposits.';
         $type = 'rejected';
-        $deposits = Deposit::where('method_code', '>=', 1000)->where('status', 3)->with(['user', 'gateway'])->latest()->paginate(getPaginate());
+        $deposits = Deposit::where('status', 3)->with(['user'])->latest()->paginate(getPaginate());
         return view('admin.deposit.log', compact('page_title', 'empty_message', 'deposits','type'));
     }
 
@@ -58,7 +58,7 @@ class DepositController extends Controller
     {
         $page_title = 'Deposit History';
         $empty_message = 'No deposit history available.';
-        $deposits = Deposit::with(['user', 'gateway'])->where('status','!=',0)->latest()->paginate(getPaginate());
+        $deposits = Deposit::with(['user'])->where('status','!=',0)->latest()->paginate(getPaginate());
         return view('admin.deposit.log', compact('page_title', 'empty_message', 'deposits'));
     }
 
@@ -67,20 +67,20 @@ class DepositController extends Controller
 
         if ($type == 'approved') {
             $page_title = 'Approved Payment Via '.$method->name;
-            $deposits = Deposit::where('method_code','>=',1000)->where('method_code',$method->code)->where('status', 1)->latest()->with(['user', 'gateway'])->paginate(getPaginate());
+            $deposits = Deposit::where('method_code','>=',1000)->where('method_code',$method->code)->where('status', 1)->latest()->with(['user'])->paginate(getPaginate());
         }elseif($type == 'rejected'){
             $page_title = 'Rejected Payment Via '.$method->name;
-            $deposits = Deposit::where('method_code','>=',1000)->where('method_code',$method->code)->where('status', 3)->latest()->with(['user', 'gateway'])->paginate(getPaginate());
+            $deposits = Deposit::where('method_code','>=',1000)->where('method_code',$method->code)->where('status', 3)->latest()->with(['user'])->paginate(getPaginate());
 
         }elseif($type == 'successful'){
             $page_title = 'Successful Payment Via '.$method->name;
-            $deposits = Deposit::where('status', 1)->where('method_code',$method->code)->latest()->with(['user', 'gateway'])->paginate(getPaginate());
+            $deposits = Deposit::where('status', 1)->where('method_code',$method->code)->latest()->with(['user'])->paginate(getPaginate());
         }elseif($type == 'pending'){
             $page_title = 'Pending Payment Via '.$method->name;
-            $deposits = Deposit::where('method_code','>=',1000)->where('method_code',$method->code)->where('status', 2)->latest()->with(['user', 'gateway'])->paginate(getPaginate());
+            $deposits = Deposit::where('method_code','>=',1000)->where('method_code',$method->code)->where('status', 2)->latest()->with(['user'])->paginate(getPaginate());
         }else{
             $page_title = 'Payment Via '.$method->name;
-            $deposits = Deposit::where('status','!=',0)->where('method_code',$method->code)->latest()->with(['user', 'gateway'])->paginate(getPaginate());
+            $deposits = Deposit::where('status','!=',0)->where('method_code',$method->code)->latest()->with(['user'])->paginate(getPaginate());
         }
         $methodAlias = $method->alias;
         $empty_message = 'Deposit Log';
@@ -93,7 +93,7 @@ class DepositController extends Controller
         $page_title = '';
         $empty_message = 'No search result was found.';
 
-        $deposits = Deposit::with(['user', 'gateway'])->where('status','!=',0)->where(function ($q) use ($search) {
+        $deposits = Deposit::with(['user'])->where('status','!=',0)->where(function ($q) use ($search) {
             $q->where('trx', 'like', "%$search%")->orWhereHas('user', function ($user) use ($search) {
                 $user->where('username', 'like', "%$search%");
             });
@@ -101,15 +101,15 @@ class DepositController extends Controller
         switch ($scope) {
             case 'pending':
                 $page_title .= 'Pending Deposits Search';
-                $deposits = $deposits->where('method_code', '>=', 1000)->where('status', 2);
+                $deposits = $deposits->where('status', 2);
                 break;
             case 'approved':
                 $page_title .= 'Approved Deposits Search';
-                $deposits = $deposits->where('method_code', '>=', 1000)->where('status', 1);
+                $deposits = $deposits->where('status', 1);
                 break;
             case 'rejected':
                 $page_title .= 'Rejected Deposits Search';
-                $deposits = $deposits->where('method_code', '>=', 1000)->where('status', 3);
+                $deposits = $deposits->where('status', 3);
                 break;
             case 'list':
                 $page_title .= 'Deposits History Search';
@@ -154,16 +154,16 @@ class DepositController extends Controller
         }
         switch ($scope) {
             case 'pending':
-                $deposits = $deposits->where('method_code', '>=', 1000)->where('status', 2);
+                $deposits = $deposits->where('status', 2);
                 break;
             case 'approved':
-                $deposits = $deposits->where('method_code', '>=', 1000)->where('status', 1);
+                $deposits = $deposits->where('status', 1);
                 break;
             case 'rejected':
-                $deposits = $deposits->where('method_code', '>=', 1000)->where('status', 3);
+                $deposits = $deposits->where('status', 3);
                 break;
         }
-        $deposits = $deposits->with(['user', 'gateway'])->latest()->paginate(getPaginate());
+        $deposits = $deposits->with(['user'])->latest()->paginate(getPaginate());
         $page_title = ' Deposits Log';
         $empty_message = 'Deposit Not Found';
         $dateSearch = $search;
@@ -173,7 +173,7 @@ class DepositController extends Controller
     public function details($id)
     {
         $general = GeneralSetting::first();
-        $deposit = Deposit::where('id', $id)->where('method_code', '>=', 1000)->with(['user', 'gateway'])->firstOrFail();
+        $deposit = Deposit::where('id', $id)->with(['user'])->firstOrFail();
         $page_title = $deposit->user->username.' requested ' . getAmount($deposit->amount) . ' '.$general->cur_text;
         $details = ($deposit->detail != null) ? json_encode($deposit->detail) : null;
         return view('admin.deposit.detail', compact('page_title', 'deposit','details'));

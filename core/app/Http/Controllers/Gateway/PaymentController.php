@@ -238,6 +238,7 @@ class PaymentController extends Controller
     public function manualDepositConfirm()
     {
         $track = session()->get('Track');
+        // dd( $track);
         $data = Deposit::with('gateway')->where('status', 0)->where('trx', $track)->first();
         if (!$data) {
             return redirect()->route(gatewayRedirectUrl());

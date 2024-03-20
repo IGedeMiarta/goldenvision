@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BonusRewardController;
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ArchivementController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CronController;
+use App\Http\Controllers\Gateway\Espay\PaymentController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\NewCronController;
 use App\Http\Controllers\NewSponsorRegitserController;
@@ -241,6 +243,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::middleware('admin')->group(function () {
+
+        Route::get('new-dashboard', [AdminDashboardController::class,'index'])->name('dashboard.new');
         Route::get('dashboard', 'AdminController@dashboard')->name('dashboard');
         Route::get('profile', 'AdminController@profile')->name('profile');
         Route::post('profile', 'AdminController@profileUpdate')->name('profile.update');
@@ -398,8 +402,6 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
             Route::post('automatic/remove/{code}', 'GatewayController@remove')->name('automatic.remove');
             Route::post('automatic/activate', 'GatewayController@activate')->name('automatic.activate');
             Route::post('automatic/deactivate', 'GatewayController@deactivate')->name('automatic.deactivate');
-
-
 
             // Manual Methods
             Route::get('manual', 'ManualGatewayController@index')->name('manual.index');
@@ -667,6 +669,8 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::get('/user-pin',[SponsorRegisterController::class,'userSendPin'])->name('pins.view');
             Route::get('/user-point',[SponsorRegisterController::class,'userPoint'])->name('point.view');
             Route::get('pin/log', 'UserReportController@PinDeliveriyLog')->name('pins.PinDeliveriyLog');
+            Route::get('/user-order',[SponsorRegisterController::class,'userOrderPin'])->name('pins.order');
+            Route::post('/user-order',[PaymentController::class,'userOrderPin'])->name('pins.order.post');
 
             Route::get('/Product', 'ProductController@productIndex')->name('product.index');
             Route::post('/Product-purchase', 'ProductController@productPurchase')->name('product.purchase')->middleware('addressCheck');
@@ -718,7 +722,7 @@ Route::name('user.')->prefix('user')->group(function () {
             // Route::get('report/binary/commission', 'UserReportController@binaryCom')->name('report.binaryCom');
 
             // Deposit
-            // Route::any('deposit', 'Gateway\PaymentController@deposit')->name('deposit');
+            Route::any('deposit', 'Gateway\PaymentController@deposit')->name('deposit');
             Route::post('deposit/insert', 'Gateway\PaymentController@depositInsert')->name('deposit.insert');
             Route::get('deposit/preview', 'Gateway\PaymentController@depositPreview')->name('deposit.preview');
             Route::get('deposit/confirm', 'Gateway\PaymentController@depositConfirm')->name('deposit.confirm');

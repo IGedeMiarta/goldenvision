@@ -104,16 +104,17 @@
                     <div class="sidebar-submenu {{ menuActive('user.pins*', 2) }} ">
                         <ul>
 
-                            <li class="sidebar-menu-item {{ menuActive('user.pins.view') }} ">
-                                <a href="{{ route('user.pins.view') }}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Request PIN')</span>
-                                </a>
-                            </li>
+
                             <li class="sidebar-menu-item {{ menuActive('user.pins.view') }} ">
                                 <a href="{{ route('user.pins.view') }}" class="nav-link">
                                     <i class="menu-icon las la-dot-circle"></i>
                                     <span class="menu-title">@lang('Send PIN')</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item {{ menuActive('user.pins.order') }} ">
+                                <a href="{{ route('user.pins.order') }}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('Order PIN')</span>
                                 </a>
                             </li>
                             <li class="sidebar-menu-item {{ menuActive('user.pins.PinDeliveriyLog') }} ">
