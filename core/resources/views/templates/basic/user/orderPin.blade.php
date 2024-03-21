@@ -73,7 +73,7 @@
             <div class="card" style="min-height: 15rem; border-radius: 15px">
                 <div class="card-body">
                     <div class="text-center">
-                        <h5 class=""> Please Complate Your Order <b>{{ $order->amount/500000 }} PIN.</b> <br>
+                        <h5 class=""> Please Complate Your Order <b>{{ $order?->amount/500000 }} PIN.</b> <br>
                     </div>
                     <ul class="list-group mt-3">
                         <li class="list-group-item">
