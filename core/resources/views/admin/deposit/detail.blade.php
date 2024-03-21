@@ -69,9 +69,9 @@
         <div class="col-xl-8 col-md-6 mb-30">
             <div class="card b-radius--10 overflow-hidden box--shadow1">
                 <div class="card-body">
-                    <h5 class="card-title mb-50 border-bottom pb-2">@lang('User Deposit Information')</h5>
+                    <h5 class="card-title border-bottom pb-2">@lang('User Deposit Information')</h5>
+                    <p class="mt-1 mb-2">Trasfer Account Name: <b>{{ $deposit->btc_amo }}</b></p>
                     <img src="{{ asset($deposit->detail) }}" alt="bukti-trf">
-                  
                     @if($deposit->status == 2)
                         <div class="row mt-4">
                             <div class="col-md-12">

@@ -22,7 +22,7 @@ class PaymentController extends Controller
             $trx->final_amo     = $request->pin * 500000;
             $trx->detail        = null;
             $trx->trx           = generateTrxCode();
-            $trx->status        = 2;
+            $trx->status        = 0;
             $trx->save();
             DB::commit();
             $notify[] = ['success', 'Order '.$request->pin.' PIN equal to '.$request->pin * 500000 .' IDR created'];
@@ -34,6 +34,7 @@ class PaymentController extends Controller
        }
     }
     public function userOrderUpdate(Request $request,$id){
+
         $deposit = Deposit::find($id);
         DB::beginTransaction();
         try {
@@ -51,6 +52,8 @@ class PaymentController extends Controller
     
                 $image->move($path,$filename);
             }
+            $deposit->status  = 2;
+            $deposit->btc_amo = $request->name;
             $deposit->save();
             DB::commit();
             $notify[] = ['success', "Bukti trasfer di upload"];
