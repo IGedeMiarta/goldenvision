@@ -190,7 +190,7 @@ class DepositController extends Controller
         $deposit->save();
 
         $user = User::find($deposit->user_id);
-        $user->balance = getAmount($user->balance + $deposit->amount);
+        // $user->balance = getAmount($user->balance + $deposit->amount);
         $addPin = ($deposit->amount / 500000);
         
         $pin = new UserPin();
@@ -206,15 +206,15 @@ class DepositController extends Controller
         $user->pin += ($deposit->amount / 500000);
         $user->save();
 
-        $transaction = new Transaction();
-        $transaction->user_id = $deposit->user_id;
-        $transaction->amount = getAmount($deposit->amount);
-        $transaction->post_balance = getAmount($user->balance);
-        $transaction->charge = getAmount($deposit->charge);
-        $transaction->trx_type = '+';
-        $transaction->details = 'Deposit Via Bank Trasfer';
-        $transaction->trx =  $deposit->trx;
-        $transaction->save();
+        // $transaction = new Transaction();
+        // $transaction->user_id = $deposit->user_id;
+        // $transaction->amount = getAmount($deposit->amount);
+        // $transaction->post_balance = getAmount($user->balance);
+        // $transaction->charge = getAmount($deposit->charge);
+        // $transaction->trx_type = '+';
+        // $transaction->details = 'Deposit Via Bank Trasfer';
+        // $transaction->trx =  $deposit->trx;
+        // $transaction->save();
 
         // $gnl = GeneralSetting::first();
         // notify($user, 'DEPOSIT_APPROVE', [
