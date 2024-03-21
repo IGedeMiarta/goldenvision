@@ -185,26 +185,36 @@ class DepositController extends Controller
     {
 
         $request->validate(['id' => 'required|integer']);
-        $deposit = Deposit::where('id',$request->id)->where('status',2)->firstOrFail();
-        $deposit->status = 1;
-        $deposit->save();
+        DB::beginTransaction();
+        try {
+            $deposit = Deposit::where('id',$request->id)->where('status',2)->firstOrFail();
+            $deposit->status = 1;
+            $deposit->save();
+    
+            $user = User::find($deposit->user_id);
 
-        $user = User::find($deposit->user_id);
-        // $user->balance = getAmount($user->balance + $deposit->amount);
-        $addPin = ($deposit->amount / 500000);
-        
-        $pin = new UserPin();
-        $pin->user_id   = $user->id;
-        $pin->pin       = $addPin;
-        $pin->pin_by    = null;
-        $pin->type      = "+";
-        $pin->start_pin = $user->pin;
-        $pin->end_pin   = $user->pin + $addPin;
-        $pin->ket       = 'Admin Added '.$addPin . ' PIN to ' . $user->username;
-        $pin->save();
-
-        $user->pin += ($deposit->amount / 500000);
-        $user->save();
+            $addPin = getAmount($deposit->amount) / 500000;
+            
+            $pin = new UserPin();
+            $pin->user_id   = $user->id;
+            $pin->pin       = $addPin;
+            $pin->pin_by    = null;
+            $pin->type      = "+";
+            $pin->start_pin = $user->pin;
+            $pin->end_pin   = $user->pin + $addPin;
+            $pin->ket       = 'Admin Added '.$addPin . ' PIN to ' . $user->username;
+            $pin->save();
+    
+            $user->pin += $addPin;
+            $user->save();
+            DB::commit();
+            $notify[] = ['success', 'Deposit has been approved.'];
+            return redirect()->route('admin.deposit.pending')->withNotify($notify);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $notify[] = ['error', 'Error: ' . $th->getMessage() ];
+            return redirect()->route('admin.deposit.pending')->withNotify($notify);
+        }
 
         // $transaction = new Transaction();
         // $transaction->user_id = $deposit->user_id;
@@ -228,8 +238,7 @@ class DepositController extends Controller
         //     'trx' => $deposit->trx,
         //     'post_balance' => $user->balance
         // ]);
-        $notify[] = ['success', 'Deposit has been approved.'];
-        return redirect()->route('admin.deposit.pending')->withNotify($notify);
+       
     }
 
     public function reject(Request $request)
