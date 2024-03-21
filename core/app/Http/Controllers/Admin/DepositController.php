@@ -202,7 +202,7 @@ class DepositController extends Controller
             $pin->type      = "+";
             $pin->start_pin = $user->pin;
             $pin->end_pin   = $user->pin + $addPin;
-            $pin->ket       = 'Admin Added '.$addPin . ' PIN to ' . $user->username;
+            $pin->ket       = 'System Send '.$addPin . ' PIN to ' . $user->username . ' From Deposit Order PIN';
             $pin->save();
     
             $user->pin += $addPin;

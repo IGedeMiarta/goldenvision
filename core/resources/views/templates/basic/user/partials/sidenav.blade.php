@@ -127,14 +127,12 @@
                     </div>
                 </li>
 
-                @if (auth()->user()->is_stockiest == 1)
-                    <li class="sidebar-menu-item {{ menuActive('user.deposit') }}">
-                        <a href="{{ route('user.deposit') }}" class="nav-link">
-                            <i class=" menu-icon las la-credit-card"></i>
-                            <span class="menu-title">@lang('Deposit Now')</span>
-                        </a>
-                    </li>
-                @endif
+                {{-- <li class="sidebar-menu-item {{ menuActive('user.deposit') }}">
+                    <a href="{{ route('user.deposit') }}" class="nav-link">
+                        <i class=" menu-icon las la-credit-card"></i>
+                        <span class="menu-title">@lang('Deposit')</span>
+                    </a>
+                </li> --}}
                 <li class="sidebar-menu-item {{ menuActive('user.withdraw') }} disabled">
                     <a href="{{ route('user.withdraw') }}" class="nav-link">
                         <i class="menu-icon las la-wallet"></i>
@@ -152,6 +150,12 @@
                                 <a href="{{ route('user.report.transactions') }}" class="nav-link">
                                     <i class="menu-icon las la-dot-circle"></i>
                                     <span class="menu-title">@lang('Transactions Log')</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-menu-item {{ menuActive('user.report.deposit') }} ">
+                                <a href="{{ route('user.report.deposit') }}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('Order PIN Log')</span>
                                 </a>
                             </li>
                             <li class="sidebar-menu-item {{ menuActive('user.report.withdraw') }}">

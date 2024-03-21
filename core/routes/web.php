@@ -715,7 +715,7 @@ Route::name('user.')->prefix('user')->group(function () {
 
 
             //Report
-            // Route::get('report/deposit/log', 'UserReportController@depositHistory')->name('report.deposit');
+            Route::get('report/deposit/log', 'UserReportController@depositHistory')->name('report.deposit');
             // Route::get('report/invest/log', 'UserReportController@investLog')->name('report.invest');
             // Route::get('report/transactions/log', 'UserReportController@transactions')->name('report.transactions');
             // Route::get('report/withdraw/log', 'UserReportController@withdrawLog')->name('report.withdraw');

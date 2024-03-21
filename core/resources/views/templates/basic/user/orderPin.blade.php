@@ -59,8 +59,8 @@
                         <i class="fas fa-key text-dark" style="font-size: 30px;"></i>
                     </div>
                     <div class="ml-3" style="text-align: start">
-                        <span class="text-dark" style="font-size: 20px">Pending </span>
-                        <h6 class="text-dark font-weight-bold" style="font-size: 30px; margin-top: -10px;">
+                        <span class="text-white" style="font-size: 20px">Pending </span>
+                        <h6 class="text-white font-weight-bold" style="font-size: 30px; margin-top: -10px;">
                             @php
                                 $pendi = $pending ?? 0;
                                 if ($pendi == 0) {
@@ -75,25 +75,25 @@
                 </div>
             </div>
         </div>
-        {{-- <div class="col-md-4 mb-30 text-center">
+        <div class="col-md-4 mb-30 text-center">
             <div class="card"
-                style="background-color:#EE4266; height: 110px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
+                style="background-color:#045199; height: 110px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;">
                 <div class="card-body d-flex align-items-center justify-content-start gap-5">
                     <div class=" ml-4 icon-rp-total">
-                        <i class="fas fa-key text-dark" style="font-size: 30px;"></i>
+                        <i class="fas fa-phone text-dark" style="font-size: 30px;"></i>
                     </div>
                     <div class="ml-3" style="text-align: start">
-                        <span class="text-dark" style="font-size: 20px">Rejected </span>
-                        <h6 class="text-dark font-weight-bold" style="font-size: 30px; margin-top: -10px;">
-                            {{ ($order->amount?? 500000) / 500000 }} PIN
+                        <span class="text-white" style="font-size: 20px">Customer Service? </span>
+                        <h6 class="text-white font-weight-bold" style="font-size: 30px; margin-top: -10px;">
+                            0811 9650 8791
                         </h6>
                     </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
     </div>
     <div class="row">
         @if (!isset($order) || (isset($order) && $order?->status == 2))
@@ -166,7 +166,7 @@
                                 <div class="input-group mb-3">
                                     <input type="file" name="images" id="" class="dropify" data-default-file="{{ $order->detail != null ? asset($order->detail):'' }}">
                                 </div>
-                                <label for="inpName">Nama Rekening Pengirim</label>
+                                <label for="inpName">Nama Pengirim</label>
                                 <input type="text" name="name" id="inpName" class="form-control" placeholder="ex: Haryanto" value="{{ $order->btc_amo??'' }}">
                                 <br>
                                 <button class="btn btn-primary" type="submit" > <i class="fas fa-save"></i> {{ $order->status == 0 ?'Submit':'Update' }}</button>

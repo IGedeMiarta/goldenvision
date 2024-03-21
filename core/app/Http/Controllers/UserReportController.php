@@ -136,7 +136,7 @@ class UserReportController extends Controller
             $data['logs'] = auth()->user()->deposits()->where('trx', 'like', "%$search%")->with(['gateway'])->latest()->paginate(getPaginate());
         } else {
             $data['page_title'] = 'Deposit Log';
-            $data['logs'] = auth()->user()->deposits()->with(['gateway'])->latest()->paginate(getPaginate());
+            $data['logs'] = auth()->user()->deposits()->latest()->paginate(getPaginate());
         }
         $data['search'] = $search;
         $data['empty_message'] = 'No history found.';
