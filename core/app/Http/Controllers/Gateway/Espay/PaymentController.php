@@ -56,7 +56,7 @@ class PaymentController extends Controller
             $deposit->btc_amo = $request->name;
             $deposit->save();
             DB::commit();
-            $notify[] = ['success', "Bukti trasfer di upload"];
+            $notify[] = ['success', "Bukti transfer di upload"];
             return redirect()->back()->withNotify($notify);
         } catch (\Throwable $th) {
             DB::rollBack();
