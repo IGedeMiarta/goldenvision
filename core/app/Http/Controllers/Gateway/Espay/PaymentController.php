@@ -33,4 +33,35 @@ class PaymentController extends Controller
             return redirect()->back()->withNotify($notify);
        }
     }
+    public function userOrderUpdate(Request $request,$id){
+        $deposit = Deposit::find($id);
+        DB::beginTransaction();
+        try {
+            if ($request->hasFile('images')) {
+                $image = $request->file('images');
+                $filename = time() . '_image_' . strtolower(str_replace(" ", "",$deposit->trx)) . '.jpg';
+                $path = './assets/images/deposit/';
+                $imageSave = $path . $filename;
+    
+                $deposit->detail = '/assets/images/deposit/'.$filename;
+    
+                if (file_exists($imageSave)) {
+                    @unlink($imageSave);
+                }
+    
+                $image->move($path,$filename);
+            }
+            $deposit->save();
+            DB::commit();
+            $notify[] = ['success', "Bukti trasfer di upload"];
+            return redirect()->back()->withNotify($notify);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $notify[] = ['error', "Error:" . $th->getMessage() ];
+            return redirect()->back()->withNotify($notify);
+        }
+
+
+        dd($request->all());
+    }
 }

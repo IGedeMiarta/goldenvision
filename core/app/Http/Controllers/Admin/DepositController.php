@@ -9,6 +9,7 @@ use App\Models\GeneralSetting;
 use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\UserPin;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -31,7 +32,7 @@ class DepositController extends Controller
     {
         $page_title = 'Approved Deposits';
         $empty_message = 'No approved deposits.';
-        $deposits = Deposit::where('method_code','>=',1000)->where('status', 1)->with(['user'])->latest()->paginate(getPaginate());
+        $deposits = Deposit::where('status', 1)->with(['user'])->latest()->paginate(getPaginate());
         $type = 'approved';
         return view('admin.deposit.log', compact('page_title', 'empty_message', 'deposits','type'));
     }
@@ -67,17 +68,17 @@ class DepositController extends Controller
 
         if ($type == 'approved') {
             $page_title = 'Approved Payment Via '.$method->name;
-            $deposits = Deposit::where('method_code','>=',1000)->where('method_code',$method->code)->where('status', 1)->latest()->with(['user'])->paginate(getPaginate());
+            $deposits = Deposit::where('method_code',$method->code)->where('status', 1)->latest()->with(['user'])->paginate(getPaginate());
         }elseif($type == 'rejected'){
             $page_title = 'Rejected Payment Via '.$method->name;
-            $deposits = Deposit::where('method_code','>=',1000)->where('method_code',$method->code)->where('status', 3)->latest()->with(['user'])->paginate(getPaginate());
+            $deposits = Deposit::where('method_code',$method->code)->where('status', 3)->latest()->with(['user'])->paginate(getPaginate());
 
         }elseif($type == 'successful'){
             $page_title = 'Successful Payment Via '.$method->name;
             $deposits = Deposit::where('status', 1)->where('method_code',$method->code)->latest()->with(['user'])->paginate(getPaginate());
         }elseif($type == 'pending'){
             $page_title = 'Pending Payment Via '.$method->name;
-            $deposits = Deposit::where('method_code','>=',1000)->where('method_code',$method->code)->where('status', 2)->latest()->with(['user'])->paginate(getPaginate());
+            $deposits = Deposit::where('method_code',$method->code)->where('status', 2)->latest()->with(['user'])->paginate(getPaginate());
         }else{
             $page_title = 'Payment Via '.$method->name;
             $deposits = Deposit::where('status','!=',0)->where('method_code',$method->code)->latest()->with(['user'])->paginate(getPaginate());
@@ -174,7 +175,7 @@ class DepositController extends Controller
     {
         $general = GeneralSetting::first();
         $deposit = Deposit::where('id', $id)->with(['user'])->firstOrFail();
-        $page_title = $deposit->user->username.' requested ' . getAmount($deposit->amount) . ' '.$general->cur_text;
+        $page_title = $deposit->user->username.' requested ' . getAmount($deposit->amount/500000) . ' '.'PIN';
         $details = ($deposit->detail != null) ? json_encode($deposit->detail) : null;
         return view('admin.deposit.detail', compact('page_title', 'deposit','details'));
     }
@@ -190,6 +191,19 @@ class DepositController extends Controller
 
         $user = User::find($deposit->user_id);
         $user->balance = getAmount($user->balance + $deposit->amount);
+        $addPin = ($deposit->amount / 500000);
+        
+        $pin = new UserPin();
+        $pin->user_id   = $user->id;
+        $pin->pin       = $addPin;
+        $pin->pin_by    = null;
+        $pin->type      = "+";
+        $pin->start_pin = $user->pin;
+        $pin->end_pin   = $user->pin + $addPin;
+        $pin->ket       = 'Admin Added '.$addPin . ' PIN to ' . $user->username;
+        $pin->save();
+
+        $user->pin += ($deposit->amount / 500000);
         $user->save();
 
         $transaction = new Transaction();
@@ -198,24 +212,23 @@ class DepositController extends Controller
         $transaction->post_balance = getAmount($user->balance);
         $transaction->charge = getAmount($deposit->charge);
         $transaction->trx_type = '+';
-        $transaction->details = 'Deposit Via ' . $deposit->gateway_currency()->name;
+        $transaction->details = 'Deposit Via Bank Trasfer';
         $transaction->trx =  $deposit->trx;
         $transaction->save();
 
-        $gnl = GeneralSetting::first();
-        notify($user, 'DEPOSIT_APPROVE', [
-            'method_name' => $deposit->gateway_currency()->name,
-            'method_currency' => $deposit->method_currency,
-            'method_amount' => getAmount($deposit->final_amo),
-            'amount' => getAmount($deposit->amount),
-            'charge' => getAmount($deposit->charge),
-            'currency' => $gnl->cur_text,
-            'rate' => getAmount($deposit->rate),
-            'trx' => $deposit->trx,
-            'post_balance' => $user->balance
-        ]);
+        // $gnl = GeneralSetting::first();
+        // notify($user, 'DEPOSIT_APPROVE', [
+        //     'method_name' => $deposit->gateway_currency()->name,
+        //     'method_currency' => $deposit->method_currency,
+        //     'method_amount' => getAmount($deposit->final_amo),
+        //     'amount' => getAmount($deposit->amount),
+        //     'charge' => getAmount($deposit->charge),
+        //     'currency' => $gnl->cur_text,
+        //     'rate' => getAmount($deposit->rate),
+        //     'trx' => $deposit->trx,
+        //     'post_balance' => $user->balance
+        // ]);
         $notify[] = ['success', 'Deposit has been approved.'];
-
         return redirect()->route('admin.deposit.pending')->withNotify($notify);
     }
 
@@ -232,18 +245,18 @@ class DepositController extends Controller
         $deposit->status = 3;
         $deposit->save();
 
-        $gnl = GeneralSetting::first();
-        notify($deposit->user, 'DEPOSIT_REJECT', [
-            'method_name' => $deposit->gateway_currency()->name,
-            'method_currency' => $deposit->method_currency,
-            'method_amount' => getAmount($deposit->final_amo),
-            'amount' => getAmount($deposit->amount),
-            'charge' => getAmount($deposit->charge),
-            'currency' => $gnl->cur_text,
-            'rate' => getAmount($deposit->rate),
-            'trx' => $deposit->trx,
-            'rejection_message' => $request->message
-        ]);
+        // $gnl = GeneralSetting::first();
+        // notify($deposit->user, 'DEPOSIT_REJECT', [
+        //     'method_name' => $deposit->gateway_currency()->name,
+        //     'method_currency' => $deposit->method_currency,
+        //     'method_amount' => getAmount($deposit->final_amo),
+        //     'amount' => getAmount($deposit->amount),
+        //     'charge' => getAmount($deposit->charge),
+        //     'currency' => $gnl->cur_text,
+        //     'rate' => getAmount($deposit->rate),
+        //     'trx' => $deposit->trx,
+        //     'rejection_message' => $request->message
+        // ]);
 
         $notify[] = ['success', 'Deposit has been rejected.'];
         return  redirect()->route('admin.deposit.pending')->withNotify($notify);

@@ -22,6 +22,8 @@
             /* Adjust border width and color as needed */
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('assets/assets/dropify/css/dropify.min.css') }}">
+
 @endpush
 @section('panel')
     <div class="row ">
@@ -46,9 +48,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-5 col-lg-5 ">
+        <div class="col-md-5 col-lg-5 @if(isset($order) && $order->status==2 && $order->detail == null) d-none  @endif">
             <div class="card" style="min-height: 15rem; border-radius: 15px">
-
                 <div class="card-body">
                     <form action="{{ route('user.pins.order.post') }}" method="POST">
                         @csrf
@@ -68,121 +69,94 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-5">
-            <div class="card">
+        <div class="col-md-5 col-lg-5 @if(!isset($order) || $order->detail != null) d-none  @endif">
+            <div class="card" style="min-height: 15rem; border-radius: 15px">
                 <div class="card-body">
-                    <iframe id="sgoplus-iframe" sandbox="allow-same-origin allow-scripts allow-top-navigation"
-                        src="" scrolling="no" frameborder="0"></iframe>
-                    <script type="text/javascript" src="https://sandbox-kit.espay.id/public/signature/js"></script>
-                    <script type="text/javascript">
-                        window.onload = function() {
-                            var data = {
-                                    key: "45c19b8cd6d132fa1c3801d21707a0dd",
-                                    paymentId: "{{ generateTrxCode() }}",
-                                    backUrl: "{{ url('user.dashboard') }}",
-                                    display: 'tab'
-                                },
-                                sgoPlusIframe = document.getElementById("sgoplus-iframe");
-                            if (sgoPlusIframe !== null) sgoPlusIframe.src = SGOSignature.getIframeURL(data);
-                            SGOSignature.receiveForm();
-                        };
-                    </script>
+                    <div class="text-center">
+                        <h5 class=""> Please Complate Your Order <b>{{ $order->amount/500000 }} PIN.</b> <br>
+                    </div>
+                    <ul class="list-group mt-3">
+                        <li class="list-group-item">
+                           <div class="row">
+                            <div class="col-md-3">Bank</div>
+                            <div class="col-md-9"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="BCA" style="width: 100px;"></div>
+                           </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-3">Rek</div>
+                                <div class="col-md-9">
+                                    <a href="#" id="copy" data-rek="5250444828"> <b>5250444828</b> <i class="fas fa-copy"></i></a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-3">A/N</div>
+                                <div class="col-md-9">
+                                    <b>PT. MEMAYU BARATA ADIGUNA</b>
+                                </div>
+                            </div>
+                            </li>
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-3">Amount</div>
+                                <div class="col-md-9">
+                                    <b>Rp {{ nb($order->amount) }}</b>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="list-group-item">
+                            <form action="{{ route('user.pins.order.update',$order?->id) }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+                                <label for="">Uplad Bukti Trasfer</label>
+                                <div class="input-group mb-3">
+                                    <input type="file" name="images" id="" class="dropify">
+                                </div>
+
+                                <button class="btn btn-primary" type="submit" > <i class="fas fa-save"></i> Submit</button>
+                            </form>
+                        </li>
+                    </ul>
+                     
                 </div>
             </div>
         </div>
     </div>
 @endsection
-{{-- @push('script')
+@push('script')
+    <script src="{{ asset('assets/assets/dropify/js/dropify.min.js') }}"></script>
+    <script>
+      function copyToClipboard(text) {
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyLink = document.getElementById('copy');
+
+            copyLink.addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent the default action of the link
+
+                const rekValue = copyLink.getAttribute('data-rek');
+                copyToClipboard(rekValue);
+                alert('Copied to clipboard Rek: ' + rekValue);
+            });
+        });
+    </script>
+@endpush
+@push('script')
     <script>
         'use strict';
         (function($) {
-            checkValid();
-            $('#username').on('keyup', delay(function(e) {
-
-                var uname = $(this).val();
-                $.ajax({
-                    url: "{{ url('find-uname') }}" + "/" + uname,
-                    cache: false,
-                    success: function(res) {
-                        if (res.status == 404) {
-                            $('.pin').attr('disabled', true);
-                            $('.uname').removeClass('is-valid').addClass('is-invalid');
-                            $('.txt-uname').addClass('text-danger').removeClass('text-success')
-                                .html(res.msg)
-                            $('#user_id').val('');
-
-                            checkValid();
-
-                        }
-                        if (res.status == 200) {
-                            $('.pin').attr('disabled', false).attr('placeholder',
-                                "Input PIN Qty").focus();
-                            $('.uname').removeClass('is-invalid').addClass('is-valid');
-                            $('.txt-uname').addClass('text-success').removeClass('text-danger')
-                                .html(res.msg)
-                            $('#user_id').val(res.data.id);
-                            checkValid();
-
-                        }
-                    }
-                });
-            }, 500))
-
-            $('#pin').on('keyup', delay(function(e) {
-                $('.txt-pin').html('');
-                const uPin = parseInt("{{ auth()->user()->pin }}"); //60
-                let pin = parseInt($(this).val()); //100
-                if (uPin >= pin) {
-                    $('.pin').removeClass('is-invalid').addClass('is-valid');
-                    $('.txt-pin').addClass('text-success').removeClass('text-danger').html(
-                        'Qty Match');
-
-                    checkValid();
-
-                } else {
-                    $('.pin').removeClass('is-valid').addClass('is-invalid');
-                    $('.txt-pin').addClass('text-danger').removeClass('text-success').html(
-                        'You Not Have Enough PIN to Send');
-                    checkValid();
-
-                }
-                if (isNaN(pin)) {
-                    $('.pin').removeClass('is-invalid is-valid');
-                    $('.txt-pin').removeClass('text-danger text-success').addClass('text-secondary').html(
-                        'Type PIN Qty');
-                    checkValid();
-
-                }
-
-            }, 500))
-
-            function delay(callback, ms) {
-                var timer = 0;
-                return function() {
-                    var context = this,
-                        args = arguments;
-                    clearTimeout(timer);
-                    timer = setTimeout(function() {
-                        callback.apply(context, args);
-                    }, ms || 0);
-                };
-            }
-
-            function checkValid() {
-                let uname = $('.uname').hasClass('is-valid');
-                let pin = $('.pin').hasClass('is-valid');
-                if (uname && pin) {
-                    $('.btnSend').attr('disabled', false);
-                } else {
-                    $('.btnSend').attr('disabled', true);
-                }
-                let userID = $('#user_id').val();
-                const url = "{{ url('user/send-pin') }}" + '/' + userID;
-                $('#formSubBalance').attr('action', url)
-
-            }
-
+            $('.dropify').dropify();
 
         })(jQuery)
     </script>
-@endpush --}}
+@endpush

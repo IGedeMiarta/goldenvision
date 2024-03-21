@@ -671,6 +671,7 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::get('pin/log', 'UserReportController@PinDeliveriyLog')->name('pins.PinDeliveriyLog');
             Route::get('/user-order',[SponsorRegisterController::class,'userOrderPin'])->name('pins.order');
             Route::post('/user-order',[PaymentController::class,'userOrderPin'])->name('pins.order.post');
+            Route::put('/user-order/{id}',[PaymentController::class,'userOrderUpdate'])->name('pins.order.update');
 
             Route::get('/Product', 'ProductController@productIndex')->name('product.index');
             Route::post('/Product-purchase', 'ProductController@productPurchase')->name('product.purchase')->middleware('addressCheck');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AdminNotification;
 use App\Models\bank;
+use App\Models\Deposit;
 use App\Models\GeneralSetting;
 use App\Models\Gold;
 use App\Models\Plan;
@@ -503,6 +504,7 @@ class SponsorRegisterController extends Controller
 
     public function userOrderPin(){
          $data['page_title'] = "Order PINs";
+         $data['order'] = Deposit::where('user_id',auth()->user()->id)->orderByDesc('id')->first();
         return view($this->activeTemplate . 'user.orderPin', $data);
     }
 

@@ -4,10 +4,7 @@
         <div class="col-xl-4 col-md-6 mb-30">
             <div class="card b-radius--10 overflow-hidden box--shadow1">
                 <div class="card-body">
-                    <h5 class="mb-20 text-muted">@lang('Deposit Via') {{ __(@$deposit->gateway->name) }}</h5>
-                    <div class="p-3 bg--white">
-                        <img src="{{ $deposit->gateway_currency()->methodImage() }}" alt="@lang('Profile Image')" class="b-radius--10 deposit-imgView">
-                    </div>
+                    
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             @lang('Date')
@@ -23,31 +20,31 @@
                                 <a href="{{ route('admin.users.detail', $deposit->user_id) }}">{{ @$deposit->user->username }}</a>
                             </span>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
                             @lang('Method')
                             <span class="font-weight-bold">{{ __(@$deposit->gateway->name) }}</span>
-                        </li>
+                        </li> --}}
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             @lang('Amount')
                             <span class="font-weight-bold">{{ getAmount($deposit->amount ) }} {{ __($general->cur_text) }}</span>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
                             @lang('Charge')
                             <span class="font-weight-bold">{{ getAmount($deposit->charge ) }} {{ __($general->cur_text) }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             @lang('After Charge')
                             <span class="font-weight-bold">{{ getAmount($deposit->amount+$deposit->charge ) }} {{ __($general->cur_text) }}</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        </li> --}}
+                        {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
                             @lang('Rate')
                             <span class="font-weight-bold">1 {{__($general->cur_text)}}
                                 = {{ getAmount($deposit->rate) }} {{__($deposit->baseCurrency())}}</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        </li> --}}
+                        {{-- <li class="list-group-item d-flex justify-content-between align-items-center">
                             @lang('Payable')
                             <span class="font-weight-bold">{{ getAmount($deposit->final_amo ) }} {{__($deposit->method_currency)}}</span>
-                        </li>
+                        </li> --}}
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             @lang('Status')
                             @if($deposit->status == 2)
@@ -73,44 +70,24 @@
             <div class="card b-radius--10 overflow-hidden box--shadow1">
                 <div class="card-body">
                     <h5 class="card-title mb-50 border-bottom pb-2">@lang('User Deposit Information')</h5>
-                    @if($details != null)
-                        @foreach(json_decode($details) as $k => $val)
-                            @if($val->type == 'file')
-                                <div class="row mt-4">
-                                    <div class="col-md-8">
-                                        <h6>{{inputTitle($k)}}</h6>
-                                        <img src="{{getImage('assets/images/verify/deposit/'.$val->field_name)}}" alt="@lang('Image')">
-                                    </div>
-                                </div>
-                            @else
-                                <div class="row mt-4">
-                                    <div class="col-md-12">
-                                        <h6>{{inputTitle($k)}}</h6>
-                                        <p>{{__($val->field_name)}}</p>
-                                    </div>
-                                </div>
-                            @endif
-                        @endforeach
-                    @endif
+                    <img src="{{ asset($deposit->detail) }}" alt="bukti-trf">
+                  
                     @if($deposit->status == 2)
                         <div class="row mt-4">
                             <div class="col-md-12">
-                                {{-- <button class="btn btn--success ml-1 approveBtn"
-                                        data-id="{{ $deposit->id }}"
-                                        data-info="{{$details}}"
-                                        data-amount="{{ getAmount($deposit->amount)}} {{ __($general->cur_text) }}"
-                                        data-username="{{ @$deposit->user->username }}"
-                                        data-toggle="tooltip" data-original-title="@lang('Approve')"><i class="fas fa-check"></i>
-                                    @lang('Approve')
-                                </button> --}}
-
                                 <button class="btn btn--danger ml-1 rejectBtn"
                                         data-id="{{ $deposit->id }}"
-                                        data-info="{{$details}}"
                                         data-amount="{{ getAmount($deposit->amount)}} {{ __($general->cur_text) }}"
                                         data-username="{{ @$deposit->user->username }}"
                                         data-toggle="tooltip" data-original-title="@lang('Reject')"><i class="fas fa-ban"></i>
                                     @lang('Reject')
+                                </button>
+                                <button class="btn btn--success ml-1 approveBtn"
+                                        data-id="{{ $deposit->id }}"
+                                        data-amount="{{ getAmount($deposit->amount)}} {{ __($general->cur_text) }}"
+                                        data-username="{{ @$deposit->user->username }}"
+                                        data-toggle="tooltip" data-original-title="@lang('Approve')"><i class="fas fa-check"></i>
+                                    @lang('Approve')
                                 </button>
                             </div>
                         </div>
@@ -135,7 +112,9 @@
                     @csrf
                     <input type="hidden" name="id">
                     <div class="modal-body">
-                        <p>@lang('Are you sure to') <span class="font-weight-bold">@lang('approve')</span> <span class="font-weight-bold withdraw-amount text-success"></span> @lang('deposit of') <span class="font-weight-bold withdraw-user"></span>?</p>
+                        <p>@lang('Are you sure to') <span class="font-weight-bold">@lang('approve')</span> 
+                            <span class="font-weight-bold withdraw-amount text-success"></span> @lang('deposit of') <span class="font-weight-bold withdraw-user"></span> 
+                            @lang('for') <span class="font-weight-bold text-success withdraw-pin"></span> ?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn--dark" data-dismiss="modal">@lang('Close')</button>
@@ -160,7 +139,8 @@
                     @csrf
                     <input type="hidden" name="id">
                     <div class="modal-body">
-                        <p>@lang('Are you sure to') <span class="font-weight-bold">@lang('reject')</span> <span class="font-weight-bold withdraw-amount text-success"></span> @lang('deposit of') <span class="font-weight-bold withdraw-user"></span>?</p>
+                        <p>@lang('Are you sure to') <span class="font-weight-bold">@lang('reject')</span> <span class="font-weight-bold withdraw-amount text-success"></span> @lang('deposit of') <span class="font-weight-bold withdraw-user"></span>
+                            @lang('for') <span class="font-weight-bold text-success withdraw-pin"></span> ?</p>
 
                         <div class="form-group">
                             <label class="font-weight-bold mt-2">@lang('Reason for Rejection')</label>
@@ -184,17 +164,22 @@
         (function($){
             $('.approveBtn').on('click', function () {
                 var modal = $('#approveModal');
+                var pin = parseInt($(this).data('amount')) / 500000;
                 modal.find('input[name=id]').val($(this).data('id'));
                 modal.find('.withdraw-amount').text($(this).data('amount'));
                 modal.find('.withdraw-user').text($(this).data('username'));
+                modal.find('.withdraw-pin').text(pin + ' PIN');
                 modal.modal('show');
             });
 
             $('.rejectBtn').on('click', function () {
                 var modal = $('#rejectModal');
+                var pin = parseInt($(this).data('amount')) / 500000;
                 modal.find('input[name=id]').val($(this).data('id'));
                 modal.find('.withdraw-amount').text($(this).data('amount'));
                 modal.find('.withdraw-user').text($(this).data('username'));
+                modal.find('.withdraw-pin').text(pin + ' PIN');
+
                 modal.modal('show');
             });
         })(jQuery)

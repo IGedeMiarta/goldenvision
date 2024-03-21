@@ -28,10 +28,10 @@ class Deposit extends Model
         return GatewayCurrency::where('method_code', $this->method_code)->where('currency', $this->method_currency)->first();
     }
 
-    public function scopeBaseCurrency()
-    {
-        return $this->gateway->crypto == 1 ? 'USD' : $this->method_currency;
-    }
+    // public function scopeBaseCurrency()
+    // {
+    //     return $this->gateway->crypto == 1 ? 'USD' : $this->method_currency;
+    // }
 
     public function scopePending()
     {

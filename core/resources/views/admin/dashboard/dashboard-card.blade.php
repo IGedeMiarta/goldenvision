@@ -172,55 +172,37 @@
             color: #28C76F;
         }
 
-        .fa-times {
+        .fa-clock {
             color: red;
         }
     </style>
 @endpush
 <div class="row">
-    <div class="col-xl-4 col-md-4 col-sm-6 mb-30" style="margin-top: 25px;">
+    <div class="col-xl-4 col-md-4 col-sm-6 mb-30" style="margin-top: 25px;margin-bottom: 10px;">
         Selamat datang,
         <h4 style="font-size: 24px; font-weight: bolder; color: black">Admin</h4>
-        <div style="">
-            <span class="badges badges-success"
-                style="display: flex; justify-content: space-between; width: 50%;align-items: center;">
-                <div>Leadership Status</div>
-                <div class="icon-check-mini">
-                    <i class="fas fa-check"></i>
-                    {{-- <i class="fas fa-times"></i> --}}
-                </div>
-            </span>
-        </div>
+        
     </div>
     <div class="col-xl-4 col-md-4 col-sm-6 mb-30 text-center">
 
 
     </div>
-    <div class="col-xl-4 col-md-4 col-sm-6 mb-30">
-        <p style="color: black">Cron Status</p>
-        <div class="row" style="max-height: 200px;">
+    <div class="col-xl-4 col-md-4 col-sm-6 mb-30" style="display: flex; justify-content: end;margin-top: 25px;">
+        {{-- <p style="color: black">Cron Status</p> --}}
+        <div class="row" style="max-height: 100%;">
             <div class="col-md-12 mb-3">
-                <div class="card"
-                    style="height: 90px; border-radius: 20px; background-color: #0A0A0A; background-image: url('{{ asset('assets/figma/nav-bg2.png') }}') !important;  
-                background-position: end;
-                background-repeat: no-repeat;
-                background-size: cover;">
-                    <div class="card-body" style="display: flex; justify-content: start;">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="referralLink"
-                                style="height: 50px; background-color: white" value="">
-                            <div class="input-group-append">
-                                <button class="btn btn-dark" id="btnCopyLink" style="height: 50px"
-                                    type="button">Copy</button>
-                            </div>
-                        </div>
-                    </div>
+                <div style="">
+                    <a href="javascript:void(0)"
+                    class="btn @if (Carbon\Carbon::parse($general->last_cron)->diffInSeconds() < 600) btn-success @elseif(Carbon\Carbon::parse($general->last_cron)->diffInSeconds() < 1200) btn-warning @else
+                    btn-danger @endif "><i
+                        class="fa fa-fw fa-clock"></i>@lang('Last Cron Run') :
+                    {{ Carbon\Carbon::parse($general->last_cron)->difFforHumans() }}</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="row">
+{{-- <div class="row">
     <div class="col-xl-4 col-md-4 col-sm-6 mb-30 text-center">
         <div class="card bg--success"
             style="height: 200px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
@@ -316,48 +298,21 @@
 
         </div>
     </div>
-</div>
-<p style="font-size: 14px">Withdraw</p>
+</div> --}}
+<p style="font-size: 14px">User</p>
 <div class="row">
-    <div class="col-xl-4 col-md-4 col-sm-6 mb-30 text-center">
+  
+    <div class="col-xl-4 col-md-4 col-sm-4 mb-30 text-center">
         <div class="card"
-            style="background-color: #045199; height: 200px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
+            style="background-color: #045199; height: 150px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: cover;">
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
-                    <span style="font-size: 12px; color: #FFC453">Waiting</span>
-                    <h6 class="text-white" style="font-size: 18px">{{ nb(111111) }} IDR</h6>
-                </div>
-                <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
-                    <a href="{{ route('user.report.transactions') }}" style="width: 80px"
-                        class="btn btn-sm text--small bg-btn-primary box--shadow3 mt-3">@lang(' View ')</a>
-                </div>
-            </div>
-            <div class="card-body" style="display: flex; justify-content: space-between">
-                <div class="col-md-6 col-sm-6" style="text-align: start;">
-                    <span style="font-size: 12px; color: #07FFB8">Completed</span>
-                    <h6 class="text-white" style="font-size: 18px">{{ nb(111111) }} IDR</h6>
-                </div>
-                <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
-                    <a href="{{ route('user.report.transactions') }}" style="width: 80px"
-                        class="btn btn-sm text--small bg-btn-primary box--shadow3 mt-3">@lang(' View ')</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-4 col-md-4 col-sm-6 mb-30 text-center">
-        <div class="card"
-            style="background-color: #045199; height: 200px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: cover;">
-            <div class="card-body" style="display: flex; justify-content: space-between">
-                <div class="col-md-6 col-sm-6" style="text-align: start;">
-                    <span class="text-white" style="font-size: 12px">Today Point: Left / Right </span>
-                    <h6 class="text-white" style="font-size: 18px">{{ 111111 }} /
-                        {{ 111111 }}
+                    <span class="text-white" style="font-size: 12px">Total Free User </span>
+                    <h6 class="text-white" style="font-size: 25px;font-weight: bolder">
+                        {{ $free_user }}
                     </h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
@@ -366,23 +321,24 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body" style="position: relative;">
+            {{-- <div class="card-body" style="position: relative;">
                 <a href="{{ route('user.report.transactions') }}"
                     class="btn btn-sm btn-block text--small bg-btn-primary box--shadow3 mt-3">@lang('View Network')</a>
-            </div>
+            </div> --}}
         </div>
     </div>
-    <div class="col-xl-4 col-md-4 col-sm-6 mb-30 text-center">
+    
+    <div class="col-xl-4 col-md-4 col-sm-4 mb-30 text-center">
         <div class="card"
-            style="background-color: #045199; height: 200px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
+            style="background-color: #045199; height: 150px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: cover;">
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
-                    <span class="text-white" style="font-size: 12px">Total Point: Left / Right </span>
-                    <h6 class="text-white" style="font-size: 18px">{{ 111111 }} /
-                        {{ 111111 }}</h6>
+                    <span class="text-white" style="font-size: 12px">Total Active User </span>
+                    <h6 class="text-white"style="font-size: 25px;font-weight: bolder">{{ $total_active_user }}
+                    </h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <div class="icon-user">
@@ -390,13 +346,113 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body" style="position: relative;">
+            {{-- <div class="card-body" style="position: relative;">
                 <a href="{{ route('user.report.transactions') }}"
                     class="btn btn-sm btn-block text--small bg-btn-primary box--shadow3 mt-3">@lang('View Network')</a>
-            </div>
+            </div> --}}
         </div>
     </div>
-
+    
+    <div class="col-xl-4 col-md-4 col-sm-4 mb-30 text-center">
+        <div class="card"
+            style="background-color: #045199; height: 150px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;">
+            <div class="card-body" style="display: flex; justify-content: space-between">
+                <div class="col-md-6 col-sm-6" style="text-align: start;">
+                    <span class="text-white" style="font-size: 12px">Free User Today</span>
+                    <h6 class="text-white"style="font-size: 25px;font-weight: bolder">{{ $free_user_today }}
+                    </h6>
+                </div>
+                <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
+                    <div class="icon-user">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+            {{-- <div class="card-body" style="position: relative;">
+                <a href="{{ route('user.report.transactions') }}"
+                    class="btn btn-sm btn-block text--small bg-btn-primary box--shadow3 mt-3">@lang('View Network')</a>
+            </div> --}}
+        </div>
+    </div>
+    
+    
+    <div class="col-xl-4 col-md-4 col-sm-4 mb-30 text-center">
+        <div class="card"
+            style="background-color: #045199; height: 150px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;">
+            <div class="card-body" style="display: flex; justify-content: space-between">
+                <div class="col-md-6 col-sm-6" style="text-align: start;">
+                    <span class="text-white" style="font-size: 12px">+ User This Month </span>
+                    <h6 class="text-white"style="font-size: 25px;font-weight: bolder">{{ $user_month }}
+                    </h6>
+                </div>
+                <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
+                    <div class="icon-user">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+            {{-- <div class="card-body" style="position: relative;">
+                <a href="{{ route('user.report.transactions') }}"
+                    class="btn btn-sm btn-block text--small bg-btn-primary box--shadow3 mt-3">@lang('View Network')</a>
+            </div> --}}
+        </div>
+    </div>
+    
+    <div class="col-xl-4 col-md-4 col-sm-4 mb-30 text-center">
+        <div class="card"
+            style="background-color: #045199; height: 150px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;">
+            <div class="card-body" style="display: flex; justify-content: space-between">
+                <div class="col-md-6 col-sm-6" style="text-align: start;">
+                    <span class="text-white" style="font-size: 12px">+ User This We </span>
+                    <h6 class="text-white"style="font-size: 25px;font-weight: bolder">{{ $user_week}}
+                    </h6>
+                </div>
+                <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
+                    <div class="icon-user">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+            {{-- <div class="card-body" style="position: relative;">
+                <a href="{{ route('user.report.transactions') }}"
+                    class="btn btn-sm btn-block text--small bg-btn-primary box--shadow3 mt-3">@lang('View Network')</a>
+            </div> --}}
+        </div>
+    </div>
+    
+    <div class="col-xl-4 col-md-4 col-sm-4 mb-30 text-center">
+        <div class="card"
+            style="background-color: #045199; height: 150px;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;">
+            <div class="card-body" style="display: flex; justify-content: space-between">
+                <div class="col-md-6 col-sm-6" style="text-align: start;">
+                    <span class="text-white" style="font-size: 12px">+ User Today </span>
+                    <h6 class="text-white"style="font-size: 25px;font-weight: bolder">{{ $active_user_today }}
+                    </h6>
+                </div>
+                <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
+                    <div class="icon-user">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+            {{-- <div class="card-body" style="position: relative;">
+                <a href="{{ route('user.report.transactions') }}"
+                    class="btn btn-sm btn-block text--small bg-btn-primary box--shadow3 mt-3">@lang('View Network')</a>
+            </div> --}}
+        </div>
+    </div>
 </div>
 
 <div style="display: flex; align-items: center;">
@@ -413,7 +469,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Sponsor Bonus </span>
-                    <h6 class="text-dark" style="font-size: 18px">{{ nb(111111) }}
+                    <h6 class="text-dark"style="font-size: 25px;font-weight: bolder">{{ nb(111111) }}
                         IDR</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
@@ -438,7 +494,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Binary Bonus </span>
-                    <h6 class="text-dark" style="font-size: 18px">
+                    <h6 class="text-dark"style="font-size: 25px;font-weight: bolder">
                         {{ nb(111111) }} IDR</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
@@ -463,7 +519,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">All Bonus </span>
-                    <h6 class="text-dark" style="font-size: 18px">
+                    <h6 class="text-dark"style="font-size: 25px;font-weight: bolder">
                         {{ nb(111111) }}
                         IDR</h6>
                 </div>

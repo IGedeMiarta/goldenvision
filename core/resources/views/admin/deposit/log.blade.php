@@ -49,9 +49,9 @@
                                         <th scope="col">@lang('Email')</th>
                                     @endif
                                     <th scope="col">@lang('Amount')</th>
-                                    <th scope="col">@lang('Payable')</th>
+                                    <th scope="col">@lang('Request')</th>
                                     <th scope="col">@lang('Status')</th>
-                                    {{-- <th scope="col">@lang('Action')</th> --}}
+                                    <th scope="col">@lang('Action')</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -73,8 +73,8 @@
                                         <td data-label="@lang('Amount')" class="font-weight-bold">
                                             {{ nb(getAmount($deposit->amount)) }} {{ __($general->cur_text) }}</td>
 
-                                        <td data-label="@lang('Payable')" class="font-weight-bold">
-                                            {{ nb(getAmount($deposit->final_amo)) }} {{ __($deposit->method_currency) }}
+                                        <td data-label="@lang('PIN')" class="font-weight-bold">
+                                            {{ nb(getAmount($deposit->amount / 500000)) }} PIN
                                         </td>
                                         <td data-label="@lang('Status')">
                                             @if ($deposit->status == 2)
@@ -85,13 +85,13 @@
                                                 <span class="badge badge--danger">@lang('Rejected')</span>
                                             @endif
                                         </td>
-                                        {{-- <td data-label="@lang('Action')">
+                                        <td data-label="@lang('Action')">
                                             <a href="{{ route('admin.deposit.details', $deposit->id) }}"
                                                 class="icon-btn ml-1 " data-toggle="tooltip" title=""
                                                 data-original-title="@lang('Detail')">
                                                 <i class="la la-eye"></i>
                                             </a>
-                                        </td> --}}
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
