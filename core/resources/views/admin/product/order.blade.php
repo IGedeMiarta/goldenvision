@@ -15,9 +15,10 @@
                                     <th>No</th>
                                     <th>Invoice No</th>
                                     <th>Date</th>
+                                    <th>User</th>
                                     <th>Status</th>
-                                    <th>Receipt Number</th>
                                     <th>Agent</th>
+                                    <th>Receipt Number</th>
                                     <th>Tracking</th>
                                     <th>Option</th>
                                 </tr>
@@ -35,27 +36,37 @@
                                             {{ date('M d, Y', strtotime($item->created_at)) }}
                                         </td>
                                         <td>
+                                           <a href="{{ url('admin/user/detail',$item->user->id) }}"> {{ $item->user->username }}</a>
+                                        </td>
+                                        <td>
                                             @if ($item->status == 1)
                                                 <span class="badge badge-warning">Waiting Approve</span>
                                             @elseif($item->status == 2)
-                                                <span class="badge badge-warning">On Delivery</span>
+                                                <span class="badge badge-primary">On Delivery</span>
                                             @elseif($item->status == 3)
-                                                <span class="badge badge-success">Completed</span>
+                                                <span class="badge badge-primary">Completed</span>
                                             @else
                                                 <span class="badge badge-danger">Rejected</span>
                                             @endif
                                         </td>
+                                      
                                         <td>
-                                            {{ $item->resi }}
+                                            {{ $item->agent->name ?? '-'}}
                                         </td>
                                         <td>
-                                            {{ $item->agen }}
+                                            {{ $item->resi ?? '-' }}
                                         </td>
                                         <td style="white-space:nowrap;">
+                                            @if ($item->status != 4 && ($item->agen != null && $item->agen != 1))
+                                                
                                             <a href="#" style="color: #8C8C8C;text-decoration: underline;">Check
                                                 Agent</a>
+                                                @else
+                                                -
+                                            @endif
                                         </td>
                                         <td>
+                                           @if ($item->status ==1)
                                             @php
                                                 $rs = '<tr>';
                                                 foreach ($item->detail as $value) {
@@ -86,6 +97,10 @@
                                                 data-address="{{ $item->user->address->address }}"
                                                 data-zip="{{ $item->user->address->zip }}" data-sts="{{ $sts }}"
                                                 class="btn btn-sm btn--warning edit"><i class="las la-edit"></i></button>
+
+                                            @else
+                                            -
+                                           @endif
                                         </td>
                                     </tr>
 
@@ -162,16 +177,23 @@
                         <input class="form-control" id="id" type="hidden" name="id">
                         <div class="form-group mt-4">
                             <label for="agent">Agent</label>
-                            <input class="form-control" id="agent" type="text" name="agent" placeholder="POS">
-                        </div>
-                        <div class="form-group mt-1">
-                            <label for="expect_ongkir">Expect Ongkir</label>
-                            <input class="form-control" id="expect_ongkir" type="number" name="expect_ongkir"
-                                placeholder="000.000" readonly>
+                            <select name="agent" id="" class="form-control">
+                                <option selected disabled>Pilih</option>
+                                @foreach ($agent as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                                {{-- <option value="pos">POS</option> --}}
+                            </select>
+                            {{-- <input class="form-control" id="agent" type="text" name="agent" placeholder="POS"> --}}
                         </div>
                         <div class="form-group mt-1">
                             <label for="ongkir">Ongkir</label>
-                            <input class="form-control" id="ongkir" type="number" name="ongkir" placeholder="000.000">
+                            <input class="form-control" id="ongkir" type="number" name="ongkir" placeholder="00,000" readonly>
+                        </div>
+                        <div class="form-group mt-1">
+                            <label for="resi">No Resi</label>
+                            <input class="form-control" id="resi" type="text" name="resi"
+                                placeholder="0000" readonly>
                         </div>
                         <div class="form-group mt-1">
                             <label for="admin_feedback">Admin Notes</label>
@@ -182,7 +204,7 @@
                         <input type="submit" name="action" value="Reject" class="btn btn--danger"
                             style="width: 100%; margin-right: 20px;" />
                         <input type="submit" name="action" value="Approve" class="btn btn--success"
-                            style="width: 100%" disabled />
+                            style="width: 100%" />
                     </div>
                 </form>
             </div>

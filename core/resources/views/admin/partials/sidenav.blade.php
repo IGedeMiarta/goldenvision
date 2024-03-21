@@ -79,7 +79,7 @@
                                 <li class="sidebar-menu-item {{ menuActive('admin.product.order') }} ">
                                     <a href="{{ route('admin.product.order') }}" class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
-                                        <span class="menu-title">@lang('Product Order')</span>
+                                        <span class="menu-title">@lang('Order Product')</span>
                                     </a>
                                 </li>
                             </ul>

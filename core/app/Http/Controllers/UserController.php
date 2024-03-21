@@ -172,7 +172,8 @@ class UserController extends Controller
     public function ref(){
         $user = Auth::user();
         $data['page_title']     = "Referals Tree";
-        $data['referrals']      = User::userTree($user->id); 
+        $data['referrals_active']      = User::where('ref_id',$user->id)->where('plan_id',1) ->get();
+        $data['referrals_free']      = User::where('ref_id',$user->id)->where('plan_id',0) ->get();
         return view($this->activeTemplate . 'user.referals', $data);
 
     }

@@ -130,26 +130,31 @@ class ProductController extends Controller
             $notify[] = ['success', 'Error:' . $th->getMessage() ];
             return redirect()->route('user.home')->withNotify($notify);
         }
-
-        
     }
     public function productInvoice(){
         $data['page_title'] = "Invoice";
         $data['inv'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('total_order','>',0)->orderByDesc('id')->get();
         $data['wait'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('total_order','>',0)->where('status',1)->count();
         $data['deliver'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('total_order','>',0)->where('status',2)->count();
-        $data['accept'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('total_order','>',0)->where('status',3)->count();
+        $data['accept'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('total_order','>',0)->whereIn('status',[2,3])->count();
         $data['reject'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('total_order','>',0)->where('status',4)->count();
         return view('templates.basic.user.product.inv',$data);
     }
     public function productTracking(){
         $data['page_title'] = "Tracking Product";
-        $data['inv'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status','!=',1)->where('status','!=',4)->get();
-        $data['wait'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',1)->count();
-        $data['deliver'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',2)->count();
-        $data['accept'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',3)->count();
-        $data['reject'] = ProductOrder::with('detail','detail.product')->where('user_id',auth()->user()->id)->where('status',4)->count();
+        $data['inv'] = ProductOrder::with('detail','detail.product','agent')->where('user_id',auth()->user()->id)->where('status','!=',1)->where('status','!=',4)->get();
+        $data['wait'] = ProductOrder::with('detail','detail.product','agent')->where('user_id',auth()->user()->id)->where('status',1)->count();
+        $data['deliver'] = ProductOrder::with('detail','detail.product','agent')->where('user_id',auth()->user()->id)->where('status',2)->count();
+        $data['accept'] = ProductOrder::with('detail','detail.product','agent')->where('user_id',auth()->user()->id)->where('status',3)->count();
+        $data['reject'] = ProductOrder::with('detail','detail.product','agent')->where('user_id',auth()->user()->id)->where('status',4)->count();
         return view('templates.basic.user.product.tracking',$data);
+    }
+    public function productTrackingUp(Request $request, $id){
+        $order = ProductOrder::find($id);
+        $order->status = 3;
+        $order->save();
+        $notify[] = ['success', 'Product Successfully Delivered. Recived!'];
+        return redirect()->back()->withNotify($notify);
     }
     public function inv($inv){
         $data['title'] = 'Invoice ' . $inv;

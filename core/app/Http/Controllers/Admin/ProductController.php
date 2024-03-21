@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\DeliveryAgent;
 use App\Models\Product;
 use App\Models\ProductOrder;
 use App\Models\User;
@@ -101,7 +102,8 @@ class ProductController extends Controller
 
     public function order(){
         $data['page_title'] = 'Product Order';
-        $data['tables'] = ProductOrder::orderBy('status')->where('total_order','>',0)->paginate(10);
+        $data['tables'] = ProductOrder::with('agent','user')->orderBy('status')->where('total_order','>',0)->paginate(10);
+        $data['agent'] = DeliveryAgent::all();
         return view('admin.product.order',$data); 
     }
     public function orderUp(Request $request){
@@ -130,8 +132,15 @@ class ProductController extends Controller
             $notify[] = ['success', 'Rejected Order successfully'];
             return back()->withNotify($notify);
         }else{
-            dd($request->all());
+            $order->agen = $request->agent;
+            $order->ongkir = $request->ongkir;
+            $order->resi = $request->resi;
+            $order->status = 2;
+            $order->admin_feedback = $request->admin_feedback;
+            $order->save();
 
+            $notify[] = ['success', 'Order Approved successfully'];
+            return back()->withNotify($notify);
         }
     }
 

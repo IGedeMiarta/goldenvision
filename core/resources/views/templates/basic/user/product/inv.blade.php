@@ -120,9 +120,9 @@
                             @if ($item->status == 1)
                                 <span class="badge badge-warning">Waiting Approve</span>
                             @elseif($item->status == 2)
-                                <span class="badge badge-warning">On Delivery</span>
+                                <span class="badge badge-success">On Delivery</span>
                             @elseif($item->status == 3)
-                                <span class="badge badge-success">Accepted</span>
+                                <span class="badge badge-primary">Accepted</span>
                             @else
                                 <span class="badge badge-danger">Rejected</span>
                             @endif
