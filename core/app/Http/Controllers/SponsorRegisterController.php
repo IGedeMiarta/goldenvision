@@ -407,9 +407,10 @@ class SponsorRegisterController extends Controller
                 'user_id' => $user->id,
                 'pin'     => $request->pin,
                 'pin_by'  => $sponsor->id,
+                'type'      => "+",
                 'start_pin' => $user->pin,
                 'end_pin'   => $user->pin + $request->pin,
-                'ket'       => 'Added '.$user->pin.' Pin By Sponsor: '. $sponsor->username
+                'ket'       => 'Added '. $request->pin .' Pin By Sponsor: '. $sponsor->username
             ]);
            
             

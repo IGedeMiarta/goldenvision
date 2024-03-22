@@ -12,9 +12,13 @@
                         <table class="table mb-0 table-bordered">
                             <tr>
                                 <th>No</th>
-                                <th>MP No</th>
                                 <th>Username</th>
                                 <th>Phone</th>
+                                <th>
+                                    Position
+                                    <br>
+                                    ('By upline | By referals')
+                                </th>
                                 <th>Join date</th>
                             </tr>
                             <tbody>
@@ -71,9 +75,13 @@
                     <table class="table mb-0 table-bordered">
                         <tr>
                             <th>No</th>
-                            <th>MP No</th>
                             <th>Username</th>
                             <th>Phone</th>
+                            <th>
+                                Position
+                                <br>
+                                ('By upline | By referals')
+                            </th>
                             <th>Join date</th>
                         </tr>
                         <tbody>
