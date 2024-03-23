@@ -151,6 +151,29 @@
             @endif
 
             <div class="card b-radius--10 overflow-hidden mt-30 box--shadow1">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Rank Founder</h5>
+                    <form action="{{ route('admin.users.detail.rank.founder', $user->id) }}">
+                        @csrf
+                        <div class="input-group mb-3">
+                            <select name="rank" class="form-control" id="">
+                                @foreach ($rankfounder as $item)
+                                    <option value="{{ $item->id }}"
+                                        @if ((($user->rank_founder == 0) ? 1 : $user->rank_founder) == $item->id) selected @endif>
+                                        {{ $item->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-outline-success" type="button"
+                                    id="button-addon2"><i class="fas fa-check"></i> Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card b-radius--10 overflow-hidden mt-30 box--shadow1">
                 <div class="card-body">
                     <h5 class="mb-20 text-muted">@lang('User information')</h5>
                     <ul class="list-group">

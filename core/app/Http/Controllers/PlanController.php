@@ -82,6 +82,7 @@ class PlanController extends Controller
             
             referralCommission2($user->id, $trx->details);
             leaderCommission2RO($user->id,1);
+            leaderCommission2ROFounder($user->id,1);
 
             // $deliferPointTo = $user->group == 0 ? $user->id:$user->group;
             $firstUsername = findFirstUsername($user->username);
@@ -374,6 +375,7 @@ class PlanController extends Controller
 
             referralCommission2($user->id, $details);
             leaderCommission($user->id,$request->qty);
+            leaderCommissionFounder($user->id,$request->qty);
             updatePaidCount2($user->id);
             updateLimit($user->id);
             return $user;

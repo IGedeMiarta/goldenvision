@@ -295,6 +295,7 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('users/{scope}/search', 'ManageUsersController@search')->name('users.search');
         Route::get('user/detail/{id}', 'ManageUsersController@detail')->name('users.detail');
         Route::get('user/detail-rank/{id}', 'ManageUsersController@updateRank')->name('users.detail.rank');
+        Route::get('user/detail-rank-founder/{id}', 'ManageUsersController@updateRankFounder')->name('users.detail.rank.founder');
         Route::get('user/detailbalance/{id}', 'ManageUsersController@BalanceLog')->name('users.detailbalance');
         Route::post('user/detail/find', 'ManageUsersController@detailFind')->name('users.detail.find');
         Route::get('user/gold_invest', 'ManageUsersController@userGold')->name('invest.gdetail');
