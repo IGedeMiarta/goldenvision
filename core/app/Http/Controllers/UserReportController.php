@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\brodev;
 use App\Models\GoldExchange;
+use App\Models\Plan;
 use App\Models\sendgold;
 use App\Models\Transaction;
 use App\Models\UserGold;
@@ -128,9 +129,8 @@ class UserReportController extends Controller
 
     public function depositHistory(Request $request)
     {
-
         $search = $request->search;
-
+        
         if ($search) {
             $data['page_title'] = "Deposit search : " . $search;
             $data['logs'] = auth()->user()->deposits()->where('trx', 'like', "%$search%")->with(['gateway'])->latest()->paginate(getPaginate());
@@ -139,9 +139,8 @@ class UserReportController extends Controller
             $data['logs'] = auth()->user()->deposits()->latest()->paginate(getPaginate());
         }
         $data['search'] = $search;
+        $data['plan'] = Plan::first();
         $data['empty_message'] = 'No history found.';
-
-
         return view($this->activeTemplate . 'user.deposit_history', $data);
     }
 

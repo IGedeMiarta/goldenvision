@@ -394,15 +394,12 @@
                         postion: pos
                     },
                     success: function(rs) {
-                        console.log(rs);
                         if (rs.sts = 200) {
                             window.location.replace(rs.url);
                         }
                     }
                 });
 
-                console.log(upline);
-                console.log(pos);
             })
             // $('.showDetails').on('click', function() {
             //     var modal = $('#exampleModalCenter');

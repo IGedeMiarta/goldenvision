@@ -1,6 +1,7 @@
 @extends($activeTemplate . 'user.layouts.app')
 
 @section('panel')
+
     <div class="row">
         <div class="col-lg-12">
             <div class="card b-radius--10 ">
@@ -26,7 +27,7 @@
                                             <strong>{{nb(getAmount($data->amount))}} {{$general->cur_text}}</strong>
                                         </td>
                                         <td data-label="@lang('Order')">
-                                            <strong>{{nb(getAmount($data->amount) /500000 )}} PIN</strong>
+                                            <strong>{{nb(getAmount($data->amount) / $plan->price )}} PIN</strong>
                                         </td>
                                         <td data-label="@lang('Status')">
                                             @if($data->status == 1)

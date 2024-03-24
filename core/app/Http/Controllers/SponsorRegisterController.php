@@ -505,6 +505,7 @@ class SponsorRegisterController extends Controller
 
     public function userOrderPin(){
          $data['page_title'] = "Order PINs";
+         $data['plan']  = Plan::orderByDesc('id')->first();
          $data['order'] = Deposit::where('user_id',auth()->user()->id)->orderByDesc('id')->whereIn('status',['0',2])->first();
          $data['pending'] = Deposit::where('user_id',auth()->user()->id)->orderByDesc('id')->whereIn('status',['0',2])->sum('amount');
         return view($this->activeTemplate . 'user.orderPin', $data);

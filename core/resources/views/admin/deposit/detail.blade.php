@@ -1,5 +1,8 @@
 @extends('admin.layouts.app')
 @section('panel')
+@php
+    $plan = App\Models\Plan::first();
+@endphp
     <div class="row mb-none-30">
         <div class="col-xl-4 col-md-6 mb-30">
             <div class="card b-radius--10 overflow-hidden box--shadow1">
@@ -164,7 +167,7 @@
         (function($){
             $('.approveBtn').on('click', function () {
                 var modal = $('#approveModal');
-                var pin = parseInt($(this).data('amount')) / 500000;
+                var pin = parseInt($(this).data('amount')) / "{{ $plan->price }}";
                 modal.find('input[name=id]').val($(this).data('id'));
                 modal.find('.withdraw-amount').text($(this).data('amount'));
                 modal.find('.withdraw-user').text($(this).data('username'));
@@ -174,7 +177,7 @@
 
             $('.rejectBtn').on('click', function () {
                 var modal = $('#rejectModal');
-                var pin = parseInt($(this).data('amount')) / 500000;
+                var pin = parseInt($(this).data('amount')) / "{{ $plan->price }}";
                 modal.find('input[name=id]').val($(this).data('id'));
                 modal.find('.withdraw-amount').text($(this).data('amount'));
                 modal.find('.withdraw-user').text($(this).data('username'));
