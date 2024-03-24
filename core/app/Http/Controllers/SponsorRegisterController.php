@@ -197,7 +197,6 @@ class SponsorRegisterController extends Controller
                         $pinNewUser, 
                         $firstUpline->id,
                     );
-                    dd($nextUser);
                     if($nextUser == false){
                         $notify[] = ['error', 'Invalid On Create Downline, Rollback'];
                         return redirect()->back()->withNotify($notify);
@@ -218,7 +217,6 @@ class SponsorRegisterController extends Controller
             $notify[] = ['success', 'Success Created '.$request->pin.' User & Purchased Plan Each'];
             return redirect()->route('user.my.tree') ->withNotify($notify);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
             DB::rollBack();
             $notify[] = ['error', 'Error on Placement, Rollback!'];
             return redirect()->back()->withNotify($notify);
@@ -368,7 +366,7 @@ class SponsorRegisterController extends Controller
             updateLimit($user->id);
             // updatePaidCount2($user->id);
 
-            deliverPoint($user->id,$data['pin']*2);
+            deliverPoint($user->id,$data['pin'] * $plan->point);
             return $trx;  
         } catch (\Throwable $th) {
             return false;
