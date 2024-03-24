@@ -7,6 +7,7 @@ use App\Models\Deposit;
 use App\Models\Gateway;
 use App\Models\GeneralSetting;
 use App\Http\Controllers\Controller;
+use App\Models\Plan;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserPin;
@@ -20,6 +21,7 @@ class DepositController extends Controller
 
     public function pending()
     {
+
         $page_title = 'Pending Deposits';
         $empty_message = 'No pending deposits.';
         $type = 'pending';
@@ -175,7 +177,8 @@ class DepositController extends Controller
     {
         $general = GeneralSetting::first();
         $deposit = Deposit::where('id', $id)->with(['user'])->firstOrFail();
-        $page_title = $deposit->user->username.' requested ' . getAmount($deposit->amount/500000) . ' '.'PIN';
+        $plan = Plan::first();
+        $page_title = $deposit->user->username.' requested ' . getAmount($deposit->amount/$plan->price) . ' '.'PIN';
         $details = ($deposit->detail != null) ? json_encode($deposit->detail) : null;
         return view('admin.deposit.detail', compact('page_title', 'deposit','details'));
     }
@@ -183,17 +186,17 @@ class DepositController extends Controller
 
     public function approve(Request $request)
     {
-
         $request->validate(['id' => 'required|integer']);
         DB::beginTransaction();
+        $deposit = Deposit::where('id',$request->id)->where('status',2)->firstOrFail();
+        $plan = Plan::first();
         try {
-            $deposit = Deposit::where('id',$request->id)->where('status',2)->firstOrFail();
             $deposit->status = 1;
             $deposit->save();
     
             $user = User::find($deposit->user_id);
 
-            $addPin = getAmount($deposit->amount) / 500000;
+            $addPin = getAmount($deposit->amount) / $plan->price;
             
             $pin = new UserPin();
             $pin->user_id   = $user->id;

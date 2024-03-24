@@ -66,7 +66,7 @@
                                 if ($pendi == 0) {
                                    $rs = 0;
                                 }else{
-                                    $rs = $pending / 500000;
+                                    $rs = $pending / $plan->price;
                                 }
                             @endphp
                             {{ $rs }} PIN
@@ -87,8 +87,8 @@
                     </div>
                     <div class="ml-3" style="text-align: start">
                         <span class="text-white" style="font-size: 20px">Customer Service? </span>
-                        <h6 class="text-white font-weight-bold" style="font-size: 30px; margin-top: -10px;">
-                            0811 9650 8791
+                        <h6 class="text-white font-weight-bold" style="font-size: 28px; margin-top: -10px;">
+                            081196508791
                         </h6>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                         <form action="{{ route('user.pins.order.post') }}" method="POST">
                             @csrf
                             <div class="card-body">
-                                <h3 class="text-dark font-weight-bold">1 PIN = Rp 500.000</h3>
+                                <h3 class="text-dark font-weight-bold">1 PIN = Rp {{ nb($plan->price) }}</h3>
                                 <input type="number" name="pin" id="" placeholder="Masukan Nilai PIN"
                                     class="form-control form-control-lg mt-3" style="border-radius: 10px">
 
@@ -124,35 +124,35 @@
             <div class="card" style="min-height: 15rem; border-radius: 15px">
                 <div class="card-body">
                     <div class="text-center">
-                        <h5 class=""> Please Complate Your Order <b>{{ ($order?->amount?? 500000) /500000 }} PIN.</b> <br>
+                        <h5 class=""> Please Complate Your Order <b>{{ ($order?->amount?? $plan->price) /$plan->price }} PIN.</b> <br>
                     </div>
                     <ul class="list-group mt-3">
                         <li class="list-group-item">
                            <div class="row">
-                            <div class="col-md-3">Bank</div>
-                            <div class="col-md-9"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="BCA" style="width: 100px;"></div>
+                            <div class="col-md-4">Bank</div>
+                            <div class="col-md-8"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="BCA" style="width: 100px;"></div>
                            </div>
                         </li>
                         <li class="list-group-item">
                             <div class="row">
-                                <div class="col-md-3">Rek</div>
-                                <div class="col-md-9">
+                                <div class="col-md-4">Rek</div>
+                                <div class="col-md-8">
                                     <a href="#" id="copy" data-rek="5250444828"> <b>5250444828</b> <i class="fas fa-copy"></i></a>
                                 </div>
                             </div>
                         </li>
                         <li class="list-group-item">
                             <div class="row">
-                                <div class="col-md-3">A/N</div>
-                                <div class="col-md-9">
+                                <div class="col-md-4">A/N</div>
+                                <div class="col-md-8">
                                     <b>PT. MEMAYU BARATA ADIGUNA</b>
                                 </div>
                             </div>
                             </li>
                         <li class="list-group-item">
                             <div class="row">
-                                <div class="col-md-3">Amount</div>
-                                <div class="col-md-9">
+                                <div class="col-md-4">Amount</div>
+                                <div class="col-md-8">
                                     <b>Rp {{ nb($order?->amount??0) }}</b>
                                 </div>
                             </div>

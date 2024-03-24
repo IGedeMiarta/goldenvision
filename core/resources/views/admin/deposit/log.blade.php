@@ -1,6 +1,10 @@
 @extends('admin.layouts.app')
 
 @section('panel')
+@php
+    $plan = App\Models\Plan::first();
+@endphp
+
     <div class="row justify-content-center">
         @if (request()->routeIs('admin.deposit.list') ||
                 request()->routeIs('admin.deposit.method') ||
@@ -74,7 +78,7 @@
                                             {{ nb(getAmount($deposit->amount)) }} {{ __($general->cur_text) }}</td>
 
                                         <td data-label="@lang('PIN')" class="font-weight-bold">
-                                            {{ nb(getAmount($deposit->amount / 500000)) }} PIN
+                                            {{ nb(getAmount($deposit->amount / $plan->price)) }} PIN
                                         </td>
                                         <td data-label="@lang('Status')">
                                             @if ($deposit->status == 2)
