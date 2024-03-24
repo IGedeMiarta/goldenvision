@@ -51,7 +51,7 @@ class PlanController extends Controller
             $notify[] = ['error', 'Insufficient Balance, Not Enough PIN to Buy'];
             return back()->withNotify($notify);
         }
-        $plan = Plan::find(1);
+        $plan = Plan::first();
         DB::beginTransaction();
         try {
             $spin = UserPin::create([
@@ -74,7 +74,7 @@ class PlanController extends Controller
 
 
             $user->pin -= 1;
-            $user->total_invest     += 500000;
+            $user->total_invest     += $plan->price;
             $user->save();
             
             updatePaidCountRO($user->id);
@@ -179,7 +179,6 @@ class PlanController extends Controller
             'qty' => 'required',
         ]);
         $checkloop  = $request->qty > 1  ? true:false;
-        $checkBankAcc = rekening::where('user_id',auth()->user()->id)->first();
         $waitlistUserID = [];
         DB::beginTransaction();
         try {
@@ -222,7 +221,8 @@ class PlanController extends Controller
             $waitlistUserID[] =  $user->id;
             
             if (!$checkloop) {
-                deliverPoint(Auth::user()->id,$request->qty*2);
+
+                deliverPoint(Auth::user()->id,$request->qty*$plan->point);
                 checkRank($user->id);
                 DB::commit();
                 $notify[] = ['success', 'Successfully Purchased Plan'];
@@ -304,7 +304,7 @@ class PlanController extends Controller
                
             }
           
-            deliverPoint(Auth::user()->id,$request->qty*2);
+            deliverPoint(Auth::user()->id,$request->qty*$plan->point);
             checkRank($user->id);
             DB::commit();
             $notify[] = ['success', 'Purchased ' . $plan->name . 'and Registered New  '.$registeredUser.' Account Successfully'];
