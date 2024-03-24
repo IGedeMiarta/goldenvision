@@ -45,11 +45,11 @@ class MlmController extends Controller
 
     public function planUpdate(Request $request)
     {
+        
         $this->validate($request, [
             'id'                => 'required',
             'name'              => 'required',
             'price'             => 'required|numeric|min:0',
-            'bv'                => 'required|min:0|integer',
             'ref_com'           => 'required|numeric|min:0',
             'tree_com'          => 'required|numeric|min:0',
         ]);
@@ -60,6 +60,8 @@ class MlmController extends Controller
         $plan->bv               = $request->bv;
         $plan->ref_com          = $request->ref_com;
         $plan->tree_com         = $request->tree_com;
+        $plan->ro_limit         = $request->ro_limit;
+        $plan->point         = $request->point;
         $plan->status           = $request->status?1:0;
         $plan->save();
 
