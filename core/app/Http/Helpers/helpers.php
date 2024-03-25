@@ -13,6 +13,7 @@ use App\Models\MemberGrow;
 use App\Models\Plan;
 use App\Models\PoolLog;
 use App\Models\Rank;
+use App\Models\RankFounder;
 use App\Models\rekening;
 use App\Models\SmsTemplate;
 use App\Models\Transaction;
@@ -1367,6 +1368,80 @@ function  leaderCommission($id, $qty)
         }
     }
 }
+function  leaderCommissionFounder($id, $qty)
+{
+
+    // return true;
+    $from = $id;
+    $gnl = GeneralSetting::first();
+    $com = 50000;
+    $count = 0;
+    $last = 0;
+    while ($id != "" || $id != "0") {
+        if (isUserExists($id)) {
+            $refid = getRefId($id);
+            $user = user::find($id);
+            $userRef = user::find($refid);
+            if ($refid == "0") {
+                break;
+            }
+            if ($userRef->rank_founder == 0 || $userRef->rank_founder == 1) {
+                $id = $refid;
+                continue;
+            }
+            if($user->rank_founder >= $userRef->rank_founder && ($user->rank_founder != 0 || $user->rank_founder != 1) && $user->id != $from){
+                $id = $refid;
+                continue;
+            }
+            $count++;
+            if ($count == 1) {
+                $amount = $userRef->rankfounder->leader_bonus;
+                $com = $com - $userRef->rankfounder->leader_bonus;
+            }else{
+                if (($userRef->rank_founder - $user->rank_founder) > 1) {
+                    $selisih = RankFounder::find($last);
+                    $amount = $userRef->rankfounder->leader_bonus - $selisih->leader_bonus;
+                    $com = $com - ($userRef->rankfounder->leader_bonus - $selisih->leader_bonus);
+                }else{
+                    $selisih = RankFounder::find($last);
+                    if($selisih->id >= $userRef->rank_founder){
+                        $id = $refid;
+                        continue;
+                    }else{
+                        $amount = $userRef->rankfounder->leader_bonus - $user->rankfounder->leader_bonus;
+                        $com = $com - ($userRef->rankfounder->leader_bonus - $user->rankfounder->leader_bonus);
+                    }
+                }
+            }
+            
+            if ($userRef->plan_id != 0 && $amount > 0) {
+                // $userRef->balance += $amount * $qty;
+                $userRef->b_balance += ($amount * $qty);
+                $userRef->save();
+                $trx = new Transaction();
+                $trx->user_id = $userRef->id;
+                $trx->amount = $amount * $qty;
+                $trx->charge = 0;
+                $trx->trx_type = '+';
+                $trx->post_balance = getAmount($userRef->b_balance);
+                $trx->remark = 'founder_com';
+                $trx->trx = getTrx();
+                $trx->details = 'Paid Founder National Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
+                $trx->save();  
+
+                $last = $userRef->rank_founder;
+            }
+            
+            if ($com <= 0){
+                break;
+            }
+            $id = $refid;
+                
+        } else {
+            break;
+        }
+    }
+}
 
 function  leaderCommission2($id, $qty)
 {
@@ -1469,6 +1544,107 @@ function  leaderCommission2($id, $qty)
         }
     }
 }
+function  leaderCommission2Founder($id, $qty)
+{
+    // return true;
+    $from = $id;
+    $gnl = GeneralSetting::first();
+    $com = 50000;
+    $userfrom = user::find($id);
+    $first = false;
+    $last = 0;
+    if ($userfrom->rank_founder != 0 || $userfrom->rank_founder != 1) {
+            $amount = $userfrom->rankfounder->leader_bonus;
+            $com = $com - $userfrom->rankfounder->leader_bonus;
+            
+            if ($userfrom->plan_id != 0 && $amount > 0) {
+                // $userfrom->balance += $amount * $qty;
+
+                $userfrom->b_balance += ($amount * $qty) ;
+                $userfrom->save();
+
+                $trx = new Transaction();
+                $trx->user_id = $userfrom->id;
+                $trx->amount = ($amount * $qty) ;
+                $trx->charge = 0;
+                $trx->trx_type = '+';
+                $trx->post_balance = getAmount($userfrom->b_balance);
+                $trx->remark = 'leadership_com';
+                $trx->trx = getTrx();
+                $trx->details = 'Paid Leadership Commission  ' . ($amount * $qty) . ' ' . $gnl->cur_text;
+                $trx->save();  
+                $first = true;
+
+                $last = $userfrom->rank_founder;
+            }
+    }
+
+    $count = 0;
+    while ($id != "" || $id != "0") {
+        if (isUserExists($id)) {
+            $refid = getRefId($id);
+            $user = user::find($id);
+            $userRef = user::find($refid);
+            if ($refid == "0") {
+                break;
+            }
+            if ($userRef->rank_founder == 0 || $userRef->rank_founder == 1) {
+                $id = $refid;
+                continue;
+            }
+            if($user->rank_founder >= $userRef->rank_founder && ($user->rank_founder != 0 || $user->rank_founder != 1) && $user->id != $from){
+                $id = $refid;
+                continue;
+            }
+            $count++;
+            if ($count == 1 && $first == false ) {
+                $amount = $userRef->rankfounder->leader_bonus;
+                $com = $com - $userRef->rankfounder->leader_bonus;
+            }else{
+                if (($userRef->rank_founder - $user->rank_founder) > 1) {
+                    $selisih = RankFounder::find($last);
+                    $amount = $userRef->rankfounder->leader_bonus - $selisih->leader_bonus;
+                    $com = $com - ($userRef->rankfounder->leader_bonus - $selisih->leader_bonus);
+                }else{
+                    $selisih = RankFounder::find($last);
+                    if($selisih->id >= $userRef->rank_founder){
+                        $id = $refid;
+                        continue;
+                    }else{
+                        $amount = $userRef->rankfounder->leader_bonus - $user->rankfounder->leader_bonus;
+                        $com = $com - ($userRef->rankfounder->leader_bonus - $user->rankfounder->leader_bonus);
+                    }
+                }
+            }
+            
+            if ($userRef->plan_id != 0 && $amount > 0) {
+                // $userRef->balance += $amount * $qty;
+                $userRef->b_balance += ($amount * $qty);
+                $userRef->save();
+                $trx = new Transaction();
+                $trx->user_id = $userRef->id;
+                $trx->amount = $amount * $qty;
+                $trx->charge = 0;
+                $trx->trx_type = '+';
+                $trx->post_balance = getAmount($userRef->b_balance);
+                $trx->remark = 'founder_com';
+                $trx->trx = getTrx();
+                $trx->details = 'Paid Founder National Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
+                $trx->save();  
+
+                $last = $userRef->rank_founder;
+            }
+            
+            if ($com <= 0){
+                break;
+            }
+            $id = $refid;
+                
+        } else {
+            break;
+        }
+    }
+}
 function  leaderCommission2RO($id, $qty)
 {
     $from = $id;
@@ -1502,8 +1678,14 @@ function  leaderCommission2RO($id, $qty)
                     $amount = $userRef->ranks->leader_bonus - $selisih->leader_bonus;
                     $com = $com - ($userRef->ranks->leader_bonus - $selisih->leader_bonus);
                 }else{
-                    $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
-                    $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                    $selisih = Rank::find($last);
+                    if($selisih->id >= $userRef->rank){
+                        $id = $refid;
+                        continue;
+                    }else{
+                        $amount = $userRef->ranks->leader_bonus - $user->ranks->leader_bonus;
+                        $com = $com - ($userRef->ranks->leader_bonus - $user->ranks->leader_bonus);
+                    }
                 }
             }
             
@@ -1523,6 +1705,78 @@ function  leaderCommission2RO($id, $qty)
                 $trx->save();  
 
                 $last = $userRef->rank;
+            }
+            
+            if ($com <= 0){
+                break;
+            }
+            $id = $refid;
+                
+        } else {
+            break;
+        }
+    }
+}
+function  leaderCommission2ROFounder($id, $qty)
+{
+    $from = $id;
+    $gnl = GeneralSetting::first();
+    $com = 50000;
+    $count = 0;
+    $last = 0;
+    while ($id != "" || $id != "0") {
+        if (isUserExists($id)) {
+            $refid = getRefId($id);
+            $user = user::find($id);
+            $userRef = user::find($refid);
+            if ($refid == "0") {
+                break;
+            }
+            if ($userRef->rank_founder == 0 || $userRef->rank_founder == 1) {
+                $id = $refid;
+                continue;
+            }
+            if($user->rank_founder >= $userRef->rank_founder && ($user->rank_founder != 0 || $user->rank_founder != 1) && $user->id != $from){
+                $id = $refid;
+                continue;
+            }
+            $count++;
+            if ($count == 1) {
+                $amount = $userRef->rankfounder->leader_bonus;
+                $com = $com - $userRef->rankfounder->leader_bonus;
+            }else{
+                if (($userRef->rank_founder - $user->rank_founder) > 1) {
+                    $selisih = RankFounder::find($last);
+                    $amount = $userRef->rankfounder->leader_bonus - $selisih->leader_bonus;
+                    $com = $com - ($userRef->rankfounder->leader_bonus - $selisih->leader_bonus);
+                }else{
+                    $selisih = RankFounder::find($last);
+                    if($selisih->id >= $userRef->rank_founder){
+                        $id = $refid;
+                        continue;
+                    }else{
+                        $amount = $userRef->rankfounder->leader_bonus - $user->rankfounder->leader_bonus;
+                        $com = $com - ($userRef->rankfounder->leader_bonus - $user->rankfounder->leader_bonus);
+                    }
+                }
+            }
+            
+            if ($userRef->plan_id != 0 && $amount > 0) {
+                // $userRef->balance += $amount * $qty;
+                $userRef->b_balance += ($amount * $qty);
+                $userRef->save();
+                $trx = new Transaction();
+                $trx->user_id = $userRef->id;
+                $trx->amount = $amount * $qty;
+                $trx->charge = 0;
+                $trx->trx_type = '+';
+                $trx->post_balance = getAmount($userRef->b_balance);
+                $trx->remark = 'founder_com';
+                $trx->trx = getTrx();
+                $trx->details = 'Paid Founder National Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
+                $trx->save();  
+
+                $last = $userRef->rank_founder;
             }
             
             if ($com <= 0){

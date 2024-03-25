@@ -188,6 +188,9 @@ class User extends Authenticatable
     public function ranks(){
         return $this->belongsTo(Rank::class,'rank');
     }
+    public function rankfounder(){
+        return $this->belongsTo(RankFounder::class,'rank_founder');
+    }
 
     // SCOPES
 

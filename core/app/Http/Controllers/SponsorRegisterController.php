@@ -364,6 +364,7 @@ class SponsorRegisterController extends Controller
 
             referralCommission2($user->id, $details);
             leaderCommission2($sponsor->id,$data['pin']);
+            leaderCommission2Founder($sponsor->id,$data['pin']);
             updateLimit($user->id);
             // updatePaidCount2($user->id);
 

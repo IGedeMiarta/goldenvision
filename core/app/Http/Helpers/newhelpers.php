@@ -318,6 +318,7 @@ function checkQuali($user_id){
 }
 function deliverPoint($user_id,$qty)
 {
+    $plan = Plan::first();
     $user = User::find($user_id);
 
     $log = new UserPoint();
@@ -326,7 +327,7 @@ function deliverPoint($user_id,$qty)
     $log->type = '+';
     $log->start_point = $user->point;
     $log->end_point = $user->point + $qty;
-    $log->desc = 'User subsribe for ' . $qty/2 . ' ID and get '  . $qty  .' POINT';
+    $log->desc = 'User subsribe for ' . $qty/$plan->point . ' ID and get '  . $qty  .' POINT';
     $log->save();
 
     $user->point += $qty;
@@ -402,8 +403,10 @@ function checkRank($userID,$type=null){
     }
 }
 function updateLimit($userID){
+    $plan = Plan::first();
+
     $user = User::find($userID);
-    $user->limit_ro += 2500000;
+    $user->limit_ro += $plan->ro_limit;
     $user->save();
 }
 
