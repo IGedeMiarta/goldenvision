@@ -176,15 +176,16 @@
                         </div>
                         <input class="form-control" id="id" type="hidden" name="id">
                         <div class="form-group mt-4">
-                            <label for="agent">Agent</label>
-                            <select name="agent" id="" class="form-control">
-                                <option selected disabled>Pilih</option>
+                            <label for="agent">Agent<span class="text-danger">*</span></label>
+                            <select name="agent" id="" class="form-control" required>
+                                <option disabled>Pilih</option>
                                 @foreach ($agent as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->id }}" @if ($item->id ==1)
+                                        selected
+                                    @endif>{{ $item->name }}</option>
                                 @endforeach
-                                {{-- <option value="pos">POS</option> --}}
                             </select>
-                            {{-- <input class="form-control" id="agent" type="text" name="agent" placeholder="POS"> --}}
+                            {{-- <span class="text-success">please select one</span> --}}
                         </div>
                         <div class="form-group mt-1">
                             <label for="ongkir">Ongkir</label>
