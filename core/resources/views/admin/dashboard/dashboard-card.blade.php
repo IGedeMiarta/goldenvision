@@ -177,32 +177,6 @@
         }
     </style>
 @endpush
-<div class="row">
-    <div class="col-xl-4 col-md-4 col-sm-6 mb-30" style="margin-top: 25px;margin-bottom: 10px;">
-        Selamat datang,
-        <h4 style="font-size: 24px; font-weight: bolder; color: black">Admin</h4>
-
-    </div>
-    <div class="col-xl-4 col-md-4 col-sm-6 mb-30 text-center">
-
-
-    </div>
-    <div class="col-xl-4 col-md-4 col-sm-6 mb-30" style="display: flex; justify-content: end;margin-top: 25px;">
-        {{-- <p style="color: black">Cron Status</p> --}}
-        <div class="row" style="max-height: 100%;">
-            <div class="col-md-12 mb-3">
-                <div style="">
-                    <a href="javascript:void(0)"
-                        class="btn @if (Carbon\Carbon::parse($general->last_cron)->diffInSeconds() < 600) btn-success @elseif(Carbon\Carbon::parse($general->last_cron)->diffInSeconds() < 1200) btn-warning @else
-                    btn-danger @endif "><i
-                            class="fa fa-fw fa-clock"></i>@lang('Last Cron Run') :
-                        {{ Carbon\Carbon::parse($general->last_cron)->difFforHumans() }}</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div style="display: flex; align-items: center;">
     <p style="font-size: 14px; margin-right: 5px;">PIN</p>
     <hr style="flex: 1; margin: 0;">
@@ -531,7 +505,7 @@
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Total Omset </span>
                     <h6 class="text-dark"style="font-size: 25px;font-weight: bolder">
-                        {{ nb(0) }}
+                        {{ nb($total_omset) }}
                     </h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
@@ -552,7 +526,7 @@
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Omset This Month</span>
                     <h6 class="text-dark"style="font-size: 25px;font-weight: bolder">
-                        {{ nb(0) }}
+                        {{ nb($omset_this_month) }}
                     </h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
@@ -573,7 +547,7 @@
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Omset This Week</span>
                     <h6 class="text-dark"style="font-size: 25px;font-weight: bolder">
-                        {{ nb(0) }}
+                        {{ nb($omset_this_week) }}
                     </h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
@@ -594,7 +568,7 @@
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Omset Today</span>
                     <h6 class="text-dark"style="font-size: 25px;font-weight: bolder">
-                        {{ nb(0) }}
+                        {{ nb($omset_today) }}
                     </h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
