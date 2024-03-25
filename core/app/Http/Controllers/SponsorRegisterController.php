@@ -298,7 +298,7 @@ class SponsorRegisterController extends Controller
                 'end_pin'   => $user->pin + $pin,
                 'ket'       => 'Added Pin By Sponsor: '. $sponsor->username
             ]);
-            addToLog('Sponsor Create and Send '.$pin.' Pin to: '. $user->username);
+            // addToLog('Sponsor Create and Send '.$pin.' Pin to: '. $user->username);
            
             
             $user->pin += $pin;
@@ -364,7 +364,6 @@ class SponsorRegisterController extends Controller
             leaderCommission2($sponsor->id,$data['pin']);
             leaderCommission2Founder($sponsor->id,$data['pin']);
             updateLimit($user->id);
-            // updatePaidCount2($user->id);
 
             deliverPoint($user->id,$data['pin'] * $plan->point);
             return $trx;  

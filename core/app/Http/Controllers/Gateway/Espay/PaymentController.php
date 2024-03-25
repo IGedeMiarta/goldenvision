@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\DB;
 class PaymentController extends Controller
 {
     public function userOrderPin(Request $request){
+        // $request->validate([
+        //     'pin' => 'reqired|numeric|min:1'
+        // ]);
         DB::beginTransaction();
         $plan = Plan::first();
         try {

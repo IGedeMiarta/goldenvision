@@ -91,7 +91,8 @@ class PlanController extends Controller
             }else{
                 $deliferPointTo = $firstUsername;
             }
-            deliverPointRO($user,$deliferPointTo,2);
+
+            deliverPointRO($user,$deliferPointTo,$plan->point);
 
             DB::commit();
             $notify[] = ['success', 'Reorder Point Success!'];
@@ -222,7 +223,7 @@ class PlanController extends Controller
             
             if (!$checkloop) {
 
-                deliverPoint(Auth::user()->id,$request->qty*$plan->point);
+                deliverPoint(Auth::user()->id, $request->qty * $plan->point );
                 checkRank($user->id);
                 DB::commit();
                 $notify[] = ['success', 'Successfully Purchased Plan'];
@@ -304,7 +305,7 @@ class PlanController extends Controller
                
             }
           
-            deliverPoint(Auth::user()->id,$request->qty*$plan->point);
+            deliverPoint(Auth::user()->id,$request->qty * $plan->point);
             checkRank($user->id);
             DB::commit();
             $notify[] = ['success', 'Purchased ' . $plan->name . 'and Registered New  '.$registeredUser.' Account Successfully'];
