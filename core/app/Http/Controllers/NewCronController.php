@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Deposit;
 use App\Models\GeneralSetting;
 use App\Models\PoolLog;
 use App\Models\Transaction;
@@ -14,7 +15,7 @@ class NewCronController extends Controller
 {
     public function bonusPasangan()
     {
-
+        $this->cancelDeposit();
         $gnl = GeneralSetting::first();
         $gnl->last_cron = Carbon::now()->toDateTimeString();
         $gnl->save();
@@ -406,5 +407,21 @@ class NewCronController extends Controller
             'http_code' => 200,
             'response' => 'ok'
         ]);
+    }
+
+    
+    public function cancelDeposit() {
+        
+        $deposits = Deposit::where('status', 0)->get();
+        foreach ($deposits as $deposit) {
+            $created_at_plus_24_hours = strtotime($deposit->created_at . ' +24 hours');
+            $now = time();
+
+            if ($created_at_plus_24_hours > $now) {
+                $deposit->status = 3;
+                $deposit->admin_feedback = 'Cancelled by system, past the transaction time';
+                $deposit->save();
+            }
+        }
     }
 }

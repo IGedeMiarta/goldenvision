@@ -23,11 +23,8 @@
         }
     </style>
     <link rel="stylesheet" href="{{ asset('assets/assets/dropify/css/dropify.min.css') }}">
-
 @endpush
 @section('panel')
-
-
     <div class="row ">
         <div class="col-md-4 mb-30 text-center">
             <div class="card"
@@ -64,8 +61,8 @@
                             @php
                                 $pendi = $pending ?? 0;
                                 if ($pendi == 0) {
-                                   $rs = 0;
-                                }else{
+                                    $rs = 0;
+                                } else {
                                     $rs = $pending / $plan->price;
                                 }
                             @endphp
@@ -105,8 +102,13 @@
                             <div class="card-body">
                                 <h3 class="text-dark font-weight-bold">1 PIN = Rp {{ nb($plan->price) }}</h3>
                                 <input type="number" name="pin" id="" placeholder="Masukan Nilai PIN"
-                                    class="form-control form-control-lg mt-3" style="border-radius: 10px">
-
+                                    class="form-control form-control-lg mt-3 @error('pin')
+                                        is-invalid
+                                    @enderror"
+                                    style="border-radius: 10px">
+                                @error('pin')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="card-body">
                                 <button type="submit"
@@ -117,74 +119,86 @@
                         </form>
                     </div>
                 </div>
-            </div>  
-           
+            </div>
         @elseif(isset($order) || ($order?->detail == null && $order?->status != 2))
-        <div class="col-md-4 col-lg-4">
-            <div class="card" style="min-height: 15rem; border-radius: 15px">
-                <div class="card-body">
-                    <div class="text-center">
-                        <h5 class=""> Please Complate Your Order <b>{{ ($order?->amount?? $plan->price) /$plan->price }} PIN.</b> <br>
-                    </div>
-                    <ul class="list-group mt-3">
-                        <li class="list-group-item">
-                           <div class="row">
-                            <div class="col-md-4">Bank</div>
-                            <div class="col-md-8"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="BCA" style="width: 100px;"></div>
-                           </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-md-4">Rek</div>
-                                <div class="col-md-8">
-                                    <a href="#" id="copy" data-rek="5250444828"> <b>5250444828</b> <i class="fas fa-copy"></i></a>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-md-4">A/N</div>
-                                <div class="col-md-8">
-                                    <b>PT. MEMAYU BARATA ADIGUNA</b>
-                                </div>
-                            </div>
-                            </li>
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-md-4">Amount</div>
-                                <div class="col-md-8">
-                                    <b>Rp {{ nb($order?->amount??0) }}</b>
-                                </div>
-                            </div>
-                        </li>
+            <div class="col-md-4 col-lg-4">
+                <div class="card" style="min-height: 15rem; border-radius: 15px">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <h5 class=" bg-warning text-dark" style="border-radius: 10px 10px 5px 5px;">
+                                Please Complete Your
+                                Order
+                                <b>{{ ($order->amount ?? $plan->price) / $plan->price }} PIN.</b> <br> Before
+                                {{ date('d M Y H:i', strtotime($order->created_at . ' +24 hours')) }}
+                            </h5>
 
-                        <li class="list-group-item">
-                            <form action="{{ url('user/user-order',$order?->id) }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
-                                <label for="">Uplad Bukti Trasfer</label>
-                                <div class="input-group mb-3">
-                                    <input type="file" name="images" id="" class="dropify" data-default-file="{{ $order->detail != null ? asset($order->detail):'' }}">
+                        </div>
+                        <ul class="list-group mt-3">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-4">Bank</div>
+                                    <div class="col-md-8"><img
+                                            src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg"
+                                            alt="BCA" style="width: 100px;"></div>
                                 </div>
-                                <label for="inpName">Nama Pengirim</label>
-                                <input type="text" name="name" id="inpName" class="form-control" placeholder="ex: Haryanto" value="{{ $order->btc_amo??'' }}">
-                                <br>
-                                <button class="btn btn-primary" type="submit" > <i class="fas fa-save"></i> {{ $order->status == 0 ?'Submit':'Update' }}</button>
-                            </form>
-                        </li>
-                    </ul>
-                     
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-4">Rek</div>
+                                    <div class="col-md-8">
+                                        <a href="#" id="copy" data-rek="5250444828"> <b>5250444828</b> <i
+                                                class="fas fa-copy"></i></a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-4">A/N</div>
+                                    <div class="col-md-8">
+                                        <b>PT. MEMAYU BARATA ADIGUNA</b>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-md-4">Amount</div>
+                                    <div class="col-md-8">
+                                        <b>Rp {{ nb($order?->amount ?? 0) }}</b>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <form action="{{ url('user/user-order', $order?->id) }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT')
+                                    <label for="">Uplad Bukti Trasfer</label>
+                                    <div class="input-group mb-3">
+                                        <input type="file" name="images" id="" class="dropify"
+                                            data-default-file="{{ $order->detail != null ? asset($order->detail) : '' }}">
+                                    </div>
+                                    <label for="inpName">Nama Pengirim</label>
+                                    <input type="text" name="name" id="inpName" class="form-control"
+                                        placeholder="ex: Haryanto" value="{{ $order->btc_amo ?? '' }}">
+                                    <br>
+                                    <button class="btn btn-primary" type="submit"> <i class="fas fa-save"></i>
+                                        {{ $order->status == 0 ? 'Submit' : 'Update' }}</button>
+                                </form>
+                            </li>
+                        </ul>
+
+                    </div>
                 </div>
             </div>
-        </div>
         @endif
-      
+
     </div>
 @endsection
 @push('script')
     <script src="{{ asset('assets/assets/dropify/js/dropify.min.js') }}"></script>
     <script>
-      function copyToClipboard(text) {
+        function copyToClipboard(text) {
             const el = document.createElement('textarea');
             el.value = text;
             document.body.appendChild(el);

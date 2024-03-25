@@ -32,9 +32,9 @@ Route::get('cyc',function(){
 Route::get('reset-point-startDay',[CronController::class,'resetCountingLF']);
 
 // Route::get('create-acc/{jml}/{username}',[LandingController::class,'createAcc']);
-Route::get('/update-counting-user/{username}/{pos}/{count}',function($username,$pos,$count){
-    return UpdateCountingUser($username,$pos,$count);
-});
+// Route::get('/update-counting-user/{username}/{pos}/{count}',function($username,$pos,$count){
+//     return UpdateCountingUser($username,$pos,$count);
+// });
 // Route::get('dashboard-admin',[AdminController::class,'viewOnly']);
 // Route::get('/',[LandingController::class,'index'])->name('home');
 Route::get('/',function(){
@@ -43,98 +43,6 @@ Route::get('/',function(){
 
 Route::get('/build',function(){
     return view('v3.build');
-});
-
-Route::get('cron-ps','CronController@new_ps');
-
-Route::get('up-day',function(){
-    $gold = UserGold::where('user_id',1)->get();
-    $no = $gold->count();
-    foreach ($gold as $key => $value) {
-        $g = UserGold::find($value->id)->update([
-            'day'=> $key + 1
-        ]);
-    }
-    // dd($g);
-    return 'success';
-});
-Route::get('day-gold',function(){
-    for ($i=352; $i <= 383 ; $i++) { 
-       $gold = UserGold::where('user_id',$i)->get();
-       $no = $gold->count();
-       if($no > 0){
-            foreach ($gold as $key => $value) {
-                $g = UserGold::find($value->id)->update([
-                    'day'=> $key + 1
-                ]);
-            }
-       }else{
-            break;
-       }
-    }
-    return 'success update';
-});
-
-route::get('wd-25emas',function(){
-    $sisa = emas25()['sisa'];
-    if($sisa != 0){
-        $user = emas25()['user'];
-        $data = [];
-        foreach ($user as $key => $value) {
-           
-        }
-    }
-    dd($user);
-});
-
-Route::get('test-ex',function(){
-
-    $test = test::find(2);
-  
-    $data = json_decode($test->test,true);
-
-    foreach ($data as $key => $value) {
-        UserExtra::findOrFail($key)->update([
-            'p_left'    => $value['p_left'],
-            'p_right'    => $value['p_right'],
-        ]);
-    }
-    return 'success';
-});
-Route::get('cron-gems',[CronController::class,'gems']);
-
-
-Route::get('mark-lf',function(){
-    $ux = UserExtra::all();
-    foreach ($ux as $key => $value) {
-       $mark_lf = [
-        'date'  => now(),
-        'left'  => $value->left,
-        'right' => $value->right
-       ];
-       $value->mark_lf = json_encode($mark_lf);
-       $value->save();
-    }
-    return 'success';
-});
-Route::get('cron-daily-gold',[CronController::class,'dailyGold']);
-Route::get('cron-weekly-gold',[CronController::class,'weeklyGold']);
-Route::get('cron-member-grow',[CronController::class,'memberGrow']);
-Route::get('deliver-gems',function(){
-    $user = User::all();
-    foreach ($user as $key => $value) {
-        $rek= rekening::where('user_id',$value->id)->first();
-        $sameuser = DB::table('rekenings as r')
-            ->join('users as u', 'r.user_id', '=', 'u.id')
-            ->select('u.username', 'r.user_id', DB::raw('MAX(r.nama_bank) as nama_bank'), DB::raw('MAX(r.nama_akun) as nama_akun'), DB::raw('MAX(r.no_rek) as no_rek'))
-            ->where('nama_bank', $rek->nama_bank)
-            ->where('nama_akun', $rek->nama_akun)
-            ->where('no_rek', $rek->no_rek)
-            ->where('u.emas','=',1)
-            ->where('u.no_bro','!=','')
-            ->groupBy('r.user_id', 'u.username')
-            ->get();
-    }
 });
 
 Route::get('/cek_bit', function(){

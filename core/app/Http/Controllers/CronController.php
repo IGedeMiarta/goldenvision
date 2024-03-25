@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DailyGold;
+use App\Models\Deposit;
 use App\Models\GeneralSetting;
 use App\Models\MemberGrow;
 use App\Models\rekening;
@@ -575,5 +576,20 @@ class CronController extends Controller
         ]);
     }
 
+    public function cancelDeposit() {
+        
+        $deposits = Deposit::where('status', 0)->get();
+        foreach ($deposits as $deposit) {
+            $created_at_plus_24_hours = strtotime($deposit->created_at . ' +24 hours');
+            $now = time();
+
+            if ($created_at_plus_24_hours > $now) {
+                $deposit->status = 3;
+                $deposit->admin_feedback = 'Cancelled by system, past the transaction time';
+                $deposit->save();
+            }
+        }
+    }
 
 }
+
