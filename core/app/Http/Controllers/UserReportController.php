@@ -124,7 +124,20 @@ class UserReportController extends Controller
         $data['search'] = $search;
         $data['empty_message'] = 'No transactions.';
         return view($this->activeTemplate . 'user.transactions', $data);
+    }
 
+    public function otherBonus(Request $request){
+        $search = $request->search;
+        if ($search) {
+            $data['page_title'] = "Other Bonus search : " . $search;
+            $data['transactions'] = auth()->user()->transactions()->where('trx', 'like', "%$search%")->where('trx_type', "+")->whereNotIn('remark',['referral_commission','binary_commission','leadership_com'])->latest()->paginate(getPaginate());
+        } else {
+            $data['page_title'] = 'Other Bonus';
+            $data['transactions'] = auth()->user()->transactions()->where('trx_type', "+")->whereNotIn('remark',['referral_commission','binary_commission','leadership_com'])->latest()->paginate(getPaginate());
+        }
+        $data['search'] = $search;
+        $data['empty_message'] = 'No Bonus Yet.';
+        return view($this->activeTemplate . 'user.transactions', $data);
     }
 
     public function depositHistory(Request $request)
