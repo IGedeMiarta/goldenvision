@@ -41,17 +41,17 @@ class AdminDashboardController extends Controller
 
         $data['total_omset'] = Transaction::where('remark', 'purchased_plan')
                 ->orWhere('remark', 'repeat_order')->sum('amount'); 
-        $widget['omset_this_month'] = Transaction::whereYear('created_at', now()->year)
+        $data['omset_this_month'] = Transaction::whereYear('created_at', now()->year)
             ->whereMonth('created_at', now()->month)
             ->where('remark', 'purchased_plan')
             ->orWhere('remark', 'repeat_order')->sum('amount');
-        $widget['omset_this_week'] = Transaction::whereYear('created_at', now()->year)
+        $data['omset_this_week'] = Transaction::whereYear('created_at', now()->year)
                 ->whereBetween('created_at', [
                     now()->startOfWeek()->format('Y-m-d H:i:s'),
                     now()->endOfWeek()->format('Y-m-d H:i:s')
                 ])->where('remark', 'purchased_plan')
                 ->orWhere('remark', 'repeat_order')->sum('amount');
-        $widget['omset_today'] = Transaction::whereDate('created_at', now()->format('Y-m-d'))->where('remark', 'purchased_plan')
+        $data['omset_today'] = Transaction::whereDate('created_at', now()->format('Y-m-d'))->where('remark', 'purchased_plan')
                 ->orWhere('remark', 'repeat_order')->sum('amount');
         return view('admin.dashboard.new-dashboard',$data);
     }
