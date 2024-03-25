@@ -183,7 +183,12 @@
                                     <span class="menu-title">@lang('Leadership Commission')</span>
                                 </a>
                             </li>
-
+                            <li class="sidebar-menu-item {{ menuActive('user.report.other') }}">
+                                <a href="{{ route('user.report.other') }}" class="nav-link">
+                                    <i class="menu-icon las la-dot-circle"></i>
+                                    <span class="menu-title">@lang('Other Bonus')</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>

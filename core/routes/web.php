@@ -670,6 +670,7 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::get('report/referral/commission', 'UserReportController@refCom')->name('report.refCom');
             Route::get('report/binary/commission', 'UserReportController@binaryCom')->name('report.binaryCom');
             Route::get('report/leadership/commission', 'UserReportController@leadersComm')->name('report.leadersComm');
+            Route::get('report/other-bonus', 'UserReportController@otherBonus')->name('report.other');
 
             Route::get('report/exchange/log', 'UserReportController@exchangeLog')->name('report.exchangeLog');
             Route::get('report/delivery/log', 'UserReportController@deliveryLog')->name('report.deliveryLog');
