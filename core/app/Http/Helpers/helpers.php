@@ -1609,7 +1609,7 @@ function  leaderCommission2Founder($id, $qty)
             if ($refid == "0") {
                 break;
             }
-            if ($userRef->rank_founder == 0 || $userRef->rank_founder == 1) {
+            if ($userRef->rank_founder == 0 || $userRef->rank_founder == 1 || $userRef->rank_founder == null) {
                 $id = $refid;
                 continue;
             }
