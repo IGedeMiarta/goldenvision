@@ -313,10 +313,11 @@ class NewSponsorRegitserController extends Controller
 
             referralCommission2($user->id, $details);
             leaderCommission2($sponsor->id,$data['pin']);
+            leaderCommission2Founder($sponsor->id,$data['pin']);
             updateLimit($user->id);
-            // updatePaidCount2($user->id);
 
-            deliverPoint($user->id,$data['pin']*2);
+            deliverPoint($user->id,$data['pin'] * $plan->point);
+
             return $trx;  
         } catch (\Throwable $th) {
             dd($th->getMessage());
