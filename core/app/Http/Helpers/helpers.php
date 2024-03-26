@@ -1416,7 +1416,7 @@ function  leaderCommissionFounder($id, $qty)
             
             if ($userRef->plan_id != 0 && $amount > 0) {
 
-                $userRef->b_balance += ($amount * $qty);
+                $userRef->balance += ($amount * $qty);
                 $userRef->save();
 
                 if ($userRef->rank_founder == 2) {
@@ -1434,7 +1434,7 @@ function  leaderCommissionFounder($id, $qty)
                 $trx->amount = $amount * $qty;
                 $trx->charge = 0;
                 $trx->trx_type = '+';
-                $trx->post_balance = getAmount($userRef->b_balance);
+                $trx->post_balance = getAmount($userRef->balance);
                 $trx->remark = 'founder_com';
                 $trx->trx = getTrx();
                 $trx->details = 'Paid '.$userRef->rankfounder->name.' Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
@@ -1581,7 +1581,7 @@ function  leaderCommission2Founder($id, $qty)
 
                 // $userfrom->balance += $amount * $qty;
 
-                $userfrom->b_balance += ($amount * $qty) ;
+                $userfrom->balance += ($amount * $qty) ;
                 $userfrom->save();
 
                 $trx = new Transaction();
@@ -1589,7 +1589,7 @@ function  leaderCommission2Founder($id, $qty)
                 $trx->amount = ($amount * $qty) ;
                 $trx->charge = 0;
                 $trx->trx_type = '+';
-                $trx->post_balance = getAmount($userfrom->b_balance);
+                $trx->post_balance = getAmount($userfrom->balance);
                 $trx->remark = 'leadership_com';
                 $trx->trx = getTrx();
                 $trx->details = 'Paid '.$userfrom->rankfounder->name.' Commission  ' . ($amount * $qty) . ' ' . $gnl->cur_text;
@@ -1650,14 +1650,14 @@ function  leaderCommission2Founder($id, $qty)
                     $details2 = 'leadership_funder';
                 }
 
-                $userRef->b_balance += ($amount * $qty);
+                $userRef->balance += ($amount * $qty);
                 $userRef->save();
                 $trx = new Transaction();
                 $trx->user_id = $userRef->id;
                 $trx->amount = $amount * $qty;
                 $trx->charge = 0;
                 $trx->trx_type = '+';
-                $trx->post_balance = getAmount($userRef->b_balance);
+                $trx->post_balance = getAmount($userRef->balance);
                 $trx->remark = 'founder_com';
                 $trx->trx = getTrx();
                 $trx->details = 'Paid '.$userRef->rankfounder->name.' Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
@@ -1794,14 +1794,14 @@ function  leaderCommission2ROFounder($id, $qty)
             
             if ($userRef->plan_id != 0 && $amount > 0) {
                 // $userRef->balance += $amount * $qty;
-                $userRef->b_balance += ($amount * $qty);
+                $userRef->balance += ($amount * $qty);
                 $userRef->save();
                 $trx = new Transaction();
                 $trx->user_id = $userRef->id;
                 $trx->amount = $amount * $qty;
                 $trx->charge = 0;
                 $trx->trx_type = '+';
-                $trx->post_balance = getAmount($userRef->b_balance);
+                $trx->post_balance = getAmount($userRef->balance);
                 $trx->remark = 'founder_com';
                 $trx->trx = getTrx();
                 $trx->details = 'Paid '.$userRef->rankfounder->name.' Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
