@@ -317,10 +317,6 @@ class NewSponsorRegitserController extends Controller
             updateLimit($user->id);
 
             deliverPoint($user->id,$data['pin'] * $plan->point);
-<<<<<<< HEAD
-
-=======
->>>>>>> e0f9aac5c37a4372a2547387e089b1b5ba4425fb
             return $trx;  
         } catch (\Throwable $th) {
             dd($th->getMessage());
