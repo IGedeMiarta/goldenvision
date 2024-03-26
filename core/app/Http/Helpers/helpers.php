@@ -1564,11 +1564,21 @@ function  leaderCommission2Founder($id, $qty)
     $userfrom = user::find($id);
     $first = false;
     $last = 0;
-    if ($userfrom->rank_founder != 0 || $userfrom->rank_founder != 1) {
+    if ($userfrom->rank_founder != 0 || $userfrom->rank_founder != 1  || $userfrom->rank_founder != null) {
             $amount = $userfrom->rankfounder->leader_bonus;
             $com = $com - $userfrom->rankfounder->leader_bonus;
             
             if ($userfrom->plan_id != 0 && $amount > 0) {
+                if ($userfrom->rank_founder == 2) {
+                    $details = 'Privilege';
+                }elseif($userfrom->rank_founder == 3){
+                    $details = 'Founder';
+                }elseif($userfrom->rank_founder == 4){
+                    $details = 'Founder Nasional';
+                }else{
+                    $details = 'leadership_funder';
+                }
+
                 // $userfrom->balance += $amount * $qty;
 
                 $userfrom->b_balance += ($amount * $qty) ;
@@ -1582,7 +1592,7 @@ function  leaderCommission2Founder($id, $qty)
                 $trx->post_balance = getAmount($userfrom->b_balance);
                 $trx->remark = 'leadership_com';
                 $trx->trx = getTrx();
-                $trx->details = 'Paid Leadership Commission  ' . ($amount * $qty) . ' ' . $gnl->cur_text;
+                $trx->details = 'Paid '. $details. ' Commission  ' . ($amount * $qty) . ' ' . $gnl->cur_text;
                 $trx->save();  
                 $first = true;
 
@@ -1629,7 +1639,17 @@ function  leaderCommission2Founder($id, $qty)
             }
             
             if ($userRef->plan_id != 0 && $amount > 0) {
-                // $userRef->balance += $amount * $qty;
+                
+                if ($userRef->rank_founder == 2) {
+                    $details2 = 'Privilege';
+                }elseif($userRef->rank_founder == 3){
+                    $details2 = 'Founder';
+                }elseif($userRef->rank_founder == 4){
+                    $details2 = 'Founder Nasional';
+                }else{
+                    $details2 = 'leadership_funder';
+                }
+
                 $userRef->b_balance += ($amount * $qty);
                 $userRef->save();
                 $trx = new Transaction();
@@ -1640,7 +1660,7 @@ function  leaderCommission2Founder($id, $qty)
                 $trx->post_balance = getAmount($userRef->b_balance);
                 $trx->remark = 'founder_com';
                 $trx->trx = getTrx();
-                $trx->details = 'Paid Founder National Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
+                $trx->details = 'Paid ' . $details2 .' Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
                 $trx->save();  
 
                 $last = $userRef->rank_founder;
