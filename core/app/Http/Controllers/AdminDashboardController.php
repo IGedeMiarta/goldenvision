@@ -38,6 +38,21 @@ class AdminDashboardController extends Controller
                 now()->endOfWeek()->format('Y-m-d H:i:s')
             ])->where('trx_type','+')->sum('amount');
         $data['payout_today'] = Transaction::where('trx_type','+')->whereDate('created_at', now()->format('Y-m-d'))->sum('amount');
+
+        $data['total_omset'] = Transaction::where('remark', 'purchased_plan')
+                ->orWhere('remark', 'repeat_order')->sum('amount'); 
+        $data['omset_this_month'] = Transaction::whereYear('created_at', now()->year)
+            ->whereMonth('created_at', now()->month)
+            ->where('remark', 'purchased_plan')
+            ->orWhere('remark', 'repeat_order')->sum('amount');
+        $data['omset_this_week'] = Transaction::whereYear('created_at', now()->year)
+                ->whereBetween('created_at', [
+                    now()->startOfWeek()->format('Y-m-d H:i:s'),
+                    now()->endOfWeek()->format('Y-m-d H:i:s')
+                ])->where('remark', 'purchased_plan')
+                ->orWhere('remark', 'repeat_order')->sum('amount');
+        $data['omset_today'] = Transaction::whereDate('created_at', now()->format('Y-m-d'))->where('remark', 'purchased_plan')
+                ->orWhere('remark', 'repeat_order')->sum('amount');
         return view('admin.dashboard.new-dashboard',$data);
     }
 }

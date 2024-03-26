@@ -327,7 +327,7 @@ function deliverPoint($user_id,$qty)
     $log->type = '+';
     $log->start_point = $user->point;
     $log->end_point = $user->point + $qty;
-    $log->desc = 'User subsribe for ' . $qty/$plan->point . ' ID and get '  . $qty  .' POINT';
+    $log->desc = 'User subsribe for ' . $qty / $plan->point . ' ID and get '  . $qty  .' POINT';
     $log->save();
 
     $user->point += $qty;

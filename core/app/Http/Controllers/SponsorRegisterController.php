@@ -365,7 +365,7 @@ class SponsorRegisterController extends Controller
             leaderCommission2Founder($sponsor->id,$data['pin']);
             updateLimit($user->id);
 
-            deliverPoint($user->id,$data['pin'] * $plan->point);
+            deliverPoint($user->id, $data['pin'] * $plan->point);
             return $trx;  
         } catch (\Throwable $th) {
             return false;
