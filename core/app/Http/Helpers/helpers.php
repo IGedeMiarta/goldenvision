@@ -1437,7 +1437,7 @@ function  leaderCommissionFounder($id, $qty)
                 $trx->post_balance = getAmount($userRef->b_balance);
                 $trx->remark = 'founder_com';
                 $trx->trx = getTrx();
-                $trx->details = 'Paid '. $details .' Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
+                $trx->details = 'Paid '.$userRef->rankfounder->name.' Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
                 $trx->save();  
 
                 $last = $userRef->rank_founder;
@@ -1463,7 +1463,7 @@ function  leaderCommission2($id, $qty)
     $userfrom = user::find($id);
     $first = false;
     $last = 0;
-    if ($userfrom->rank != 0 || $userfrom->rank != 1) {
+    if ($userfrom->rank != 0 && $userfrom->rank != 1) {
             $amount = $userfrom->ranks->leader_bonus;
             $com = $com - $userfrom->ranks->leader_bonus;
             
@@ -1564,7 +1564,7 @@ function  leaderCommission2Founder($id, $qty)
     $userfrom = user::find($id);
     $first = false;
     $last = 0;
-    if ($userfrom->rank_founder != 0 || $userfrom->rank_founder != 1  || $userfrom->rank_founder != null) {
+    if ($userfrom->rank_founder != 0 && $userfrom->rank_founder != 1) {
             $amount = $userfrom->rankfounder->leader_bonus;
             $com = $com - $userfrom->rankfounder->leader_bonus;
             
@@ -1592,7 +1592,7 @@ function  leaderCommission2Founder($id, $qty)
                 $trx->post_balance = getAmount($userfrom->b_balance);
                 $trx->remark = 'leadership_com';
                 $trx->trx = getTrx();
-                $trx->details = 'Paid '. $details. ' Commission  ' . ($amount * $qty) . ' ' . $gnl->cur_text;
+                $trx->details = 'Paid '.$userfrom->rankfounder->name.' Commission  ' . ($amount * $qty) . ' ' . $gnl->cur_text;
                 $trx->save();  
                 $first = true;
 
@@ -1660,7 +1660,7 @@ function  leaderCommission2Founder($id, $qty)
                 $trx->post_balance = getAmount($userRef->b_balance);
                 $trx->remark = 'founder_com';
                 $trx->trx = getTrx();
-                $trx->details = 'Paid ' . $details2 .' Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
+                $trx->details = 'Paid '.$userRef->rankfounder->name.' Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
                 $trx->save();  
 
                 $last = $userRef->rank_founder;
@@ -1804,7 +1804,7 @@ function  leaderCommission2ROFounder($id, $qty)
                 $trx->post_balance = getAmount($userRef->b_balance);
                 $trx->remark = 'founder_com';
                 $trx->trx = getTrx();
-                $trx->details = 'Paid Founder National Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
+                $trx->details = 'Paid '.$userRef->rankfounder->name.' Commission  ' . $amount * $qty . ' ' . $gnl->cur_text;
                 $trx->save();  
 
                 $last = $userRef->rank_founder;
