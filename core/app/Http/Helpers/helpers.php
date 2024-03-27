@@ -1590,7 +1590,7 @@ function  leaderCommission2Founder($id, $qty)
                 $trx->charge = 0;
                 $trx->trx_type = '+';
                 $trx->post_balance = getAmount($userfrom->balance);
-                $trx->remark = 'leadership_com';
+                $trx->remark = 'founder_com';
                 $trx->trx = getTrx();
                 $trx->details = 'Paid '.$userfrom->rankfounder->name.' Commission  ' . ($amount * $qty) . ' ' . $gnl->cur_text;
                 $trx->save();  
