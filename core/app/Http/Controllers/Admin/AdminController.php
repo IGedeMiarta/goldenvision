@@ -152,7 +152,9 @@ class AdminController extends Controller
         $data['member_pin'] = User::where('pin','>',0)->sum('pin');
         $data['used_pin'] = UserPin::where('user_id','=','pin_by')->orWhere('pin_by',0)->sum('pin');
         $data['free_user'] = User::where('plan_id',0)->where('comp','!=',1)->count();
+        $data['total_user'] = User::count();
         $data['total_active_user'] = User::where('status',1)->count();
+        $data['total_ban_user'] = User::where('status',0)->count();
         $data['free_user_today'] = User::whereDate('created_at', now()->format('Y-m-d'))->where('plan_id',0)->count();
         $data['active_user_today'] = User::whereDate('created_at', now()->format('Y-m-d'))->count();
         $data['user_week'] = User::whereBetween('created_at', [

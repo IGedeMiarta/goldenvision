@@ -262,9 +262,9 @@
                 background-size: cover;">
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
-                    <span class="text-white" style="font-size: 12px">Total Free User </span>
+                    <span class="text-white" style="font-size: 12px">Total User </span>
                     <h6 class="text-white" style="font-size: 25px;font-weight: bolder">
-                        {{ $data['free_user'] }}
+                        {{ $data['total_user'] }}
                     </h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
@@ -291,6 +291,9 @@
                     <span class="text-white" style="font-size: 12px">Total Active User </span>
                     <h6 class="text-white"style="font-size: 25px;font-weight: bolder">{{ $data['total_active_user'] }}
                     </h6>
+                    <span class="text-white" style="font-size: 12px">Total Baned User </span>
+                    <h6 class="text-white"style="font-size: 25px;font-weight: bolder">{{ $data['total_ban_user'] }}
+                    </h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
                     <div class="icon-user">
@@ -313,8 +316,8 @@
                 background-size: cover;">
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
-                    <span class="text-white" style="font-size: 12px">Free User Today</span>
-                    <h6 class="text-white"style="font-size: 25px;font-weight: bolder">{{ $data['free_user_today'] }}
+                    <span class="text-white" style="font-size: 12px">Free User</span>
+                    <h6 class="text-white"style="font-size: 25px;font-weight: bolder">{{ $data['free_user'] }}
                     </h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">

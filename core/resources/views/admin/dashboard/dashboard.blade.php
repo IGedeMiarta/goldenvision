@@ -326,7 +326,7 @@
     <a href="javascript:void(0)"
         class="btn @if (Carbon\Carbon::parse($general->last_cron)->diffInSeconds() < 600) btn--success @elseif(Carbon\Carbon::parse($general->last_cron)->diffInSeconds() < 1200) btn--warning @else
         btn--danger @endif "><i
-            class="fa fa-fw fa-clock"></i>@lang('Last Cron Run') :
+            class="fa fa-fw fa-clock text-light"></i>@lang('Last Cron Run') :
         {{ Carbon\Carbon::parse($general->last_cron)->difFforHumans() }}</a>
 @endpush
 
