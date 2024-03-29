@@ -68,8 +68,6 @@ class PaymentController extends Controller
             $notify[] = ['error', "Error:" . $th->getMessage() ];
             return redirect()->back()->withNotify($notify);
         }
-
-
-        dd($request->all());
     }
+
 }

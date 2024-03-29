@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\Gateway\Espay\PaymentController;
+use App\Http\Controllers\Gateway\Paylabs\PaylabsPaymentController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\NewCronController;
 use App\Http\Controllers\NewSponsorRegitserController;
@@ -27,6 +28,7 @@ use Illuminate\Support\Facades\URL;
 Route::get('cyc',function(){
     updateCycleNasional(1);
 });
+Route::get('/tes-payment',[PaylabsPaymentController::class,'payment']);
 
 
 Route::get('reset-point-startDay',[CronController::class,'resetCountingLF']);

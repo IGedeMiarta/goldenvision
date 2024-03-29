@@ -43,118 +43,15 @@
         </div>
     @endif
 
-    @include('admin.dashboard.cardInfo')
+    @include('admin.dashboard.dashboard-card')
     {{-- @dd($date) --}}
     <div class="row mb-none-30 mt-5">
-        <div class="col-xl-5 mb-30">
-            <div class="card ">
-                <div class="card-header">
-                    <h6 class="card-title mb-0">@lang('Admin & Leader Sell Pin')</h6>
-                    <form action="">
-                        <div class="input-group">
-                            <input type="month" name="date" id="" class="form-control mr-2"
-                                value="{{ $date }}">
-                            <button class="btn btn-primary" type="submit">Check</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive--sm table-responsive">
-                        <table class="table table--light style--two">
-                            <thead>
-                                <tr>
-                                    <th scope="col">@lang('Username')</th>
-                                    <th scope="col">@lang('Total Pin')</th>
-                                    <th scope="col">@lang('Date')</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($widget['admin_leader_pin'] as $u)
-                                    {{-- @dd($u) --}}
-                                    <tr>
-                                        <td>{{ $u->username }}</td>
-                                        <td>{{ $u->total_pin }}</td>
-                                        <td>{{ $u->month_year }}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td class="text-muted text-center" colspan="100%">@lang('Data Not Found')</td>
-                                    </tr>
-                                @endforelse
-
-                            </tbody>
-                        </table><!-- table end -->
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="col-xl-7 mb-30">
+        <div class="col-xl-12 mb-30">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">@lang('Daily purchase Plan')</h5>
                     <div id="registered-line"></div>
                 </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="row mb-none-30 mt-5">
-        <div class="col-md-12">
-            <div class="card ">
-                <div class="card-header">
-                    <h6 class="card-title mb-0">@lang('Last Log User')</h6>
-                </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive--sm table-responsive">
-                        <table class="table table--light style--two">
-                            <thead>
-                                <tr>
-                                    <th scope="col">@lang('User')</th>
-                                    <th scope="col">@lang('Username')</th>
-                                    <th scope="col">@lang('Section')</th>
-                                    <th scope="col">@lang('Action')</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($latesLog as $user)
-                                    <tr>
-                                        <td data-label="@lang('User')">
-                                            <div class="user">
-                                                <div class="thumb"><img
-                                                        src="{{ getImage('assets/images/user/profile/', null, true) }}"
-                                                        alt="@lang('image')"></div>
-                                                <span class="name">{{ $user->fullname }}</span>
-                                            </div>
-                                        </td>
-                                        <td data-label="@lang('Username')"><a
-                                                href="{{ route('admin.users.detail', $user->id) }}">{{ $user->user->username ?? '' }}</a>
-                                        </td>
-                                        <td data-label="@lang('Email')" class="text-left">{{ $user->subject }} <br>
-                                            <span style="color: #999">{{ $user->created_at->diffForHumans() }}</span>
-                                        </td>
-                                        <td data-label="@lang('Action')">
-                                            <a href="{{ route('admin.users.detail', $user->user_id) }}" class="icon-btn"
-                                                data-toggle="tooltip" title="@lang('Details')">
-                                                <i class="las la-desktop text--shadow"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td class="text-muted text-center" colspan="100%">@lang('User Not Found')</td>
-                                    </tr>
-                                @endforelse
-
-                            </tbody>
-                        </table><!-- table end -->
-                    </div>
-                </div>
-                <a href="#">
-                    <div class="card-footer text-center">
-                        See All Log User
-                    </div>
-                </a>
             </div>
         </div>
     </div>
@@ -303,7 +200,7 @@
 
 
 
-    <div class="row mb-none-30 mt-5">
+    {{-- <div class="row mb-none-30 mt-5">
 
         <div class="col-xl-7 mb-30">
             <div class="card mb-3">
@@ -345,49 +242,7 @@
                 <div class="card-body">
                     <div id="leaderPin"></div>
                 </div>
-                {{-- <div class="card-body p-0">
-                    <div class="table-responsive--sm table-responsive">
-                        <table class="table table--light style--two">
-                            <thead>
-                                <tr>
-                                    <th scope="col">@lang('User')</th>
-                                    <th scope="col">@lang('Username')</th>
-                                    <th scope="col">@lang('Email')</th>
-                                    <th scope="col">@lang('Action')</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($latestUser as $user)
-                                    <tr>
-                                        <td data-label="@lang('User')">
-                                            <div class="user">
-                                                <div class="thumb"><img
-                                                        src="{{ getImage('assets/images/user/profile/' . $user->image, null, true) }}"
-                                                        alt="@lang('image')"></div>
-                                                <span class="name">{{ $user->fullname }}</span>
-                                            </div>
-                                        </td>
-                                        <td data-label="@lang('Username')"><a
-                                                href="{{ route('admin.users.detail', $user->id) }}">{{ $user->username }}</a>
-                                        </td>
-                                        <td data-label="@lang('Email')">{{ $user->email }}</td>
-                                        <td data-label="@lang('Action')">
-                                            <a href="{{ route('admin.users.detail', $user->id) }}" class="icon-btn"
-                                                data-toggle="tooltip" title="@lang('Details')">
-                                                <i class="las la-desktop text--shadow"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td class="text-muted text-center" colspan="100%">@lang('User Not Found')</td>
-                                    </tr>
-                                @endforelse
 
-                            </tbody>
-                        </table><!-- table end -->
-                    </div>
-                </div> --}}
             </div><!-- card end -->
         </div>
 
@@ -400,8 +255,8 @@
                 </div>
             </div>
         </div>
-    </div>
-
+    </div> --}}
+    {{-- 
     <div class="row mb-none-30 mt-5">
         <div class="col-md-12">
             <div class="card">
@@ -420,7 +275,7 @@
                 </a>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="row mb-none-30 mt-5">
         <div class="col-xl-4 col-lg-6 mb-30">

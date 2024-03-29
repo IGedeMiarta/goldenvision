@@ -45,10 +45,8 @@ class AdminController extends Controller
         }else{
             $date = date('Y-m',strtotime(now()));
         }
-        // dd(totalGlobalPayout());
-        // dd(adminLeaderSellPin('2023-03-18 13:31:45'));
         $page_title = 'Dashboard';
-        // User Info
+
         $widget['total_users'] = User::where('comp',0)->count();
         $widget['verified_users'] = User::where('comp',0)->where('status', 1)->count();
         $widget['email_verified_users'] = User::where('comp',0)->where('ev', 1)->count();
@@ -97,11 +95,9 @@ class AdminController extends Controller
             $report['withdraw_month_amount']->push(getAmount($bb->withdrawAmount));
         });
 
-        // $registered = userRegiteredChart();
-        // dd($registered);
+    
         $registered = registerThisMount();
         $weekleader = sumPinByWeek();
-        // dd($weekleader);
 
         $withdrawal = Withdrawal::where('created_at', '>=', \Carbon\Carbon::now()->subDays(30))->where('status', 1)
             ->select(array(DB::Raw('sum(amount)   as totalAmount'), DB::Raw('DATE(created_at) day')))
@@ -151,19 +147,62 @@ class AdminController extends Controller
 
         $latestUser = User::latest()->limit(6)->get();
         $latesLog = LogActivity::with(['user'])->where('subject','like','%Login.%')->orderByDesc('id')->groupBy('user_id')->limit(4)->get();
-// dd($leader);
+        
+        $data['pin'] = UserPin::where('pin_by',null)->sum('pin');
+        $data['member_pin'] = User::where('pin','>',0)->sum('pin');
+        $data['used_pin'] = UserPin::where('user_id','=','pin_by')->orWhere('pin_by',0)->sum('pin');
+        $data['free_user'] = User::where('plan_id',0)->where('comp','!=',1)->count();
+        $data['total_active_user'] = User::where('status',1)->count();
+        $data['free_user_today'] = User::whereDate('created_at', now()->format('Y-m-d'))->where('plan_id',0)->count();
+        $data['active_user_today'] = User::whereDate('created_at', now()->format('Y-m-d'))->count();
+        $data['user_week'] = User::whereBetween('created_at', [
+            now()->startOfWeek()->format('Y-m-d H:i:s'),
+            now()->endOfWeek()->format('Y-m-d H:i:s')
+        ])->count();
+
+        $data['user_month'] = User::whereYear('created_at', now()->year)
+            ->whereMonth('created_at', now()->month)
+            ->count();
+
+        $data['total_payout'] = Transaction::where('trx_type','+')->sum('amount');
+        $data['payout_this_month'] = Transaction::whereYear('created_at', now()->year)
+            ->whereMonth('created_at', now()->month)->where('trx_type','+')
+            ->sum('amount');
+        $data['payout_this_week'] = Transaction::whereYear('created_at', now()->year)
+            ->whereBetween('created_at', [
+                now()->startOfWeek()->format('Y-m-d H:i:s'),
+                now()->endOfWeek()->format('Y-m-d H:i:s')
+            ])->where('trx_type','+')->sum('amount');
+        $data['payout_today'] = Transaction::where('trx_type','+')->whereDate('created_at', now()->format('Y-m-d'))->sum('amount');
+
+        $data['total_omset'] = Transaction::where('remark', 'purchased_plan')
+                ->orWhere('remark', 'repeat_order')->sum('amount'); 
+        $data['omset_this_month'] = Transaction::whereYear('created_at', now()->year)
+            ->whereMonth('created_at', now()->month)
+            ->where('remark', 'purchased_plan')
+            ->orWhere('remark', 'repeat_order')->sum('amount');
+        $data['omset_this_week'] = Transaction::whereYear('created_at', now()->year)
+                ->whereBetween('created_at', [
+                    now()->startOfWeek()->format('Y-m-d H:i:s'),
+                    now()->endOfWeek()->format('Y-m-d H:i:s')
+                ])->where('remark', 'purchased_plan')
+                ->orWhere('remark', 'repeat_order')->sum('amount');
+        $data['omset_today'] = Transaction::whereDate('created_at', now()->format('Y-m-d'))->where('remark', 'purchased_plan')
+                ->orWhere('remark', 'repeat_order')->sum('amount');
+
+
         if(auth()->guard('admin')->user()->role == 'su'){
             return view('admin.dashboard.dashboard', compact('page_title','date','weekleader',
                 'widget', 'report', 'withdrawals', 'chart','payment',
-                'paymentWithdraw','latestUser', 'bv', 'depositsMonth','latesLog', 'withdrawalMonth','registered'));
+                'paymentWithdraw','latestUser', 'bv', 'depositsMonth','latesLog', 'withdrawalMonth','registered','data'));
         }elseif(auth()->guard('admin')->user()->role == 'vu'){
             return view('admin.dashboard.dasboardView', compact('page_title','date','lPin','weekleader',
                 'widget', 'report', 'withdrawals', 'chart','payment',
-                'paymentWithdraw','latestUser', 'bv', 'depositsMonth','latesLog','leader', 'withdrawalMonth','registered'));
+                'paymentWithdraw','latestUser', 'bv', 'depositsMonth','latesLog','leader', 'withdrawalMonth','registered','data'));
         }else{
             return view('admin.dashboard.dashboard_ar', compact('page_title','date',
                 'widget', 'report', 'withdrawals', 'chart','payment','weekleader',
-                'paymentWithdraw','latestUser', 'bv','mem','lPin', 'depositsMonth','latesLog', 'withdrawalMonth','registered','bonusr','bonusa','ure','ure2'));
+                'paymentWithdraw','latestUser', 'bv','mem','lPin', 'depositsMonth','latesLog', 'withdrawalMonth','registered','bonusr','bonusa','ure','ure2','data'));
         }
 
         
