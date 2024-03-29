@@ -421,7 +421,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Total Payout </span>
-                    <h6 class="text-dark"style="font-size: 25px;font-weight: bolder">{{ nb($data['total_payout']) }}
+                    <h6 class="text-dark"style="font-size: 20px;font-weight: bolder">{{ nb($data['total_payout']) }}
                     </h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
@@ -442,7 +442,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Payout This Month </span>
-                    <h6 class="text-dark"style="font-size: 25px;font-weight: bolder">
+                    <h6 class="text-dark"style="font-size: 20px;font-weight: bolder">
                         {{ nb($data['payout_this_month']) }}</h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
@@ -462,7 +462,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Payout This Week </span>
-                    <h6 class="text-dark"style="font-size: 25px;font-weight: bolder">
+                    <h6 class="text-dark"style="font-size: 20px;font-weight: bolder">
                         {{ nb($data['payout_this_week']) }}
                     </h6>
                 </div>
@@ -483,7 +483,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Payout Today </span>
-                    <h6 class="text-dark"style="font-size: 25px;font-weight: bolder">
+                    <h6 class="text-dark"style="font-size: 20px;font-weight: bolder">
                         {{ nb($data['payout_today']) }}
                     </h6>
                 </div>
@@ -504,7 +504,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Total Omset </span>
-                    <h6 class="text-dark"style="font-size: 25px;font-weight: bolder">
+                    <h6 class="text-dark"style="font-size: 20px;font-weight: bolder">
                         {{ nb($data['total_omset']) }}
                     </h6>
                 </div>
@@ -525,7 +525,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Omset This Month</span>
-                    <h6 class="text-dark"style="font-size: 25px;font-weight: bolder">
+                    <h6 class="text-dark"style="font-size: 20px;font-weight: bolder">
                         {{ nb($data['omset_this_month']) }}
                     </h6>
                 </div>
@@ -546,7 +546,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Omset This Week</span>
-                    <h6 class="text-dark"style="font-size: 25px;font-weight: bolder">
+                    <h6 class="text-dark"style="font-size: 20px;font-weight: bolder">
                         {{ nb($data['omset_this_week']) }}
                     </h6>
                 </div>
@@ -567,7 +567,7 @@
             <div class="card-body" style="display: flex; justify-content: space-between">
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-dark" style="font-size: 12px">Omset Today</span>
-                    <h6 class="text-dark"style="font-size: 25px;font-weight: bolder">
+                    <h6 class="text-dark"style="font-size: 20px;font-weight: bolder">
                         {{ nb($data['omset_today']) }}
                     </h6>
                 </div>
