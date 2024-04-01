@@ -16,12 +16,12 @@ use App\Services\Tree\TreeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class PlanController extends Controller
 {
     public function __construct(public TreeService $treeService)
     {
-        $data =  'lorem';
         $this->activeTemplate = activeTemplate();
     }
 
@@ -456,10 +456,39 @@ class PlanController extends Controller
             $data['page_title'] = "Tree of " . $user->fullname;
             return view($this->activeTemplate . 'user.myTree', $data);
         }
-
+        
         $notify[] = ['error', 'Tree Not Found or You do not have Permission to view that!!'];
         return redirect()->route('user.my.tree')->withNotify($notify);
 
+    }
+    public function seeTree(Request $request){
+        if ($request->username) {
+            $user = User::where('username', $request->username)->first();
+        } else {
+            $user = User::where('username', $username)->first();
+        }
+        if ($user && treeAuth($user->id, auth()->id())) {
+            $data['tree'] = showTreePage($user->id);
+
+            $data['page_title'] = "Tree of " . $user->fullname;
+            
+            // if(!Session::get('log')){
+            //     $log[] = $request->up;
+            //     Session::put('log',$log);
+
+            // }else{
+            //     $ss = Session::get('log');
+                
+            //     $ss[] = $request->up;
+            //     Session::put('log',$ss);
+            // }
+        
+
+            return view($this->activeTemplate . 'user.myTree', $data);
+        }
+        
+        $notify[] = ['error', 'Tree Not Found or You do not have Permission to view that!!'];
+        return redirect()->route('user.my.tree')->withNotify($notify);
     }
 
 }

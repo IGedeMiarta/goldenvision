@@ -284,6 +284,29 @@
                     </li>
 
                     <li class="sidebar-menu-item sidebar-dropdown">
+                        <a href="javascript:void(0)" class="{{ menuActive('admin.ticket*', 3) }}">
+                            <i class="menu-icon la la-product-hunt"></i>
+                            <span class="menu-title">@lang('PIN') </span>
+                        </a>
+                        <div class="sidebar-submenu {{ menuActive('admin.ticket*', 2) }} ">
+                            <ul>
+                                <li class="sidebar-menu-item {{ menuActive('admin.pin.delivered') }} ">
+                                    <a href="{{ route('admin.pin.delivered') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('PIN By Admin')</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item {{ menuActive('admin.pin.all') }} ">
+                                    <a href="{{ route('admin.pin.all') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('All PIN')</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="sidebar-menu-item sidebar-dropdown">
                         <a href="javascript:void(0)" class="{{ menuActive('admin.withdraw*', 3) }}">
                             <i class="menu-icon la la-bank"></i>
                             <span class="menu-title">@lang('Withdrawals') </span>
@@ -382,54 +405,6 @@
                             <span class="menu-title">@lang('MP Pack Delivery')</span>
                         </a>
                     </li> --}}
-
-
-                    <li class="sidebar-menu-item sidebar-dropdown">
-                        <a href="javascript:void(0)" class="{{ menuActive('admin.ticket*', 3) }}">
-                            <i class="menu-icon la la-ticket"></i>
-                            <span class="menu-title">@lang('Support Ticket') </span>
-                            @if (0 < $pending_ticket_count)
-                                <span class="menu-badge pill bg--primary ml-auto">
-                                    <i class="fa fa-exclamation"></i>
-                                </span>
-                            @endif
-                        </a>
-                        <div class="sidebar-submenu {{ menuActive('admin.ticket*', 2) }} ">
-                            <ul>
-
-                                <li class="sidebar-menu-item {{ menuActive('admin.ticket') }} ">
-                                    <a href="{{ route('admin.ticket') }}" class="nav-link">
-                                        <i class="menu-icon las la-dot-circle"></i>
-                                        <span class="menu-title">@lang('All Ticket')</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-menu-item {{ menuActive('admin.ticket.pending') }} ">
-                                    <a href="{{ route('admin.ticket.pending') }}" class="nav-link">
-                                        <i class="menu-icon las la-dot-circle"></i>
-                                        <span class="menu-title">@lang('Pending Ticket')</span>
-                                        @if ($pending_ticket_count)
-                                            <span
-                                                class="menu-badge pill bg--primary ml-auto">{{ $pending_ticket_count }}</span>
-                                        @endif
-                                    </a>
-                                </li>
-                                <li class="sidebar-menu-item {{ menuActive('admin.ticket.closed') }} ">
-                                    <a href="{{ route('admin.ticket.closed') }}" class="nav-link">
-                                        <i class="menu-icon las la-dot-circle"></i>
-                                        <span class="menu-title">@lang('Closed Ticket')</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-menu-item {{ menuActive('admin.ticket.answered') }} ">
-                                    <a href="{{ route('admin.ticket.answered') }}" class="nav-link">
-                                        <i class="menu-icon las la-dot-circle"></i>
-                                        <span class="menu-title">@lang('Answered Ticket')</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-
                     <li class="sidebar-menu-item sidebar-dropdown">
                         <a href="javascript:void(0)" class="{{ menuActive('admin.report*', 3) }}">
                             <i class="menu-icon la la-list"></i>
@@ -483,6 +458,54 @@
                             </ul>
                         </div>
                     </li>
+
+
+                    <li class="sidebar-menu-item sidebar-dropdown">
+                        <a href="javascript:void(0)" class="{{ menuActive('admin.ticket*', 3) }}">
+                            <i class="menu-icon la la-ticket"></i>
+                            <span class="menu-title">@lang('Support Ticket') </span>
+                            @if (0 < $pending_ticket_count)
+                                <span class="menu-badge pill bg--primary ml-auto">
+                                    <i class="fa fa-exclamation"></i>
+                                </span>
+                            @endif
+                        </a>
+                        <div class="sidebar-submenu {{ menuActive('admin.ticket*', 2) }} ">
+                            <ul>
+
+                                <li class="sidebar-menu-item {{ menuActive('admin.ticket') }} ">
+                                    <a href="{{ route('admin.ticket') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('All Ticket')</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item {{ menuActive('admin.ticket.pending') }} ">
+                                    <a href="{{ route('admin.ticket.pending') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('Pending Ticket')</span>
+                                        @if ($pending_ticket_count)
+                                            <span
+                                                class="menu-badge pill bg--primary ml-auto">{{ $pending_ticket_count }}</span>
+                                        @endif
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item {{ menuActive('admin.ticket.closed') }} ">
+                                    <a href="{{ route('admin.ticket.closed') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('Closed Ticket')</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item {{ menuActive('admin.ticket.answered') }} ">
+                                    <a href="{{ route('admin.ticket.answered') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('Answered Ticket')</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+
 
 
                     <li class="sidebar-menu-item  {{ menuActive('admin.subscriber.index') }}">

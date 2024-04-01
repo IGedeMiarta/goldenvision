@@ -140,15 +140,6 @@ class DepositController extends Controller
         $start  = @$date[0];
         $end    = @$date[1];
         
-        // dd(Carbon::parse($start)->subDays(0));
-
-        // if ($start) {
-        //     $deposits = Deposit::where('status','!=',0)->where('created_at','>',Carbon::parse($start)->subDays(1))->where('created_at','<=',Carbon::parse($start)->addDays(0));
-        // }
-        // if($end){
-        //     $deposits = Deposit::where('status','!=',0)->where('created_at','>',Carbon::parse($start)->subDays(1))->where('created_at','<',Carbon::parse($end)->addDays(1));
-        // }
-        
         $deposits = Deposit::where('status','!=',0)->whereBetween('created_at', [Carbon::parse($start), Carbon::parse($end)->addDays(1)]);
         
         if ($request->method) {

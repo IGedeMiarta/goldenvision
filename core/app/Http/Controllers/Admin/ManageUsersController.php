@@ -28,6 +28,7 @@ use App\Models\UserPin;
 use App\Models\UserPoint;
 use App\Models\WithdrawMethod;
 use App\Models\Withdrawal;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,9 +54,33 @@ class ManageUsersController extends Controller
     }
 
     public function exportallUsers(Request $request){
-        if ($request->search) {
-            return Excel::download(new ExptUserQuery($request->search), 'users.xlsx');
-            # code...
+        
+        if ($request->search != null || $request->date != null) {
+            $name = 'Export User';
+            if($request->search != null){
+                $name .= ' & Name:' . $request->search;
+            }
+            if($request->date != null){
+                function formatDateRange($dates) {
+                    $date = explode('-', $dates);
+                    
+                    if (!(strtotime($date[0]) && strtotime($date[1]))) {
+                        $notify[] = ['error', 'Please provide a valid date'];
+                        return back()->withNotify($notify);
+                    }
+                    
+                    $start = $date[0];
+                    $end = $date[1];
+                    // dd($end);
+                    $startFormatted = date('dMy',strtotime($start));
+                    $endFormatted = date('dMy',strtotime($end));
+                    
+                    return $startFormatted . ' - ' . $endFormatted;
+                }
+
+                $name .= ' & Date:' . formatDateRange($request->date);
+            }
+            return Excel::download(new ExptUserQuery($request->search,$request->date), $name.'.xlsx');
         }else{
             if ($request->page != "Manage Users") {
                 # code...
@@ -158,20 +183,6 @@ class ManageUsersController extends Controller
     }
 
 
-    // public function smsUnverifiedUsers()
-    // {
-    //     $page_title = 'SMS Unverified Users';
-    //     $empty_message = 'No sms unverified user found';
-    //     $users = User::smsUnverified()->latest()->paginate(getPaginate());
-    //     return view('admin.users.list', compact('page_title', 'empty_message', 'users'));
-    // }
-    // public function smsVerifiedUsers()
-    // {
-    //     $page_title = 'SMS Verified Users';
-    //     $empty_message = 'No sms verified user found';
-    //     $users = User::smsVerified()->latest()->paginate(getPaginate());
-    //     return view('admin.users.list', compact('page_title', 'empty_message', 'users'));
-    // }
 
 
 
@@ -181,7 +192,6 @@ class ManageUsersController extends Controller
         $users = User::where('comp',0)->where(function ($user) use ($search) {
             $user->where('username', 'like', "%$search%")
                 ->orWhere('email', 'like', "%$search%")
-                ->orWhere('no_bro', 'like', "%$search%")
                 ->orWhere('mobile', 'like', "%$search%")
                 ->orWhere('firstname', 'like', "%$search%")
                 ->orWhere('lastname', 'like', "%$search%");
@@ -210,6 +220,60 @@ class ManageUsersController extends Controller
         $empty_message = 'No search result found';
         return view('admin.users.list', compact('page_title', 'search', 'scope', 'empty_message', 'users'));
     }
+
+    public function dateSearch(Request $request,$scope){
+        $users = User::where('comp',0);
+        if ($request->search) {
+            $search = $request->search;
+            $users->where(function ($user) use ($search) {
+                $user->where('username', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%")
+                    ->orWhere('mobile', 'like', "%$search%")
+                    ->orWhere('firstname', 'like', "%$search%")
+                    ->orWhere('lastname', 'like', "%$search%");
+            });
+            $page_title = '';
+            switch ($scope) {
+                case 'active':
+                    $page_title .= 'Active ';
+                    $users = $users->where('status', 1);
+                    break;
+                case 'banned':
+                    $page_title .= 'Banned';
+                    $users = $users->where('status', 0);
+                    break;
+                case 'emailUnverified':
+                    $page_title .= 'Email Unerified ';
+                    $users = $users->where('ev', 0);
+                    break;
+                case 'smsUnverified':
+                    $page_title .= 'SMS Unverified ';
+                    $users = $users->where('sv', 0);
+                    break;
+            }
+        }else{
+            $search = null;
+        }
+        $dates = $request->date;
+        if ($dates) {
+            $date = explode('-',$dates);
+            if(!(@strtotime($date[0]) && @strtotime($date[1]))){
+                $notify[]=['error','Please provide valid date'];
+                return back()->withNotify($notify);
+            }
+            
+            $start  = @$date[0];
+            $end    = @$date[1];
+            $users->whereBetween('created_at', [Carbon::parse($start), Carbon::parse($end)->addDays(1)]);
+        }
+        $dateSearch = $dates;
+        $users = $users->paginate(getPaginate());
+        $page_title = 'User Search';
+        $empty_message = 'No search result found';
+        return view('admin.users.list', compact('page_title', 'search', 'scope', 'empty_message', 'users','dateSearch'));
+
+    }
+
 
 
     public function detail($id)

@@ -187,31 +187,47 @@
 @push('breadcrumb-plugins')
 
     @if (!request()->routeIs('admin.users.withdrawals') && !request()->routeIs('admin.users.withdrawals.method'))
-        <form
-            action="{{ route('admin.withdraw.search', $scope ?? str_replace('admin.withdraw.', '', request()->route()->getName())) }}"
-            method="GET" class="form-inline float-sm-right bg--white">
-            <div class="input-group has_append">
-                <input type="text" name="search" class="form-control" placeholder="@lang('Withdrawal code/Username')"
-                    value="{{ $search ?? '' }}">
-                <div class="input-group-append">
-                    <button class="btn btn--primary" type="submit"><i class="fa fa-search"></i></button>
-                </div>
+        <div class="row">
+            <div class="col-md-10">
+                <form
+                    action="{{ route('admin.withdraw.dateSearch', $scope ?? str_replace('admin.withdraw.', '', request()->route()->getName())) }}"
+                    method="GET" class="form-inline float-sm-right bg--white mr-0 mr-xl-2 ml-lg-2">
+                    <div class="input-group has_append">
+                        <input name="date" type="date" data-range="true" data-multiple-dates-separator=" - "
+                            data-language="en" class=" bg--white text--secondary form-control" data-position='bottom right'
+                            placeholder="@lang('date')" autocomplete="off" value="{{ @$dateSearch }}">
+                        {{-- <input type="date" name="date" id="form-control"> --}}
+                        <input type="hidden" name="method" value="{{ @$method->id }}">
+                        <div class="input-group-append">
+                            <button class="btn btn--primary" type="submit"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+                <form
+                    action="{{ route('admin.withdraw.search', $scope ?? str_replace('admin.withdraw.', '', request()->route()->getName())) }}"
+                    method="GET" class="form-inline float-sm-right bg--white">
+                    <div class="input-group has_append">
+                        <input type="text" name="search" class="form-control" placeholder="@lang('Withdrawal code/Username')"
+                            value="{{ $search ?? '' }}">
+                        <div class="input-group-append">
+                            <button class="btn btn--primary" type="submit"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+
             </div>
-        </form>
-        <form
-            action="{{ route('admin.withdraw.dateSearch', $scope ?? str_replace('admin.withdraw.', '', request()->route()->getName())) }}"
-            method="GET" class="form-inline float-sm-right bg--white mr-0 mr-xl-2 mr-lg-0">
-            <div class="input-group has_append">
-                <input name="date" type="date" data-range="true" data-multiple-dates-separator=" - "
-                    data-language="en" class=" bg--white text--secondary form-control" data-position='bottom right'
-                    placeholder="@lang('date')" autocomplete="off" value="{{ @$dateSearch }}">
-                {{-- <input type="date" name="date" id="form-control"> --}}
-                <input type="hidden" name="method" value="{{ @$method->id }}">
-                <div class="input-group-append">
-                    <button class="btn btn--primary" type="submit"><i class="fa fa-search"></i></button>
-                </div>
+            <div class="col-md-2 col-3">
+                <form action="{{ route('admin.withdraw.export') }}" method="GET" class="form-inline float-sm-right">
+                    <input hidden type="text" name="search" class="form-control" placeholder="@lang('Username or email')"
+                        value="{{ $search ?? null }}">
+                    <input hidden type="text" name="date" class="form-control" placeholder="@lang('Username or email')"
+                        value="{{ $dateSearch ?? null }}">
+                    <input hidden type="text" name="page" class="form-control" placeholder="@lang('Username or email')"
+                        value="{{ $page_title ?? '' }}">
+                    <button class="btn btn-success" type="submit"><i class="fas fa-file-excel"></i> Export</button>
+                </form>
             </div>
-        </form>
+        </div>
     @endif
 @endpush
 @push('script')

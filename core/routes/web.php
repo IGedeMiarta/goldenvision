@@ -203,6 +203,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('user/reject/{id}', 'ManageUsersController@reject')->name('users.reject');
 
         Route::get('users/{scope}/search', 'ManageUsersController@search')->name('users.search');
+        Route::get('users/{scope}/dateSearch', 'ManageUsersController@dateSearch')->name('users.dateSearch');
+
         Route::get('user/detail/{id}', 'ManageUsersController@detail')->name('users.detail');
         Route::get('user/detail-rank/{id}', 'ManageUsersController@updateRank')->name('users.detail.rank');
         Route::get('user/detail-rank-founder/{id}', 'ManageUsersController@updateRankFounder')->name('users.detail.rank.founder');
@@ -357,7 +359,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
             Route::get('details/{id}', 'WithdrawalController@details')->name('details');
             Route::post('approve', 'WithdrawalController@approve')->name('approve');
             Route::post('reject', 'WithdrawalController@reject')->name('reject');
-
+            
+            Route::get('export','WithdrawalController@export')->name('export');
 
             // Withdraw Method
             Route::get('method/', 'WithdrawMethodController@methods')->name('method.index');
@@ -367,6 +370,11 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
             Route::post('method/edit/{id}', 'WithdrawMethodController@update')->name('method.update');
             Route::post('method/activate', 'WithdrawMethodController@activate')->name('method.activate');
             Route::post('method/deactivate', 'WithdrawMethodController@deactivate')->name('method.deactivate');
+        });
+
+        Route::name('pin.')->prefix('pin')->group(function(){
+            Route::get('/pin-delivered','ReportController@adminDeliver')->name('delivered');
+            Route::get('/pin-all','ReportController@pinAll')->name('all');
         });
 
         // Report
@@ -385,6 +393,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('report/login/ipHistory/{ip}', 'ReportController@loginIpHistory')->name('report.login.ipHistory');
 
         Route::get('report/export', 'ReportController@export')->name('report.export');
+
+        Route::get('report/user','ReportController@exportUser')->name('report.user');
 
 
         // Admin Support
@@ -606,6 +616,7 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::get('/tree', 'PlanController@myTree')->name('my.tree');
             Route::get('/all-users', 'UserController@allInUsers')->name('all.users');
             Route::get('/tree/{user}', 'PlanController@otherTree')->name('other.tree');
+            Route::get('/tree-other', 'PlanController@seeTree')->name('see.tree');
             Route::get('/tree/search', 'PlanController@otherTree')->name('other.tree.search');
 
             Route::get('/register-by-sponsor',[SponsorRegisterController::class,'index'])->name('sponsor.regist')->middleware('checkPlacement');

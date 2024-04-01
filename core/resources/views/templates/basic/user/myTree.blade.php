@@ -146,17 +146,28 @@
                             <label for="default" style="font-size: 14px">Referrals Default Position By Refferal
                                 Link</label>
                         </div>
-                        {{-- <div class="col-md-3">
-                            <a href="{{ route('user.sponsor.regist') }}" class="btn btn-outline-success w-100"
-                                type="button" id="button-addon2"><i class="fas fa-user"></i>Register New User</a>
-                        </div> --}}
                         <div class="col-md-6"></div>
                     </div>
                 </form>
 
             </div>
-
             <div class="card-body">
+                @if (Route::is('user.see.tree'))
+                    @php
+                        $up = request()->get('up');
+                        // Session::forget('log');
+                        // $log = json_encode(Session::get('log'));
+                        // dd(Session::get('log'));
+                    @endphp
+                    {{-- <script>
+                        let log = "{{ $log }}"
+                        console.log(log);
+                    </script> --}}
+                    @if ($up != 'null')
+                        <a href="{{ url('user/tree-other') . '?username=' . $up . '&up=' . 'null' }}"
+                            class="btn btn-primary"><i class="fas fa-arrow-left"></i> Back</a>
+                    @endif
+                @endif
                 <div class="active-user-none" data-id="{{ auth()->user()->id }}"></div>
                 <div class="row text-center justify-content-center llll">
                     <!-- <div class="col"> -->
@@ -356,21 +367,13 @@
     <script>
         "use strict";
         (function($) {
-            // $('.btnCopy').on('click', function() {
-
-            //     var copyText = $(this).data('url');
-
-
-
-            //     navigator.clipboard.writeText(copyText);
-            //     // $(this).text('URL DISALIN')
-            // })
-
             const userID = $('.active-user-none').data('id');
 
             $('.btnSeeUser').on('click', function() {
                 let username = $(this).data('username');
-                let url = `{{ url('user/tree/${username}') }}`
+                let lastUp = "{{ $tree['a']['user']->username }}"
+                let url = "{{ url('user/tree-other') }}" + `?username=${username}&up=${lastUp}`;
+                // console.log(url);
                 window.location.replace(url)
             });
             $.ajaxSetup({

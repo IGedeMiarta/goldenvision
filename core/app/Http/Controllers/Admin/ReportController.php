@@ -8,12 +8,40 @@ use App\Models\User;
 use App\Models\BvLog;
 use App\Models\Transaction;
 use App\Models\UserLogin;
+use App\Models\UserPin;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
+
+    public function adminDeliver(Request $request){
+        $search = $request->search;
+        $data['page_title'] = "PIN Delivery Log";
+       $data['transactions'] = UserPin::where('pin_by', null)
+            ->leftJoin('users AS pin_users', 'pin_users.id', '=', 'user_pin.pin_by')
+            ->join('users AS user', 'user.id', '=', 'user_pin.user_id')
+            ->select('user_pin.*', 'user.username AS user_username', 'pin_users.username AS pin_username')
+            ->orderBy('user_pin.id', 'DESC')
+            ->paginate(getPaginate());
+        $data['search'] = $search;
+        $data['empty_message'] = "No Data Found!";
+        return view('admin.pin.admin-pin', $data);
+    }
+    public function pinAll(Request $request){
+        $search = $request->search;
+        $data['page_title'] = "PIN Delivery Log";
+        $data['transactions'] = UserPin::leftJoin('users AS pin_users', 'pin_users.id', '=', 'user_pin.pin_by')
+            ->join('users AS user', 'user.id', '=', 'user_pin.user_id')
+            ->select('user_pin.*', 'user.username AS user_username', 'pin_users.username AS pin_username')
+            ->orderBy('user_pin.id', 'DESC')
+            ->paginate(getPaginate());
+        $data['search'] = $search;
+        $data['empty_message'] = "No Data Found!";
+        return view('admin.pin.admin-pin', $data);
+    }
+
     public function bvLog(Request $request)
     {
 

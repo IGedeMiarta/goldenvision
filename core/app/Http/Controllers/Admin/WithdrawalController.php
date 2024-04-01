@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\WithdrawExport;
 use App\Models\GeneralSetting;
 use App\Http\Controllers\Controller;
 use App\Models\Transaction;
@@ -10,6 +11,7 @@ use App\Models\WithdrawMethod;
 use App\Models\Withdrawal;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 use function GuzzleHttp\Promise\all;
 
@@ -111,30 +113,18 @@ class WithdrawalController extends Controller
 
         return view('admin.withdraw.withdrawals', compact('page_title', 'empty_message', 'search', 'scope', 'withdrawals'));
     }
+    public function export(Request $request){
+        $date = date('dMy',strtotime(now()));
+        return Excel::download(new WithdrawExport, 'ExportWithdrawl'.$date.'.xlsx');
+    }
 
     public function dateSearch(Request $request,$scope){
-        // dd($request->all());
         $search = $request->date;
         if (!$search) {
             return back();
         }
-        // $date = explode('-',$search);
-
-        // if(!(@strtotime($date[0]) && @strtotime($date[1]))){
-        //     $notify[]=['error','Please provide valid date'];
-        //     return back()->withNotify($notify);
-        // }
-
-        // $start = @$date[0];
-        // $end = @$date[1];
-        // if ($start) {
-        //     $withdrawals = Withdrawal::where('status','!=',0)->where('created_at','>',Carbon::parse($start)->subDays(1))->where('created_at','<=',Carbon::parse($start)->addDays(1));
-        // }
-        // if($end){
-        // }
         $withdrawals = Withdrawal::where('status','!=',0)
         ->whereDate('created_at', '=', $search);
-        // ->get();
         if ($request->method) {
             $method = WithdrawMethod::findOrFail($request->method);
             $withdrawals = $withdrawals->where('method_id',$method->id);
