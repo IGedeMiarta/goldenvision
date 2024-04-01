@@ -11,8 +11,12 @@
                                 <tr>
                                     <th scope="col">@lang('SL')</th>
                                     <th scope="col">@lang('Date')</th>
-                                    <th scope="col">@lang('PIN By')</th>
-                                    <th scope="col">@lang('PIN To')</th>
+                                    @if (!request()->routeIs('admin.pin.all'))
+                                        <th scope="col">@lang('PIN By')</th>
+                                        <th scope="col">@lang('PIN To')</th>
+                                    @else
+                                        <th scope="col">@lang('Users')</th>
+                                    @endif
                                     <th scope="col">@lang('Start PIN')</th>
                                     <th scope="col">@lang('Distribute')</th>
                                     <th scope="col">@lang('Post PIN')</th>
@@ -25,12 +29,19 @@
                                         <td data-label="@lang('SL')">{{ $transactions->firstItem() + $loop->index }}
                                         </td>
                                         <td data-label="@lang('Date')">{{ showDateTime($trx->created_at) }}</td>
-                                        <td data-label="@lang('TRX')" class="font-weight-bold">
-                                            {{ $trx->pin_username ?? 'System' }}
-                                        </td>
-                                        <td data-label="@lang('TRX')" class="font-weight-bold">
-                                            {{ $trx->user_username ?? '-' }}
-                                        </td>
+                                        @if (!request()->routeIs('admin.pin.all'))
+                                            <td data-label="@lang('TRX')" class="font-weight-bold">
+                                                {{ $trx->pin_username ?? 'System' }}
+                                            </td>
+                                            <td data-label="@lang('TRX')" class="font-weight-bold">
+                                                {{ $trx->user_username ?? '-' }}
+                                            </td>
+                                        @else
+                                            <td data-label="@lang('TRX')" class="font-weight-bold">
+                                                {{ $trx->user_username ?? '-' }}
+                                            </td>
+                                        @endif
+
                                         <td data-label="@lang('Start')">{{ $trx->start_pin }}</td>
                                         <td data-label="@lang('PIN')"
                                             class="{{ $trx->type == '-' ? 'text-danger' : 'text-success' }}">
