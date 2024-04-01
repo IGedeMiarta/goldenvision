@@ -9,6 +9,7 @@ use App\Models\BvLog;
 use App\Models\Transaction;
 use App\Models\UserLogin;
 use App\Models\UserPin;
+use App\Models\UserPoint;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
@@ -16,10 +17,10 @@ use Illuminate\Support\Facades\DB;
 class ReportController extends Controller
 {
 
-    public function adminDeliver(Request $request){
+    public function adminPinDeliver(Request $request){
         $search = $request->search;
         $data['page_title'] = "PIN Delivery Log";
-       $data['transactions'] = UserPin::where('pin_by', null)
+        $data['transactions'] = UserPin::where('pin_by', null)
             ->leftJoin('users AS pin_users', 'pin_users.id', '=', 'user_pin.pin_by')
             ->join('users AS user', 'user.id', '=', 'user_pin.user_id')
             ->select('user_pin.*', 'user.username AS user_username', 'pin_users.username AS pin_username')
@@ -40,6 +41,30 @@ class ReportController extends Controller
         $data['search'] = $search;
         $data['empty_message'] = "No Data Found!";
         return view('admin.pin.admin-pin', $data);
+    }
+    public function SystemPointDeliver(Request $request){
+        $search = $request->search;
+        $data['page_title'] = "Redemption Delivery Point Log";
+        $data['transactions'] = UserPoint::where('user_points.type','+')-> where('user_points.point','>',0)
+         ->join('users','users.id','=','user_points.user_id')
+                            ->orderBy('user_points.id','DESC')
+                            ->paginate(getPaginate());
+        $data['search'] = $search;
+        $data['empty_message'] = "No Data Found!";
+        return view('admin.point.log', $data);
+    }
+    public function pointAll(Request $request){
+        $search = $request->search;
+        $data['page_title'] = "Redemption Delivery Point Log";
+        $data['transactions'] = UserPoint::where('user_points.point','>',0)
+                            ->join('users','users.id','=','user_points.user_id')
+                            ->orderBy('user_points.id','DESC')
+                            // ->get();
+                            ->paginate(getPaginate());
+                            // dd($data);
+        $data['search'] = $search;
+        $data['empty_message'] = "No Data Found!";
+        return view('admin.point.log', $data);
     }
 
     public function bvLog(Request $request)

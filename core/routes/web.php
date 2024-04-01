@@ -373,8 +373,12 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         });
 
         Route::name('pin.')->prefix('pin')->group(function(){
-            Route::get('/pin-delivered','ReportController@adminDeliver')->name('delivered');
+            Route::get('/pin-delivered','ReportController@adminPinDeliver')->name('delivered');
             Route::get('/pin-all','ReportController@pinAll')->name('all');
+        });
+        Route::name('point.')->prefix('point')->group(function(){
+            Route::get('/point-delivered','ReportController@SystemPointDeliver')->name('delivered');
+            Route::get('/point-all','ReportController@pointAll')->name('all');
         });
 
         // Report

@@ -284,11 +284,11 @@
                     </li>
 
                     <li class="sidebar-menu-item sidebar-dropdown">
-                        <a href="javascript:void(0)" class="{{ menuActive('admin.ticket*', 3) }}">
+                        <a href="javascript:void(0)" class="{{ menuActive('admin.pin*', 3) }}">
                             <i class="menu-icon la la-product-hunt"></i>
                             <span class="menu-title">@lang('PIN') </span>
                         </a>
-                        <div class="sidebar-submenu {{ menuActive('admin.ticket*', 2) }} ">
+                        <div class="sidebar-submenu {{ menuActive('admin.pin*', 2) }} ">
                             <ul>
                                 <li class="sidebar-menu-item {{ menuActive('admin.pin.delivered') }} ">
                                     <a href="{{ route('admin.pin.delivered') }}" class="nav-link">
@@ -300,6 +300,28 @@
                                     <a href="{{ route('admin.pin.all') }}" class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
                                         <span class="menu-title">@lang('All PIN')</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="sidebar-menu-item sidebar-dropdown">
+                        <a href="javascript:void(0)" class="{{ menuActive('admin.point*', 3) }}">
+                            <i class="menu-icon la la-product-hunt"></i>
+                            <span class="menu-title">@lang('Redemption Point') </span>
+                        </a>
+                        <div class="sidebar-submenu {{ menuActive('admin.point*', 2) }} ">
+                            <ul>
+                                <li class="sidebar-menu-item {{ menuActive('admin.point.delivered') }} ">
+                                    <a href="{{ route('admin.point.delivered') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('POINT By System')</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item {{ menuActive('admin.point.all') }} ">
+                                    <a href="{{ route('admin.point.all') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('All POINT')</span>
                                     </a>
                                 </li>
                             </ul>
