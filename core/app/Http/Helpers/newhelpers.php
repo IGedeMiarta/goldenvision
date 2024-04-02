@@ -436,3 +436,27 @@ function generateTrxCode() {
 
     return $trxCode;
 }
+function minifyJsonBody($body) {
+    // Menghapus semua karakter spasi/jarak dari konten JSON
+    $minifiedBody = preg_replace('/\s/', '', $body);
+    // Menghapus nilai field yang bernilai null
+    $minifiedBody = preg_replace('/"([^"\\\]|\\.)*":null,?/', '', $minifiedBody) ;
+    // Menghapus karakter backslash
+    $minifiedBody = stripslashes($minifiedBody);
+    return $minifiedBody;
+}
+
+function createStringContent($httpMethod, $endpointUrl, $minifiedBody, $timestamp) {
+    $sha256 = hash('sha256', $minifiedBody);
+    return "$httpMethod:$endpointUrl:" . strtolower($sha256) . " .: $timestamp";
+}
+
+function createSignature($stringContent, $privateKey) {
+    // Mengambil private key dalam format PEM
+    $privateKey = openssl_pkey_get_private($privateKey);
+    // Tandatangani string content dengan private key menggunakan algoritma SHA256withRSA
+    openssl_sign($stringContent, $signature, $privateKey,
+    OPENSSL_ALGO_SHA256) ;
+    // Meng-encode signature dalam format Base64
+    return base64_encode($signature);
+}
