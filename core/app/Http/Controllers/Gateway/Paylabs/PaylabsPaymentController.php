@@ -73,9 +73,10 @@ class PaylabsPaymentController extends Controller
             "notifyUrl"         => url('api/v1/notify'), //URL yang akan ditembak saat terjadi pembayaran. Untuk parameter-parameternya cek di bagian Inquiry Order
             "redirectUrl"       => route('user.report.deposit'), //Baik saat sukses ataupun gagal, akan diarahkan ke URL tersebut
         );
+
         $privateKeyPath = __DIR__ . "/private.pem";
         $privateKey     = file_get_contents($privateKeyPath);
-        // dd($privateKey);
+        // dd(json_encode($body));
 
         // minify json body
         $minifiedJson = minifyJsonBody(json_encode($body));
@@ -85,8 +86,15 @@ class PaylabsPaymentController extends Controller
         // dd($stringContent);
         // membuat signature
         $signature = createSignature($stringContent,$privateKey);
-        // dd($signature);
-
+        // dd($timestamp, $signature);
+        // echo  'method: ' . $httpMethod .'<br>';
+        // echo  'TimeStamp: ' . $timestamp.'<br>';
+        // echo  'Parameter: ' . $minifiedJson .'<br>';
+        // echo  'stringContent: ' . $stringContent.'<br>';
+        // echo 'signature: ' . $signature .'<br>';
+        // die;
+        // 'POST:/payment/v2/h5/createLink:97f6a3e800b4d22533e1b3778d4f0d999e5400d5d49c1c30dead068e7f34fa6b:2024-04-02T21:29:38.451342+07:00';
+        // 'POST:/payment/v2/h5/createLink:97f6a3e800b4d22533e1b3778d4f0d999e5400d5d49c1c30dead068e7f34fa6b:2024-04-02T21:29:38.451342+07:00';
         $data_string = json_encode($body);
 
         $url = 'https://sit-pay.paylabs.co.id' . $endpointURL;
@@ -97,11 +105,11 @@ class PaylabsPaymentController extends Controller
         curl_setopt($ch,CURLOPT_POSTFIELDS,$data_string);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
         curl_setopt($ch,CURLOPT_HTTPHEADER,array(
-            ' Content-Type: application/json;charset=utf-8',
-            'X-TIMESTAMP: ' . $timestamp,
-            'X-SIGNATURE: ' . $signature ,
+            'Content-Type: application/json;charset=utf-8',
+            'X-TIMESTAMP:' . $timestamp,
+            'X-SIGNATURE:' . $signature ,
             'X-PARTNER-ID:' . $mid,
-'            X-REQUEST-ID:' . $trxid
+            'X-REQUEST-ID:' . $trxid
         ));
 
         // execute and add get response
