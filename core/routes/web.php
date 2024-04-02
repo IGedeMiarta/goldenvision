@@ -28,7 +28,6 @@ use Illuminate\Support\Facades\URL;
 Route::get('cyc',function(){
     updateCycleNasional(1);
 });
-Route::get('/tes-payment',[PaylabsPaymentController::class,'payment']);
 
 
 Route::get('reset-point-startDay',[CronController::class,'resetCountingLF']);
@@ -381,21 +380,27 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
             Route::get('/point-all','ReportController@pointAll')->name('all');
         });
 
+        Route::get('log/invest', 'ReportController@invest')->name('log.invest');
+        Route::get('log/transaction', 'ReportController@transaction')->name('log.transaction');
+        Route::get('log/transaction/search', 'ReportController@transactionSearch')->name('log.transaction.search');
+        Route::get('log/login/history', 'ReportController@loginHistory')->name('log.login.history');
+        Route::get('log/login/ipHistory/{ip}', 'ReportController@loginIpHistory')->name('log.login.ipHistory');
+
         // Report
         Route::get('report/referral-commission', 'ReportController@refCom')->name('report.refCom');
         Route::get('report/binary-commission', 'ReportController@binary')->name('report.binaryCom');
-        Route::get('report/invest', 'ReportController@invest')->name('report.invest');
+        Route::get('report/founder-commission', 'ReportController@founder')->name('report.founder');
+        Route::get('report/leadership-commission', 'ReportController@leadership')->name('report.leadership');
+        Route::get('report/all-payout','ReportController@allPayout')->name('report.allPayout');
 
         Route::get('report/bv-log', 'ReportController@bvLog')->name('report.bvLog');
         Route::get('report/bv-log/{id}', 'ReportController@singleBvLog')->name('report.single.bvLog');
-
-        Route::get('report/transaction', 'ReportController@transaction')->name('report.transaction');
         Route::get('report/transaction/search', 'ReportController@transactionSearch')->name('report.transaction.search');
 
 
-        Route::get('report/login/history', 'ReportController@loginHistory')->name('report.login.history');
-        Route::get('report/login/ipHistory/{ip}', 'ReportController@loginIpHistory')->name('report.login.ipHistory');
+       
 
+        
         Route::get('report/export', 'ReportController@export')->name('report.export');
 
         Route::get('report/user','ReportController@exportUser')->name('report.user');
@@ -595,7 +600,7 @@ Route::name('user.')->prefix('user')->group(function () {
             Route::get('/user-point',[SponsorRegisterController::class,'userPoint'])->name('point.view');
             Route::get('pin/log', 'UserReportController@PinDeliveriyLog')->name('pins.PinDeliveriyLog');
             Route::get('/user-order',[SponsorRegisterController::class,'userOrderPin'])->name('pins.order');
-            Route::post('/user-order',[PaylabsPaymentController::class,'payment'])->name('pins.order.post');
+            Route::post('/user-order',[PaymentController::class,'payment'])->name('pins.order.post');
             Route::put('/user-order/{id}',[PaymentController::class,'userOrderUpdate'])->name('pins.order.update');
 
             Route::get('/Product', 'ProductController@productIndex')->name('product.index');

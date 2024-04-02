@@ -3,8 +3,14 @@
 namespace App\Http\Controllers\Gateway\Paylabs;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminNotification;
 use App\Models\Deposit;
+use App\Models\GeneralSetting;
 use App\Models\Plan;
+use App\Models\User;
+use App\Models\UserPin;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +34,7 @@ class PaylabsPaymentController extends Controller
             $trx->final_amo     = $request->pin * $plan->price;
             $trx->detail        = null;
             $trx->trx           = generateTrxCode();
-            $trx->status        = 0;
+            $trx->status        = 2;
             $trx->save();
             
             $pg = $this->requestPayment($trx);
@@ -52,41 +58,43 @@ class PaylabsPaymentController extends Controller
 
         $httpMethod = "POST";
         $endpointURL = "/payment/v2/h5/createLink";
-        $timestamp = $trx->creted_at;
+        $date = new DateTime('now', new DateTimeZone('Asia/Jakarta')); // Adjust timezone as needed
+        $timestamp = $date->format('Y-m-d\TH:i:s.uP');
         $mid = "010414";
-        $trxid = $trx->trx;
+        $trxid = $trx->id;
         $body = array(
-            "merchantId"        =>  $mid,
-            "merchantTradeNo"   => $trxid,
+            "merchantId"        => $mid,
+            "merchantTradeNo"   => $trx->trx,
             "requestId"         => $trx->id,
-            "amount"            => $trx->final_amo,
+            "amount"            => intval($trx->final_amo),
             "productName"       => "Deposit",
             "payer"             => $user->username, //User fullname,
             "phoneNumber"       => $user->mobile, //user mobile
-            "notifyUrl"         => "", //URL yang akan ditembak saat terjadi pembayaran. Untuk parameter-parameternya cek di bagian Inquiry Order
-            "redirectUrl"       => "", //Baik saat sukses ataupun gagal, akan diarahkan ke URL tersebut
+            "notifyUrl"         => url('api/v1/notify'), //URL yang akan ditembak saat terjadi pembayaran. Untuk parameter-parameternya cek di bagian Inquiry Order
+            "redirectUrl"       => route('user.report.deposit'), //Baik saat sukses ataupun gagal, akan diarahkan ke URL tersebut
         );
         $privateKeyPath = __DIR__ . "/private.pem";
         $privateKey     = file_get_contents($privateKeyPath);
+        // dd($privateKey);
 
         // minify json body
         $minifiedJson = minifyJsonBody(json_encode($body));
-        // dd($minifiedJson);
-
+        
         //membuat string content
         $stringContent = createStringContent($httpMethod,$endpointURL,$minifiedJson,$timestamp);
+        // dd($stringContent);
         // membuat signature
         $signature = createSignature($stringContent,$privateKey);
         // dd($signature);
 
-        $datastring = json_encode($body);
+        $data_string = json_encode($body);
 
         $url = 'https://sit-pay.paylabs.co.id' . $endpointURL;
 
         // konfigurasi cURL
         $ch = curl_init($url);
         curl_setopt($ch,CURLOPT_CUSTOMREQUEST,"POST");
-        curl_setopt($ch,CURLOPT_POSTFIELDS,$datastring);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$data_string);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
         curl_setopt($ch,CURLOPT_HTTPHEADER,array(
             ' Content-Type: application/json;charset=utf-8',
@@ -121,4 +129,44 @@ class PaylabsPaymentController extends Controller
 
     }
 
+    public function notify(Request $request){
+        $status = $request->status;
+        $data = Deposit::where('trx',$request->merchantTradeNo)->first();
+        if ($data) {
+            if ($status=='02') {
+                $this->userDataUpdate($data);
+            }
+            
+        }
+        return response()->json(['status'=>$status]);
+    }
+    public static function userDataUpdate(Deposit $deposit){
+        $plan = Plan::first();
+
+        $deposit->status = 1;
+        $deposit->save();
+
+        $user = User::find($deposit->user_id);
+
+        $addPin = getAmount($deposit->amount) / $plan->price;
+        
+        $pin = new UserPin();
+        $pin->user_id   = $user->id;
+        $pin->pin       = $addPin;
+        $pin->pin_by    = null;
+        $pin->type      = "+";
+        $pin->start_pin = $user->pin;
+        $pin->end_pin   = $user->pin + $addPin;
+        $pin->ket       = 'System Send '.$addPin . ' PIN to ' . $user->username . ' From Deposit Order PIN';
+        $pin->save();
+
+        $user->pin += $addPin;
+        $user->save();
+
+        $adminNotif = new AdminNotification();
+        $adminNotif->user_id    = $user->id;
+        $adminNotif->title      = 'Deposit Successful Via Paylabs Payment';
+        $adminNotif->click_url  = route('admin.deposit.successful');
+        $adminNotif->save();
+    }
 }

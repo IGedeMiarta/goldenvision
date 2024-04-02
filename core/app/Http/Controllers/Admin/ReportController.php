@@ -154,6 +154,36 @@ class ReportController extends Controller
         $empty_message = 'No transactions.';
         return view('admin.reports.transactions', compact('page_title', 'transactions', 'empty_message'));
     }
+    public function founder(Request $request)
+    {
+        if ($request->userID)
+        {
+            $user = User::findOrFail($request->userID);
+            $page_title = $user->username . ' - Founder Commission Logs';
+            $transactions = Transaction::where('user_id', $user->id)->where('remark', 'founder_com')->with('user')->latest()->paginate(getPaginate());
+        }else {
+            $page_title = 'Founder Commission Logs';
+            $transactions = Transaction::where('remark', 'founder_com')->with('user')->latest()->paginate(getPaginate());
+        }
+
+        $empty_message = 'No transactions.';
+        return view('admin.reports.transactions', compact('page_title', 'transactions', 'empty_message'));
+    }
+    public function leadership(Request $request)
+    {
+        if ($request->userID)
+        {
+            $user = User::findOrFail($request->userID);
+            $page_title = $user->username . ' - Leadership Commission Logs';
+            $transactions = Transaction::where('user_id', $user->id)->where('remark', 'leadership_com')->with('user')->latest()->paginate(getPaginate());
+        }else {
+            $page_title = 'Leadership Commission Logs';
+            $transactions = Transaction::where('remark', 'leadership_com')->with('user')->latest()->paginate(getPaginate());
+        }
+
+        $empty_message = 'No transactions.';
+        return view('admin.reports.transactions', compact('page_title', 'transactions', 'empty_message'));
+    }
     public function invest(Request $request)
     {
         if ($request->userID)
@@ -168,6 +198,24 @@ class ReportController extends Controller
 
         $empty_message = 'No transactions.';
         return view('admin.reports.transactions', compact('page_title', 'transactions', 'empty_message'));
+    }
+    public function allPayout(Request $request)
+    {
+        if ($request->userID)
+        {
+            $user = User::findOrFail($request->userID);
+            $page_title = $user->username . ' - All Payout Logs';
+            $transactions = Transaction::where('user_id', $user->id)->whereIn('remark', ['leadership_com','founder_com','binary_commission','referral_commission'])->with('user')->latest()->paginate(getPaginate());
+        }else {
+            $page_title = 'All Payout Logs';
+            $transactions = Transaction::whereIn('remark', ['leadership_com','founder_com','binary_commission','referral_commission'])->with('user')->latest()->paginate(getPaginate());
+        }
+        $binnary = Transaction::where('remark','binary_commission')->sum('amount');
+        $leader = Transaction::where('remark','leadership_com')->sum('amount');
+        $founder = Transaction::where('remark','founder_com')->sum('amount');
+        $ref = Transaction::where('remark','referral_commission')->sum('amount');
+        $empty_message = 'No transactions.';
+        return view('admin.reports.transactions', compact('page_title', 'transactions', 'empty_message','binnary','leader','founder','ref'));
     }
     public function transaction()
     {

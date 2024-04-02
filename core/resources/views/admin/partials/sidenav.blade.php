@@ -430,58 +430,91 @@
                     <li class="sidebar-menu-item sidebar-dropdown">
                         <a href="javascript:void(0)" class="{{ menuActive('admin.report*', 3) }}">
                             <i class="menu-icon la la-list"></i>
-                            <span class="menu-title">@lang('Report') </span>
+                            <span class="menu-title">@lang('Payout Commission') </span>
                         </a>
                         <div class="sidebar-submenu {{ menuActive('admin.report*', 2) }} ">
                             <ul>
-                                <li
-                                    class="sidebar-menu-item {{ menuActive(['admin.report.transaction', 'admin.report.transaction.search']) }}">
-                                    <a href="{{ route('admin.report.transaction') }}" class="nav-link">
+                                <li class="sidebar-menu-item {{ menuActive(['admin.report.allPayout']) }}">
+                                    <a href="{{ route('admin.report.allPayout') }}" class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
-                                        <span class="menu-title">@lang('Transaction Log')</span>
+                                        <span class="menu-title">@lang('All Payout')</span>
                                     </a>
                                 </li>
-
-                                <li class="sidebar-menu-item {{ menuActive(['admin.report.invest']) }}">
-                                    <a href="{{ route('admin.report.invest') }}" class="nav-link">
+                                <li class="sidebar-menu-item {{ menuActive(['admin.report.refCom']) }}">
+                                    <a href="{{ route('admin.report.refCom') }}" class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
-                                        <span class="menu-title">@lang('Invest Log')</span>
+                                        <span class="menu-title">@lang('Referral Commission')</span>
                                     </a>
                                 </li>
-                                {{-- <li class="sidebar-menu-item {{menuActive(['admin.report.bvLog'])}}">
-                                <a href="{{route('admin.report.bvLog')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('BV Log')</span>
-                                </a>
-                            </li> --}}
-                                {{-- <li class="sidebar-menu-item {{menuActive(['admin.report.refCom'])}}">
-                                <a href="{{route('admin.report.refCom')}}" class="nav-link">
-                                    <i class="menu-icon las la-dot-circle"></i>
-                                    <span class="menu-title">@lang('Referral Commission')</span>
-                                </a>
-                            </li> --}}
                                 <li class="sidebar-menu-item {{ menuActive(['admin.report.binaryCom']) }}">
                                     <a href="{{ route('admin.report.binaryCom') }}" class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
                                         <span class="menu-title">@lang('Binary Commission')</span>
                                     </a>
                                 </li>
+                                <li class="sidebar-menu-item {{ menuActive(['admin.report.leadership']) }}">
+                                    <a href="{{ route('admin.report.leadership') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('Leader Commission')</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-menu-item {{ menuActive(['admin.report.founder']) }}">
+                                    <a href="{{ route('admin.report.founder') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('Founder Commission')</span>
+                                    </a>
+                                </li>
 
+                                {{-- <li
+                                    class="sidebar-menu-item {{ menuActive(['admin.report.transaction', 'admin.report.transaction.search']) }}">
+                                    <a href="{{ route('admin.report.transaction') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('All Trasaction')</span>
+                                    </a>
+                                </li> --}}
 
-
-                                <li
+                                {{-- <li
                                     class="sidebar-menu-item {{ menuActive(['admin.report.login.history', 'admin.report.login.ipHistory']) }}">
                                     <a href="{{ route('admin.report.login.history') }}" class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
                                         <span class="menu-title">@lang('Login History')</span>
                                     </a>
-                                </li>
+                                </li> --}}
 
                             </ul>
                         </div>
                     </li>
+                    <li class="sidebar-menu-item sidebar-dropdown">
+                        <a href="javascript:void(0)" class="{{ menuActive('admin.log*', 3) }}">
+                            <i class="menu-icon la la-list"></i>
+                            <span class="menu-title">@lang('Logs') </span>
+                        </a>
+                        <div class="sidebar-submenu {{ menuActive('admin.log*', 2) }} ">
+                            <ul>
+                                <li class="sidebar-menu-item {{ menuActive(['admin.log.invest']) }}">
+                                    <a href="{{ route('admin.log.invest') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('Invest Log')</span>
+                                    </a>
+                                </li>
+                                <li
+                                    class="sidebar-menu-item {{ menuActive(['admin.log.transaction', 'admin.log.transaction.search']) }}">
+                                    <a href="{{ route('admin.log.transaction') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('Trasaction Log')</span>
+                                    </a>
+                                </li>
+                                {{-- <li
+                                    class="sidebar-menu-item {{ menuActive(['admin.log.login.history', 'admin.log.login.ipHistory']) }}">
+                                    <a href="{{ route('admin.log.login.history') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('Login Log')</span>
+                                    </a>
+                                </li> --}}
 
-
+                            </ul>
+                        </div>
+                    </li>
                     <li class="sidebar-menu-item sidebar-dropdown">
                         <a href="javascript:void(0)" class="{{ menuActive('admin.ticket*', 3) }}">
                             <i class="menu-icon la la-ticket"></i>

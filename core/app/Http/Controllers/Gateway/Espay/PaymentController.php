@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
-    public function userOrderPin(Request $request){
+    public function payment(Request $request){
         $request->validate([
             'pin' => 'required|numeric|min:1'
         ]);

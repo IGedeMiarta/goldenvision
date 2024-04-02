@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Gateway\Paylabs\PaylabsPaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('rekening-info/{username}',[UserController::class,'rekeningInfo']);
 Route::get('check-user/{username}',[UserController::class,'checkUser']);
+
+Route::get('/v1/notify',[PaylabsPaymentController::class,'notify']);
