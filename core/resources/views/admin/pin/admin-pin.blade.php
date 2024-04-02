@@ -1,7 +1,27 @@
 @extends('admin.layouts.app')
 
 @section('panel')
-    <div class="row ">
+    <div class="row mb-none-30">
+        <div class="col-xl-3 col-lg-4 col-sm-6 mb-30">
+            <div class="dashboard-w1 bg--gradi-10 b-radius--10 box-shadow">
+                <div class="icon">
+                    <i class="la la-product-hunt"></i>
+                </div>
+                <div class="details">
+                    <div class="numbers">
+                        {{-- <span class="currency-sign">PIN</span> --}}
+
+                        <span class="amount">{{ nb($pin) }}</span>
+                    </div>
+                    <div class="desciption">
+                        <span class="text--small">@lang('PIN in user')</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
         <div class="col-lg-12">
             <div class="card b-radius--10 ">
                 <div class="card-body p-0">

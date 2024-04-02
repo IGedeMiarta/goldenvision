@@ -49,8 +49,20 @@ class ManageUsersController extends Controller
     public function allInUsers(){
         $page_title = 'All Users';
         $empty_message = 'No user found';
-        $users = User::where('no_bro',0)->where('comp',0)->latest()->paginate(getPaginate());
+        $users = User::where('comp',0)->latest()->paginate(getPaginate());
         return view('admin.users.list', compact('page_title', 'empty_message', 'users'));
+    }
+    public function balance(){
+        $page_title = 'Balance Users';
+        $empty_message = 'No user found';
+        $users = User::where('comp',0)
+                ->orderBy('b_balance','DESC')
+                ->paginate(getPaginate());
+        $balance = User::sum('balance');
+        $b_balance = User::sum('b_balance');
+        $pin = User::sum('pin');
+        $point = User::sum('point');
+        return view('admin.users.list', compact('page_title', 'empty_message', 'users','balance','b_balance','pin','point'));
     }
 
     public function exportallUsers(Request $request){

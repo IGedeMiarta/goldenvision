@@ -201,6 +201,8 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function () {
         Route::post('user/verify/{id}', 'ManageUsersController@verify')->name('users.verify');
         Route::post('user/reject/{id}', 'ManageUsersController@reject')->name('users.reject');
 
+        Route::get('users/balance','ManageUsersController@balance')->name('users.balance');
+
         Route::get('users/{scope}/search', 'ManageUsersController@search')->name('users.search');
         Route::get('users/{scope}/dateSearch', 'ManageUsersController@dateSearch')->name('users.dateSearch');
 

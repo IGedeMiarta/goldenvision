@@ -159,8 +159,13 @@
                                         @endif
                                     </a>
                                 </li>
-
-                                <li class="sidebar-menu-item  {{ menuActive('admin.users.emailUnverified') }}">
+                                <li class="sidebar-menu-item {{ menuActive('admin.users.balance') }} ">
+                                    <a href="{{ route('admin.users.balance') }}" class="nav-link">
+                                        <i class="menu-icon las la-dot-circle"></i>
+                                        <span class="menu-title">@lang('Balance Users')</span>
+                                    </a>
+                                </li>
+                                {{-- <li class="sidebar-menu-item  {{ menuActive('admin.users.emailUnverified') }}">
                                     <a href="{{ route('admin.users.emailUnverified') }}" class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
                                         <span class="menu-title">@lang('Email Unverified')</span>
@@ -170,7 +175,7 @@
                                                 class="menu-badge pill bg--primary ml-auto">{{ $email_unverified_users_count }}</span>
                                         @endif
                                     </a>
-                                </li>
+                                </li> --}}
 
                                 {{-- <li class="sidebar-menu-item {{menuActive('admin.users.smsUnverified')}}">
                                 <a href="{{route('admin.users.smsUnverified')}}" class="nav-link">
@@ -191,7 +196,7 @@
                                 </a>
                             </li> --}}
 
-                                <li class="sidebar-menu-item {{ menuActive('admin.users.dataverification') }} ">
+                                {{-- <li class="sidebar-menu-item {{ menuActive('admin.users.dataverification') }} ">
                                     <a href="{{ route('admin.users.dataverification') }}" class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
                                         <span class="menu-title">@lang('Data Users')</span>
@@ -200,26 +205,27 @@
                                                 class="menu-badge pill bg--primary ml-auto">{{ $need_action_users_count }}</span>
                                         @endif
                                     </a>
-                                </li>
-                                <li class="sidebar-menu-item {{ menuActive('admin.users.dataverified') }} ">
+                                </li> --}}
+                                {{-- <li class="sidebar-menu-item {{ menuActive('admin.users.dataverified') }} ">
                                     <a href="{{ route('admin.users.dataverified') }}" class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
                                         <span class="menu-title">@lang('Verified Data Users')</span>
-                                        {{-- @if ($reject_users_count)
+                                        @if ($reject_users_count)
                                             <span
                                                 class="menu-badge pill bg--primary ml-auto">{{ $reject_users_count }}</span>
-                                        @endif --}}
+                                        @endif
                                     </a>
                                 </li>
                                 <li class="sidebar-menu-item {{ menuActive('admin.users.datareject') }} ">
                                     <a href="{{ route('admin.users.datareject') }}" class="nav-link">
                                         <i class="menu-icon las la-dot-circle"></i>
                                         <span class="menu-title">@lang('Rejected Data Users')</span>
-                                        {{-- @if ($reject_users_count)
-                                        <span class="menu-badge pill bg--primary ml-auto">{{$reject_users_count}}</span>
-                                    @endif --}}
+                                        @if ($reject_users_count)
+                                            <span
+                                                class="menu-badge pill bg--primary ml-auto">{{ $reject_users_count }}</span>
+                                        @endif
                                     </a>
-                                </li>
+                                </li> --}}
 
                             </ul>
                         </div>

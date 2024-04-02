@@ -1,6 +1,84 @@
 @extends('admin.layouts.app')
 @section('panel')
-    <div class="row">
+    @if (request()->routeIs('admin.users.balance'))
+        <div class="row mb-none-30">
+            <div class="col-xl-3 col-lg-4 col-sm-6 mb-30">
+                <div class="dashboard-w1 bg--gradi-10 b-radius--10 box-shadow">
+                    <div class="icon">
+                        <i class="fa fa-wallet"></i>
+                    </div>
+                    <div class="details">
+                        <div class="numbers">
+                            <span class="currency-sign">{{ $general->cur_sym }}</span>
+
+                            <span class="amount">{{ nb($b_balance) }}</span>
+                        </div>
+                        <div class="desciption">
+                            <span class="text--small">@lang('Total B Wallet')</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-sm-6 mb-30">
+                <div class="dashboard-w1 bg--gradi-9 b-radius--10 box-shadow">
+                    <div class="icon">
+                        <i class="fa fa-wallet"></i>
+                    </div>
+                    <div class="details">
+                        <div class="numbers">
+                            <span class="currency-sign">{{ $general->cur_sym }}</span>
+
+                            <span class="amount">{{ nb($balance) }}</span>
+                        </div>
+                        <div class="desciption">
+                            <span class="text--small">@lang('Total Cash Wallet')</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-lg-4 col-sm-6 mb-30">
+                <div class="dashboard-w1 bg--gradi-12 b-radius--10 box-shadow">
+                    <div class="icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="details">
+                        <div class="numbers">
+                            {{-- <span class="currency-sign">{{ $general->cur_sym }}</span> --}}
+                            <span class="amount">{{ nb($pin) }}</span>
+                        </div>
+                        <div class="desciption">
+                            <span class="text--small">@lang('Total PIN')</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-xl-3 col-lg-4 col-sm-6 mb-30">
+                <div class="dashboard-w1 bg--gradi-13 b-radius--10 box-shadow">
+                    <div class="icon">
+                        <i class="fa fa-wallet"></i>
+                    </div>
+                    <div class="details">
+                        <div class="numbers">
+                            {{-- <span class="currency-sign">{{ $general->cur_sym }}</span> --}}
+
+                            <span class="amount">{{ nb($point) }}</span>
+                        </div>
+                        <div class="desciption">
+                            <span class="text--small">@lang('Total POINT')</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+    <div class="row mt-3">
         <div class="col-lg-12">
             <div class="card b-radius--10 ">
                 <div class="card-body p-0">
@@ -9,8 +87,10 @@
                             <thead>
                                 <tr>
                                     <th scope="col">@lang('User')</th>
+                                    @if (request()->routeIs('admin.users.balance'))
+                                        <th scope="col">@lang('Balance')</th>
+                                    @endif
                                     <th scope="col">@lang('Username')</th>
-                                    {{-- <th scope="col">@lang('MP')</th> --}}
                                     <th scope="col">@lang('Email')</th>
                                     <th scope="col">@lang('Phone')</th>
                                     <th scope="col">@lang('Joined At')</th>
@@ -20,6 +100,7 @@
                             <tbody>
                                 @forelse($users as $user)
                                     <tr>
+
                                         <td data-label="@lang('User')">
                                             <div class="user">
                                                 <div class="thumb">
@@ -29,16 +110,28 @@
                                                 <span class="name">{{ $user->fullname }}</span>
                                             </div>
                                         </td>
+                                        {{-- <td data-label="@lang('User')" style="text-align: start">
+                                            <span style="font-size: 12px">B Balance:</span> <a
+                                                href="{{ route('admin.users.detail', $withdraw->user_id) }}">{{ @$withdraw->user->username }}</a>
+                                            <br>
+                                            <span style="font-size: 12px">Fullname:</span>
+                                            <b>{{ $withdraw->user->fullname }}</b> <br>
+                                            <span style="font-size: 12px">Username:</span>
+                                            <b>{{ $withdraw->user->mobile }}</b>
+                                        </td> --}}
+                                        @if (request()->routeIs('admin.users.balance'))
+                                            <td style="text-align: start">
+                                                <span style="font-size: 12px">B Balance <b>Rp
+                                                        {{ nb($user->b_balance) }}</b></span> <br>
+                                                <span style="font-size: 12px">Cash Balance <b> Rp
+                                                        {{ nb($user->balance) }}</b></span> <br>
+                                                <span style="font-size: 12px">PIN <b>{{ nb($user->pin) }}</b></span> <br>
+                                                <span style="font-size: 12px">POINT <b>{{ nb($user->point) }}</b></span>
+                                            </td>
+                                        @endif
                                         <td data-label="@lang('Username')"><a
                                                 href="{{ route('admin.users.detail', $user->id) }}">{{ $user->username }}</a>
                                         </td>
-                                        {{-- <td data-label="@lang('MP')">
-                                            @if ($user->no_bro == 0)
-                                                <small>Not subscribed yet</small>
-                                            @else
-                                                {{ $user->no_bro }}
-                                            @endif
-                                        </td> --}}
                                         <td data-label="@lang('Email')">{{ $user->email }}</td>
                                         <td data-label="@lang('Phone')">{{ $user->mobile }}</td>
                                         <td data-label="@lang('Joined At')">{{ showDateTime($user->created_at) }}</td>
