@@ -235,7 +235,7 @@
                 <div class="col-md-6 col-sm-6" style="text-align: start;">
                     <span class="text-white" style="font-size: 12px">PIN Used</span>
                     <h6 class="text-white" style="font-size: 25px;font-weight: bolder">
-                        {{ $data['used_pin'] }}
+                        {{ $data['pin'] }}
                     </h6>
                 </div>
                 <div class="col-md-6 col-sm-6" style="display: flex; justify-content: end">
