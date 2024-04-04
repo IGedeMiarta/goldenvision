@@ -90,7 +90,8 @@
     <div class="mb-3">
         <button class=" btn btn-success mr-2 mt-2">On Delivery: {{ $deliver }}</button>
         <button class=" btn btn-primary  mr-2 mt-2">Completed : {{ $accept }}</button>
-        {{-- <button class=" btn btn-danger mt-2">Rejected : {{ $reject }}</button> --}}
+        <button class=" btn mt-2" style="background-color: #E8BC00"><i class="fas fa-phone"></i> <b>CS: </b> 0811 9650
+            8791</button>
     </div>
     <div class="table-responsive">
         <table class="table">
@@ -130,48 +131,51 @@
                             @endif
                         </td>
                         <td>
-                            {{ $item->agent->name??'' }}
+                            {{ $item->agent->name ?? '' }}
                         </td>
                         <td>
-                            {{ $item->resi ??'-' }}
+                            {{ $item->resi ?? '-' }}
                         </td>
                         <td style="white-space:nowrap;">
-                            @if ($item->status != 4 && ($item->agen != null && $item->agen != 1))
-                                                
-                            <a href="#" style="color: #8C8C8C;text-decoration: underline;">Check
-                                Agent</a>
-                                @else
+                            @if ($item->status != 4 && ($item->agen != null && $item->agen != 1 && $item->resi != null))
+                                <a href="{{ $item->agent->check_resi_url ?? '#' }}" target="_blank"
+                                    style="color: #blue;text-decoration: underline;">Check
+                                    Agent</a>
+                            @else
                                 -
                             @endif
                         </td>
                         <td>
-                            @if ($item->status==2)
-                                
-                            <button class="badge badge-primary recived"  data-toggle="modal" data-target="#exampleModal{{ $item->id }}"><i class="fas fa-check"></i> Received</button>
+                            @if ($item->status == 2)
+                                <button class="badge badge-primary recived" data-toggle="modal"
+                                    data-target="#exampleModal{{ $item->id }}"><i class="fas fa-check"></i>
+                                    Received</button>
                             @endif
                         </td>
 
-                            <!-- Modal -->
-                            <div class="modal fade" id="exampleModal{{ $item->id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                <div class="modal-dialog">
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal{{ $item->id }}" data-backdrop="static"
+                            data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                        <h5 class="modal-title" id="staticBackdropLabel">Received The Product</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <form action="{{route('user.product.tracking.up',$item->id)}}" method="post">
+                                    <form action="{{ route('user.product.tracking.up', $item->id) }}" method="post">
                                         @csrf
                                         @method('PUT')
                                         <div class="modal-body text-center">
                                             <img src="{{ asset('assets/recived.gif') }}" alt="recived" style="width: 80%">
-                                            <button type="submit" class="btn btn-block btn-lg btn-primary mt-3"> <i class="fas fa-check"></i> @lang('Product Recived')</button>
+                                            <button type="submit" class="btn btn-block btn-lg btn-primary mt-3"> <i
+                                                    class="fas fa-check"></i> @lang('Product Recived')</button>
                                         </div>
                                     </form>
                                 </div>
-                                </div>
                             </div>
+                        </div>
                         {{-- <div class="modal fade" id="#exampleModal{{ $item->id }}">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
@@ -192,7 +196,7 @@
                                 </div>
                             </div>
                         </div> --}}
-                        
+
                     </tr>
                 @empty
                     <tr>
@@ -204,15 +208,13 @@
 
         </table>
     </div>
-  
-   
 @endsection
 
 @push('script')
     <script>
         "use strict";
         (function($) {
-          
+
             $('.qtyinp').on('change', function() {
                 const val = $(this).val();
                 const id = $(this).data('id');

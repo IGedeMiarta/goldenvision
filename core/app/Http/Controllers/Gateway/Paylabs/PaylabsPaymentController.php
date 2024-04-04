@@ -60,6 +60,7 @@ class PaylabsPaymentController extends Controller
         $endpointURL = "/payment/v2/h5/createLink";
         $date = new DateTime('now', new DateTimeZone('Asia/Jakarta')); // Adjust timezone as needed
         $timestamp = $date->format('Y-m-d\TH:i:s.uP');
+        // $timestamp = '2024-03-31T16:58:47.964+07:00';
         $mid = "010414";
         $trxid = $trx->id;
         $body = array(

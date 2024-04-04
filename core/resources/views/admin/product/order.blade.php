@@ -36,7 +36,8 @@
                                             {{ date('M d, Y', strtotime($item->created_at)) }}
                                         </td>
                                         <td>
-                                           <a href="{{ url('admin/user/detail',$item->user->id) }}"> {{ $item->user->username }}</a>
+                                            <a href="{{ url('admin/user/detail', $item->user->id) }}">
+                                                {{ $item->user->username }}</a>
                                         </td>
                                         <td>
                                             @if ($item->status == 1)
@@ -49,58 +50,60 @@
                                                 <span class="badge badge-danger">Rejected</span>
                                             @endif
                                         </td>
-                                      
+
                                         <td>
-                                            {{ $item->agent->name ?? '-'}}
+                                            {{ $item->agent->name ?? '-' }}
                                         </td>
                                         <td>
                                             {{ $item->resi ?? '-' }}
                                         </td>
                                         <td style="white-space:nowrap;">
-                                            @if ($item->status != 4 && ($item->agen != null && $item->agen != 1))
-                                                
-                                            <a href="#" style="color: #8C8C8C;text-decoration: underline;">Check
-                                                Agent</a>
-                                                @else
+                                            @if ($item->status != 4 && ($item->agen != null && $item->agen != 1 && $item->resi != null))
+                                                <a href="{{ $item->agent->check_resi_url ?? '#' }}" target="_blank"
+                                                    style="color: blue;text-decoration: underline;">Check
+                                                    Agent</a>
+                                            @else
                                                 -
                                             @endif
                                         </td>
                                         <td>
-                                           @if ($item->status ==1)
-                                            @php
-                                                $rs = '<tr>';
-                                                foreach ($item->detail as $value) {
-                                                    $rs .= '<td>' . $value->product->name . '</td>';
-                                                    $rs .= '<td>' . $value->qty . '</td>';
-                                                    $rs .= '<td>' . $value->total . '</td>';
-                                                }
-                                                $rs .= '</tr>';
+                                            @if ($item->status == 1)
+                                                @php
+                                                    $rs = '<tr>';
+                                                    foreach ($item->detail as $value) {
+                                                        $rs .= '<td>' . $value->product->name . '</td>';
+                                                        $rs .= '<td>' . $value->qty . '</td>';
+                                                        $rs .= '<td>' . $value->total . '</td>';
+                                                    }
+                                                    $rs .= '</tr>';
 
-                                                if ($item->status == 1) {
-                                                    $sts = '<span class="badge badge-warning">Waiting Approve</span>';
-                                                } elseif ($item->status == 2) {
-                                                    $sts = '<span class="badge badge-warning">On Delivery</span>';
-                                                } elseif ($item->status == 3) {
-                                                    $sts = '<span class="badge badge-success">Completed</span>';
-                                                } else {
-                                                    $sts = '<span class="badge badge-danger">Rejected</span>';
-                                                }
-                                            @endphp
-                                            <button data-id="{{ $item->id }}",
-                                                data-total_order="{{ $item->total_order }}" data-inv="{{ $item->inv }}"
-                                                data-resi="{{ $item->resi }}" data-agen="{{ $item->agen }}"
-                                                data-expect_ongkir="{{ $item->expect_ongkir }}"
-                                                data-ongkir="{{ $item->ongkir }}" data-status="{{ $item->status }}"
-                                                data-admin_feedback="{{ $item->admin_feedback }}"
-                                                data-details="{{ $rs }}"
-                                                data-name="{{ $item->user->firstname . ' ' . $item->user->lastname }}"
-                                                data-address="{{ $item->user->address->address }}"
-                                                data-zip="{{ $item->user->address->zip }}" data-sts="{{ $sts }}"
-                                                class="btn btn-sm btn--warning edit"><i class="las la-edit"></i></button>
-
+                                                    if ($item->status == 1) {
+                                                        $sts =
+                                                            '<span class="badge badge-warning">Waiting Approve</span>';
+                                                    } elseif ($item->status == 2) {
+                                                        $sts = '<span class="badge badge-warning">On Delivery</span>';
+                                                    } elseif ($item->status == 3) {
+                                                        $sts = '<span class="badge badge-success">Completed</span>';
+                                                    } else {
+                                                        $sts = '<span class="badge badge-danger">Rejected</span>';
+                                                    }
+                                                @endphp
+                                                <button data-id="{{ $item->id }}",
+                                                    data-total_order="{{ $item->total_order }}"
+                                                    data-inv="{{ $item->inv }}" data-resi="{{ $item->resi }}"
+                                                    data-agen="{{ $item->agen }}"
+                                                    data-expect_ongkir="{{ $item->expect_ongkir }}"
+                                                    data-ongkir="{{ $item->ongkir }}" data-status="{{ $item->status }}"
+                                                    data-admin_feedback="{{ $item->admin_feedback }}"
+                                                    data-details="{{ $rs }}"
+                                                    data-name="{{ $item->user->firstname . ' ' . $item->user->lastname }}"
+                                                    data-address="{{ $item->user->address->address }}"
+                                                    data-zip="{{ $item->user->address->zip }}"
+                                                    data-sts="{{ $sts }}" class="btn btn-sm btn--warning edit"><i
+                                                        class="las la-edit"></i></button>
                                             @else
-                                            -
-                                           @endif
+                                                -
+                                            @endif
                                         </td>
                                     </tr>
 
@@ -177,24 +180,22 @@
                         <input class="form-control" id="id" type="hidden" name="id">
                         <div class="form-group mt-4">
                             <label for="agent">Agent<span class="text-danger">*</span></label>
-                            <select name="agent" id="" class="form-control" required>
+                            <select name="agent" id="agen" class="form-control" required>
                                 <option disabled>Pilih</option>
                                 @foreach ($agent as $item)
-                                    <option value="{{ $item->id }}" @if ($item->id ==1)
-                                        selected
-                                    @endif>{{ $item->name }}</option>
+                                    <option value="{{ $item->id }}" @if ($item->id == 1) selected @endif>
+                                        {{ $item->name }}</option>
                                 @endforeach
                             </select>
                             {{-- <span class="text-success">please select one</span> --}}
                         </div>
                         <div class="form-group mt-1">
                             <label for="ongkir">Ongkir</label>
-                            <input class="form-control" id="ongkir" type="number" name="ongkir" placeholder="00,000" readonly>
+                            <input class="form-control" id="ongkir" type="number" name="ongkir" placeholder="00,000">
                         </div>
                         <div class="form-group mt-1">
                             <label for="resi">No Resi</label>
-                            <input class="form-control" id="resi" type="text" name="resi"
-                                placeholder="0000" readonly>
+                            <input class="form-control" id="resi" type="text" name="resi" placeholder="0000">
                         </div>
                         <div class="form-group mt-1">
                             <label for="admin_feedback">Admin Notes</label>
@@ -247,7 +248,8 @@
                 $('#name').html(name);
                 $('#address').html(address);
                 $('#zip').html(zip);
-                $('#expect_ongkir').val(expect_ongkir)
+                $('#expect_ongkir').val(expect_ongkir);
+                $('#agen').val(agen)
                 $('#StatusInfo').html(sts)
             });
         })(jQuery);

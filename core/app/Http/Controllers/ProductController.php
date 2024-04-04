@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\corder;
+use App\Models\DeliveryAgent;
 use App\Models\GeneralSetting;
 use App\Models\Gold;
 use App\Models\Product;
@@ -28,6 +29,7 @@ class ProductController extends Controller
         $data['page_title'] = "Reedem Product";
         $data['product'] = Product::where('status',1)->get();
         $data['cart'] = UserChart::with('product')->where('user_id',auth()->user()->id)->get();
+        $data['agent'] = DeliveryAgent::all();
         return view('templates.basic.user.product.index',$data);
     }
     public function productCart(Request $request){
@@ -78,6 +80,7 @@ class ProductController extends Controller
             $order->user_id = $user->id;
             $order->inv = 'INV'.time();
             $order->total_order =  $total;
+            $order->agen = $request->shipping;
             $order->status = 1;
             $order->admin_feedback = null;
             $order->save();

@@ -152,12 +152,11 @@
                     </div>
                 </div>
                 <div class="card-body" style="position: relative;">
-                    <form action="{{ route('user.product.purchase') }}" method="POST">
-                        @csrf
-                        <button type="submit"
-                            class="btn btn-sm btn-block text--small box--shadow3 mt-3 {{ LoopCart()->count() < 1 ? 'd-none' : '' }}"
-                            style="background-color: #000;color:white">@lang('Submit')</button>
-                    </form>
+                    <button type="button"
+                        class="btn btn-sm btn-block text--small box--shadow3 mt-3 {{ LoopCart()->count() < 1 ? 'd-none' : '' }}"
+                        style="background-color: #000;color:white" data-toggle="modal"
+                        data-target="#exampleModal">@lang('Submit')</button>
+
                 </div>
             </div>
         </div>
@@ -196,82 +195,102 @@
         @endforeach
     </div>
 
-    <div class="card @if ($cart->count() <= 0) d-none @endif">
-        <div class="card-header d-flex justify-content-between">
-            <h3>User Cart</h3>
 
-        </div>
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th class="text-end">Qty</th>
-                        <th>Total</th>
-                        <th class="text-center">Option</th>
-                    </tr>
-                </thead>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <form action="{{ route('user.product.purchase') }}" method="POST">
+                    <div class="modal-body">
 
-                    @csrf
-                    <tbody>
-                        @php
-                            $total = 0;
-                        @endphp
-                        @foreach ($cart as $item)
-                            <tr>
-                                <td>
-                                    <div class="text-center">
-                                        <img src="{{ asset($item->product->image) }}" alt="@lang('Product Image')"
-                                            style="max-width: 100px"> <br>
-                                        <h5 class="mt-2">{{ $item->product->name }}</h5>
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th class="text-end">Qty</th>
+                                    <th>Total</th>
+                                    <th class="text-center">Option</th>
+                                </tr>
+                            </thead>
 
-                                    </div>
-                                </td>
-                                <td>
-                                    {{ $item->product->price }} POINT
-                                </td>
+                            @csrf
+                            <tbody>
+                                @php
+                                    $total = 0;
+                                @endphp
+                                @foreach ($cart as $item)
+                                    <tr>
+                                        <td>
+                                            <div class="text-center">
+                                                <img src="{{ asset($item->product->image) }}" alt="@lang('Product Image')"
+                                                    style="max-width: 100px"> <br>
+                                                <h5 class="mt-2">{{ $item->product->name }}</h5>
 
-                                <td class="d-flex justify-content-center ">
-                                    <input type="number" class="form-control qtyinp" name="qty"
-                                        id="qtyinp{{ $item->id }}" data-id="{{ $item->id }}"
-                                        value="{{ $item->qty }}" style="width: 100px">
-                                    <button type="button" class="btn btn-success btn-save ml-2 d-none btnSave"
-                                        id="btnSave{{ $item->id }}" data-id="{{ $item->id }}"
-                                        data-product="{{ $item->product_id }}" data-qty="{{ $item->qty }}">
-                                        <i class="fas fa-check"></i></button>
-                                </td>
-                                <input type="hidden" name="product_id[]" value="{{ $item->product_id }}">
-                                <input type="hidden" name="process_qty[]" value="{{ $item->qty }}">
-                                <td>
-                                    {{ $item->product->price * $item->qty }} POINT
-                                </td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-danger delete"
-                                        data-id="{{ $item->id }}"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            @php
-                                $total += $item->product->price * $item->qty;
-                            @endphp
-                        @endforeach
-                    </tbody>
-                    <input type="hidden" name="total" value="{{ $total }}">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ $item->product->price }} POINT
+                                        </td>
 
-                    <tfoot>
-                        <tr class="bg-secondary">
-                            <th colspan="3" class="text-center">Total</th>
-                            <th>{{ $total }} POINT</th>
-                            <th class="text-center">
-                                <button type="submit" class="btn btn-outline-primary bg-white text-primary "
-                                    id="savePurchase">
-                                    <i class="fas fa-save"></i>Transaction</button>
-                            </th>
-                        </tr>
-                    </tfoot>
+                                        <td style="width: 20px">
+                                            <input type="number" class="form-control qtyinp" name="qty"
+                                                id="qtyinp{{ $item->id }}" data-id="{{ $item->id }}"
+                                                value="{{ $item->qty }}" style="width: 80px">
+                                            <button type="button" class="btn btn-success btn-save ml-2 d-none btnSave"
+                                                id="btnSave{{ $item->id }}" data-id="{{ $item->id }}"
+                                                data-product="{{ $item->product_id }}" data-qty="{{ $item->qty }}">
+                                                <i class="fas fa-check"></i></button>
+                                        </td>
+                                        <input type="hidden" name="product_id[]" value="{{ $item->product_id }}">
+                                        <input type="hidden" name="process_qty[]" value="{{ $item->qty }}">
+                                        <td>
+                                            {{ $item->product->price * $item->qty }} POINT
+                                        </td>
+                                        <td class="text-center">
+                                            <button type="button" class="btn btn-danger delete"
+                                                data-id="{{ $item->id }}"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    @php
+                                        $total += $item->product->price * $item->qty;
+                                    @endphp
+                                @endforeach
+                            </tbody>
+                            <input type="hidden" name="total" value="{{ $total }}">
+
+                            <tfoot class="table-striped">
+                                <tr>
+                                    <th colspan="3" class="text-center">Total</th>
+                                    <th>{{ $total }} POINT</th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th colspan="3" class="text-center">Select Shiping<span
+                                            class="text-danger">*</span></th>
+                                    <th colspan="2">
+                                        <select name="shipping" id="" class="form-control">
+                                            @foreach ($agent as $a)
+                                                <option value="{{ $a->id }}">{{ $a->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
                 </form>
-            </table>
+            </div>
         </div>
     </div>
 @endsection
