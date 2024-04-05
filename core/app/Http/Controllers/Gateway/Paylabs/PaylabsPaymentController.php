@@ -88,12 +88,12 @@ class PaylabsPaymentController extends Controller
         // membuat signature
         $signature = createSignature($stringContent,$privateKey);
         // dd($timestamp, $signature);
-        // echo  'method: ' . $httpMethod .'<br>';
-        // echo  'TimeStamp: ' . $timestamp.'<br>';
-        // echo  'Parameter: ' . $minifiedJson .'<br>';
-        // echo  'stringContent: ' . $stringContent.'<br>';
-        // echo 'signature: ' . $signature .'<br>';
-        // die;
+        echo  'method: ' . $httpMethod .'<br>';
+        echo  'TimeStamp: ' . $timestamp.'<br>';
+        echo  'Parameter: ' . $minifiedJson .'<br>';
+        echo  'stringContent: ' . $stringContent.'<br>';
+        echo 'signature: ' . $signature .'<br>';
+        die;
         // 'POST:/payment/v2/h5/createLink:97f6a3e800b4d22533e1b3778d4f0d999e5400d5d49c1c30dead068e7f34fa6b:2024-04-02T21:29:38.451342+07:00';
         // 'POST:/payment/v2/h5/createLink:97f6a3e800b4d22533e1b3778d4f0d999e5400d5d49c1c30dead068e7f34fa6b:2024-04-02T21:29:38.451342+07:00';
         $data_string = json_encode($body);
@@ -123,6 +123,11 @@ class PaylabsPaymentController extends Controller
         curl_close($ch);
 
         $response = json_decode($result,true);
+        echo  'method: ' . $httpMethod .'<br>';
+        echo  'TimeStamp: ' . $timestamp.'<br>';
+        echo  'Parameter: ' . $minifiedJson .'<br>';
+        echo  'stringContent: ' . $stringContent.'<br>';
+        echo 'signature: ' . $signature .'<br>';
         dd($response);
         if ($response['errCode'] == 0) {
             //update status
