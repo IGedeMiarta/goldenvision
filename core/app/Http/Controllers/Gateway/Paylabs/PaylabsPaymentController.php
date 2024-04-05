@@ -22,7 +22,7 @@ class PaylabsPaymentController extends Controller
         $request->validate([
             'pin' => 'required|numeric|min:1'
         ]);
-        DB::beginTransaction();
+        // DB::beginTransaction();
         $plan = Plan::first();
         try {
             $trx                = new Deposit();
@@ -39,12 +39,12 @@ class PaylabsPaymentController extends Controller
             $trx->save();
             
             $pg = $this->requestPayment($trx);
-            DB::commit();
+            // DB::commit();
             if($pg){
                 return redirect()->to($trx->payment_url);
             }
         } catch (\Throwable $th) {
-                DB::rollBack();
+                // DB::rollBack();
                 $notify[] = ['error', 'Error: ' . $th->getMessage() ];
                 return redirect()->back()->withNotify($notify);
         }
