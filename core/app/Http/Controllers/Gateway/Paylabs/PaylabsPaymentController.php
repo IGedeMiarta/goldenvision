@@ -39,9 +39,9 @@ class PaylabsPaymentController extends Controller
             
             $pg = $this->requestPayment($trx);
             if($pg){
+                DB::commit();
                 return redirect()->to($trx->payment_url);
             }
-            DB::commit();
 
             // $notify[] = ['success', 'Order '.$request->pin.' PIN equal to '. nb($request->pin * $plan->price) .' IDR created'];
             // return redirect()->back()->withNotify($notify);
@@ -67,7 +67,7 @@ class PaylabsPaymentController extends Controller
             "merchantTradeNo"   => $trx->trx,
             "requestId"         => $trx->id,
             "amount"            => intval($trx->final_amo),
-            "productName"       => "Deposit",
+            "productName"       => "Goldenvision PIN Deposit",
             "payer"             => $user->username, //User fullname,
             "phoneNumber"       => $user->mobile, //user mobile
             "notifyUrl"         => url('api/v1/notify'), //URL yang akan ditembak saat terjadi pembayaran. Untuk parameter-parameternya cek di bagian Inquiry Order
