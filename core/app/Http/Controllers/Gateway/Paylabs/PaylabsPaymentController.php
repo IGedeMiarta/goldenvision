@@ -124,7 +124,7 @@ class PaylabsPaymentController extends Controller
         // echo  'Parameter: ' . $minifiedJson .'<br>';
         // echo  'stringContent: ' . $stringContent.'<br>';
         // echo 'signature: ' . $signature .'<br>';
-        // dd($response);
+        dd($response);
 
         if ($response['errCode'] == 0) {
             //update status
