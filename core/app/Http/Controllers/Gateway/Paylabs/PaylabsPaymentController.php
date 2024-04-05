@@ -42,9 +42,6 @@ class PaylabsPaymentController extends Controller
                 DB::commit();
                 return redirect()->to($trx->payment_url);
             }
-
-            // $notify[] = ['success', 'Order '.$request->pin.' PIN equal to '. nb($request->pin * $plan->price) .' IDR created'];
-            // return redirect()->back()->withNotify($notify);
         } catch (\Throwable $th) {
                 DB::rollBack();
                 $notify[] = ['error', 'Error: ' . $th->getMessage() ];
@@ -124,7 +121,7 @@ class PaylabsPaymentController extends Controller
         // echo  'Parameter: ' . $minifiedJson .'<br>';
         // echo  'stringContent: ' . $stringContent.'<br>';
         // echo 'signature: ' . $signature .'<br>';
-
+        dd($response);
         if ($response['errCode'] == 0) {
             //update status
             $trx->status = 2;
