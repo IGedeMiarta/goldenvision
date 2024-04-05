@@ -59,8 +59,7 @@ class PaylabsPaymentController extends Controller
         $httpMethod = "POST";
         $endpointURL = "/payment/v2/h5/createLink";
         $date = new DateTime('now', new DateTimeZone('Asia/Jakarta')); // Adjust timezone as needed
-        $timestamp = $date->format('Y-m-d\TH:i:s.uP');
-        // $timestamp = '2024-03-31T16:58:47.964+07:00';
+        $timestamp = $date->format('Y-m-d\TH:i:s.uP'); // $timestamp = '2024-03-31T16:58:47.964+07:00';
         $mid = "010414";
         $trxid = $trx->id;
         $body = array(
@@ -84,18 +83,15 @@ class PaylabsPaymentController extends Controller
         
         //membuat string content
         $stringContent = createStringContent($httpMethod,$endpointURL,$minifiedJson,$timestamp);
-        // dd($stringContent);
+
         // membuat signature
         $signature = createSignature($stringContent,$privateKey);
-        // dd($timestamp, $signature);
-        // echo  'method: ' . $httpMethod .'<br>';
-        // echo  'TimeStamp: ' . $timestamp.'<br>';
-        // echo  'Parameter: ' . $minifiedJson .'<br>';
-        // echo  'stringContent: ' . $stringContent.'<br>';
-        // echo 'signature: ' . $signature .'<br>';
-        // die;
-        // 'POST:/payment/v2/h5/createLink:97f6a3e800b4d22533e1b3778d4f0d999e5400d5d49c1c30dead068e7f34fa6b:2024-04-02T21:29:38.451342+07:00';
-        // 'POST:/payment/v2/h5/createLink:97f6a3e800b4d22533e1b3778d4f0d999e5400d5d49c1c30dead068e7f34fa6b:2024-04-02T21:29:38.451342+07:00';
+
+
+       
+        //hasil dari Calculation Tool  POST:/payment/v2/h5/createLink:46bf90614f316be3a60ac9013410a7006f477bb21105ff6c179593da8e954c31:2024-04-05T19:16:53.654493+07:00   
+        //hasil dari aplikasi          POST:/payment/v2/h5/createLink:46bf90614f316be3a60ac9013410a7006f477bb21105ff6c179593da8e954c31:2024-04-05T19:16:53.654493+07:00
+
         $data_string = json_encode($body);
 
         $url = 'https://sit-pay.paylabs.co.id' . $endpointURL;
@@ -123,12 +119,12 @@ class PaylabsPaymentController extends Controller
         curl_close($ch);
 
         $response = json_decode($result,true);
-        echo  'method: ' . $httpMethod .'<br>';
-        echo  'TimeStamp: ' . $timestamp.'<br>';
-        echo  'Parameter: ' . $minifiedJson .'<br>';
-        echo  'stringContent: ' . $stringContent.'<br>';
-        echo 'signature: ' . $signature .'<br>';
-        dd($response);
+        // echo  'method: ' . $httpMethod .'<br>';
+        // echo  'TimeStamp: ' . $timestamp.'<br>';
+        // echo  'Parameter: ' . $minifiedJson .'<br>';
+        // echo  'stringContent: ' . $stringContent.'<br>';
+        // echo 'signature: ' . $signature .'<br>';
+        // dd($response);
 
         if ($response['errCode'] == 0) {
             //update status
