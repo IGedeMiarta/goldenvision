@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AdminNotification;
 use App\Models\Deposit;
 use App\Models\GeneralSetting;
+use App\Models\LogActivity;
 use App\Models\Plan;
 use App\Models\User;
 use App\Models\UserPin;
@@ -38,8 +39,8 @@ class PaylabsPaymentController extends Controller
             $trx->save();
             
             $pg = $this->requestPayment($trx);
+            DB::commit();
             if($pg){
-                DB::commit();
                 return redirect()->to($trx->payment_url);
             }
         } catch (\Throwable $th) {
@@ -121,7 +122,6 @@ class PaylabsPaymentController extends Controller
         // echo  'Parameter: ' . $minifiedJson .'<br>';
         // echo  'stringContent: ' . $stringContent.'<br>';
         // echo 'signature: ' . $signature .'<br>';
-        dd($response);
         if ($response['errCode'] == 0) {
             //update status
             $trx->status = 2;
@@ -130,7 +130,8 @@ class PaylabsPaymentController extends Controller
             return true;
         }else{
             // return false;
-            $notify[] = ['error', 'Error Payment gateway: ' . $response ];
+            addToLog('error payment gateway: ' . implode(", ", $response));
+            $notify[] = ['error', 'Error Payment gateway: ' . implode(", ", $response) ];
             return redirect()->route('user.deposit')->withNotify($notify);
         }
 
