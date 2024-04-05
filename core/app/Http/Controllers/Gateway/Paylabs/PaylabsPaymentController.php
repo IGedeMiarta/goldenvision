@@ -128,8 +128,9 @@ class PaylabsPaymentController extends Controller
         echo  'Parameter: ' . $minifiedJson .'<br>';
         echo  'stringContent: ' . $stringContent.'<br>';
         echo 'signature: ' . $signature .'<br>';
-        var_dump($response);
+        echo $response;
         die;
+
         if ($response['errCode'] == 0) {
             //update status
             $trx->status = 2;
