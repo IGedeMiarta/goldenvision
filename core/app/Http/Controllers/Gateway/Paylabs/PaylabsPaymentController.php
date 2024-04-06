@@ -57,8 +57,7 @@ class PaylabsPaymentController extends Controller
         $httpMethod = "POST";
         $endpointURL = "/payment/v2/h5/createLink";
         $date = new DateTime('now', new DateTimeZone('Asia/Jakarta')); // Adjust timezone as needed
-        // $timestamp = $date->format('Y-m-d\TH:i:s.uP'); // $timestamp = '2024-03-31T16:58:47.964+07:00';
-        $timestamp = "2024-04-06T13:48:04.942495+07:00";
+        $timestamp = $date->format('Y-m-d\TH:i:s.uP');
         $mid = "010414";
         $trxid = $trx->id;
         $body = array(
@@ -81,14 +80,14 @@ class PaylabsPaymentController extends Controller
         $minifiedJson = minifyJsonBody(json_encode($body));
         
         //membuat string content
-        // $stringContent = createStringContent($httpMethod,$endpointURL,$minifiedJson,$timestamp);
+        $stringContent = createStringContent($httpMethod,$endpointURL,$minifiedJson,$timestamp);
+        // $stringContent = "POST:/payment/v2/h5/createLink:9cffc712a4c2f908b38d3e4e9a1dd7e0408755100d6447611859f146af6866c9:2024-04-06T13:48:04.942495+07:00";
 
         // membuat signature
-        $stringContent = "POST:/payment/v2/h5/createLink:9cffc712a4c2f908b38d3e4e9a1dd7e0408755100d6447611859f146af6866c9:2024-04-06T13:48:04.942495+07:00";
         $signature = createSignature($stringContent,$privateKey);
 
-        // $data_string = json_encode($body);
-        $data_string = '{"merchantId":"010414","merchantTradeNo":"TRX24040613340400009","requestId":18,"amount":"700000.00","productName":"GoldenvisionPINDeposit","payer":"miarta","phoneNumber":"62081529963914","notifyUrl":"http://dev.goldenvision.co.id/api/v1/notify","redirectUrl":"http://dev.goldenvision.co.id/user/report/deposit/log"}';
+        $data_string = json_encode($body);
+        // $data_string = '{"merchantId":"010414","merchantTradeNo":"TRX24040613340400009","requestId":18,"amount":"700000.00","productName":"GoldenvisionPINDeposit","payer":"miarta","phoneNumber":"62081529963914","notifyUrl":"http://dev.goldenvision.co.id/api/v1/notify","redirectUrl":"http://dev.goldenvision.co.id/user/report/deposit/log"}';
 
         $url = 'https://sit-pay.paylabs.co.id' . $endpointURL;
 
@@ -116,11 +115,6 @@ class PaylabsPaymentController extends Controller
         curl_close($ch);
 
         $response = json_decode($result,true);
-        // echo  'method: ' . $httpMethod .'<br>';
-        // echo  'TimeStamp: ' . $timestamp.'<br>';
-        // echo  'Parameter: ' . $minifiedJson .'<br>';
-        // echo  'stringContent: ' . $stringContent.'<br>';
-        // echo 'signature: ' . $signature .'<br>';
         if ($response['errCode'] == 0) {
             //update status
             $trx->status = 2;
@@ -142,6 +136,9 @@ class PaylabsPaymentController extends Controller
         }
 
     }
+
+    // nBD0k8k6d5cD6zvxynxih8GxvQ0auUDihct+Rsm4ojNO8h4QgroFxP3YPrwskzvz3sfB7Kpu3XY38MMTmuZOByWVNaw2Jjf+3gIZNpIryRMvOcplkjL17AvszYxJqkt08pKNKQAhn23/QZJ1Qpsaj+8MU9E2R0mk34+MFKv1lhbXsn/27VV7CYGSEGQHnv9KXo9M99ojK8GfU6tp99Ay2kqXsjCfyYaOiIFTpWTTM5H2nuiKQ6J/RQbs+YUnHStTil9dVyRkmNnr6hk8Vo3ZLRUvAdoCZSca0faIDJ6QWbaIdlOcOErR9jZPc4AdZhBlgwbVb9nv3LDdqxQ+z/FrjQ==
+    // nBD0k8k6d5cD6zvxynxih8GxvQ0auUDihct+Rsm4ojNO8h4QgroFxP3YPrwskzvz3sfB7Kpu3XY38MMTmuZOByWVNaw2Jjf+3gIZNpIryRMvOcplkjL17AvszYxJqkt08pKNKQAhn23/QZJ1Qpsaj+8MU9E2R0mk34+MFKv1lhbXsn/27VV7CYGSEGQHnv9KXo9M99ojK8GfU6tp99Ay2kqXsjCfyYaOiIFTpWTTM5H2nuiKQ6J/RQbs+YUnHStTil9dVyRkmNnr6hk8Vo3ZLRUvAdoCZSca0faIDJ6QWbaIdlOcOErR9jZPc4AdZhBlgwbVb9nv3LDdqxQ+z/FrjQ==
 
     public function notify(Request $request){
         $status = $request->status;
