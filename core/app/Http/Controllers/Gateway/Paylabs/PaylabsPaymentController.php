@@ -57,7 +57,8 @@ class PaylabsPaymentController extends Controller
         $httpMethod = "POST";
         $endpointURL = "/payment/v2/h5/createLink";
         $date = new DateTime('now', new DateTimeZone('Asia/Jakarta')); // Adjust timezone as needed
-        $timestamp = $date->format('Y-m-d\TH:i:s.uP'); // $timestamp = '2024-03-31T16:58:47.964+07:00';
+        // $timestamp = $date->format('Y-m-d\TH:i:s.uP'); // $timestamp = '2024-03-31T16:58:47.964+07:00';
+        $timestamp = "2024-04-06T13:48:04.942495+07:00";
         $mid = "010414";
         $trxid = $trx->id;
         $body = array(
@@ -80,17 +81,14 @@ class PaylabsPaymentController extends Controller
         $minifiedJson = minifyJsonBody(json_encode($body));
         
         //membuat string content
-        $stringContent = createStringContent($httpMethod,$endpointURL,$minifiedJson,$timestamp);
+        // $stringContent = createStringContent($httpMethod,$endpointURL,$minifiedJson,$timestamp);
 
         // membuat signature
+        $stringContent = "POST:/payment/v2/h5/createLink:9cffc712a4c2f908b38d3e4e9a1dd7e0408755100d6447611859f146af6866c9:2024-04-06T13:48:04.942495+07:00";
         $signature = createSignature($stringContent,$privateKey);
 
-
-       
-        //hasil dari Calculation Tool  POST:/payment/v2/h5/createLink:46bf90614f316be3a60ac9013410a7006f477bb21105ff6c179593da8e954c31:2024-04-05T19:16:53.654493+07:00   
-        //hasil dari aplikasi          POST:/payment/v2/h5/createLink:46bf90614f316be3a60ac9013410a7006f477bb21105ff6c179593da8e954c31:2024-04-05T19:16:53.654493+07:00
-
-        $data_string = json_encode($body);
+        // $data_string = json_encode($body);
+        $data_string = '{"merchantId":"010414","merchantTradeNo":"TRX24040613340400009","requestId":18,"amount":"700000.00","productName":"GoldenvisionPINDeposit","payer":"miarta","phoneNumber":"62081529963914","notifyUrl":"http://dev.goldenvision.co.id/api/v1/notify","redirectUrl":"http://dev.goldenvision.co.id/user/report/deposit/log"}';
 
         $url = 'https://sit-pay.paylabs.co.id' . $endpointURL;
 
@@ -135,8 +133,6 @@ class PaylabsPaymentController extends Controller
             echo    'Parameter: ' . $minifiedJson .'<br>';
             echo    'stringContent: ' . $stringContent.'<br>';
             echo    'signature: ' . $signature .'<br>';
-            // echo    'header: '. $header;
-            // var_dump($header);
             dd($header,$response);
 
             // return false;
