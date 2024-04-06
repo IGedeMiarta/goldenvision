@@ -129,6 +129,13 @@ class PaylabsPaymentController extends Controller
             $trx->save();
             return true;
         }else{
+            echo  'method: ' . $httpMethod .'<br>';
+            echo  'TimeStamp: ' . $timestamp.'<br>';
+            echo  'Parameter: ' . $minifiedJson .'<br>';
+            echo  'stringContent: ' . $stringContent.'<br>';
+            echo 'signature: ' . $signature .'<br>';
+            dd($response);
+
             // return false;
             addToLog('error payment gateway: ' . implode(", ", $response));
             $notify[] = ['error', 'Error Payment gateway: ' . implode(", ", $response) ];
