@@ -74,7 +74,7 @@ class PaylabsPaymentController extends Controller
         // );
         
          $body = array(
-            "merchantId"        => 010414,
+            "merchantId"        => $mid,
             "merchantTradeNo"   => 'TRX24040613340400009',
             "requestId"         => '18',
             "amount"            => 700000.00,
