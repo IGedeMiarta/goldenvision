@@ -94,18 +94,19 @@ class PaylabsPaymentController extends Controller
 
         $url = 'https://sit-pay.paylabs.co.id' . $endpointURL;
 
-        // konfigurasi cURL
-        $ch = curl_init($url);
-        curl_setopt($ch,CURLOPT_CUSTOMREQUEST,"POST");
-        curl_setopt($ch,CURLOPT_POSTFIELDS,$data_string);
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-        curl_setopt($ch,CURLOPT_HTTPHEADER,array(
+        $header = array(
             'Content-Type: application/json;charset=utf-8',
             'X-TIMESTAMP:' . $timestamp,
             'X-SIGNATURE:' . $signature ,
             'X-PARTNER-ID:' . $mid,
             'X-REQUEST-ID:' . $trxid
-        ));
+        );
+        // konfigurasi cURL
+        $ch = curl_init($url);
+        curl_setopt($ch,CURLOPT_CUSTOMREQUEST,"POST");
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$data_string);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
 
         // execute and add get response
         $result = curl_exec($ch);
@@ -129,11 +130,12 @@ class PaylabsPaymentController extends Controller
             $trx->save();
             return true;
         }else{
-            echo  'method: ' . $httpMethod .'<br>';
-            echo  'TimeStamp: ' . $timestamp.'<br>';
-            echo  'Parameter: ' . $minifiedJson .'<br>';
-            echo  'stringContent: ' . $stringContent.'<br>';
-            echo 'signature: ' . $signature .'<br>';
+            echo    'method: ' . $httpMethod .'<br>';
+            echo    'TimeStamp: ' . $timestamp.'<br>';
+            echo    'Parameter: ' . $minifiedJson .'<br>';
+            echo    'stringContent: ' . $stringContent.'<br>';
+            echo    'signature: ' . $signature .'<br>';
+            echo    'header: '. $header;
             dd($response);
 
             // return false;
