@@ -135,7 +135,8 @@ class PaylabsPaymentController extends Controller
             echo    'Parameter: ' . $minifiedJson .'<br>';
             echo    'stringContent: ' . $stringContent.'<br>';
             echo    'signature: ' . $signature .'<br>';
-            echo    'header: '. $header;
+            // echo    'header: '. $header;
+            var_dump($header);
             dd($response);
 
             // return false;
