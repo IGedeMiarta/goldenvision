@@ -58,6 +58,7 @@ class PaylabsPaymentController extends Controller
         $endpointURL = "/payment/v2/h5/createLink";
         $date = new DateTime('now', new DateTimeZone('Asia/Jakarta')); // Adjust timezone as needed
         $timestamp = $date->format('Y-m-d\TH:i:s.uP');
+        $timestamp = '2024-04-06T13:48:04.942495+07:00';
         $mid = "010414";
         $trxid = $trx->id;
         $body = array(
@@ -81,13 +82,13 @@ class PaylabsPaymentController extends Controller
         
         //membuat string content
         $stringContent = createStringContent($httpMethod,$endpointURL,$minifiedJson,$timestamp);
-        // $stringContent = "POST:/payment/v2/h5/createLink:9cffc712a4c2f908b38d3e4e9a1dd7e0408755100d6447611859f146af6866c9:2024-04-06T13:48:04.942495+07:00";
+        $stringContent = "POST:/payment/v2/h5/createLink:9cffc712a4c2f908b38d3e4e9a1dd7e0408755100d6447611859f146af6866c9:2024-04-06T13:48:04.942495+07:00";
 
         // membuat signature
         $signature = createSignature($stringContent,$privateKey);
 
         $data_string = json_encode($body);
-        // $data_string = '{"merchantId":"010414","merchantTradeNo":"TRX24040613340400009","requestId":18,"amount":"700000.00","productName":"GoldenvisionPINDeposit","payer":"miarta","phoneNumber":"62081529963914","notifyUrl":"http://dev.goldenvision.co.id/api/v1/notify","redirectUrl":"http://dev.goldenvision.co.id/user/report/deposit/log"}';
+        $data_string = '{"merchantId":"010414","merchantTradeNo":"TRX24040613340400009","requestId":18,"amount":"700000.00","productName":"GoldenvisionPINDeposit","payer":"miarta","phoneNumber":"62081529963914","notifyUrl":"http://dev.goldenvision.co.id/api/v1/notify","redirectUrl":"http://dev.goldenvision.co.id/user/report/deposit/log"}';
 
         $url = 'https://sit-pay.paylabs.co.id' . $endpointURL;
 
