@@ -64,7 +64,7 @@ class PaylabsPaymentController extends Controller
             "merchantId"        => $mid,
             "merchantTradeNo"   => $trx->trx,
             "requestId"         => $trx->id,
-            "amount"            => intval($trx->final_amo),
+            "amount"            => number_format(intval($trx->final_amo),2,'.',''),
             "productName"       => "Goldenvision PIN Deposit",
             "payer"             => $user->username, //User fullname,
             "phoneNumber"       => $user->mobile, //user mobile
