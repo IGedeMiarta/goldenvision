@@ -88,7 +88,7 @@ class PaylabsPaymentController extends Controller
 
         $privateKeyPath = __DIR__ . "/private.pem";
         $privateKey     = file_get_contents($privateKeyPath);
-        // dd(json_encode($body));
+        dd($privateKey);
 
         // minify json body
         $minifiedJson = minifyJsonBody(json_encode($body));
@@ -150,6 +150,12 @@ class PaylabsPaymentController extends Controller
         }
 
     }
+
+    //{"merchantId":"010414","merchantTradeNo":"TRX24040613340400009","requestId":18,"amount":"700000","productName":"GoldenvisionPINDeposit","payer":"miarta","phoneNumber":"62081529963914","notifyUrl":"http://dev.goldenvision.co.id/api/v1/notify","redirectUrl":"http://dev.goldenvision.co.id/user/report/deposit/log"}
+    //{"merchantId":"010414","merchantTradeNo":"TRX24040613340400009","requestId":"18","amount":700000,"productName":"GoldenvisionPINDeposit","payer":"miarta","phoneNumber":"62081529963914","notifyUrl":"http://dev.goldenvision.co.id/api/v1/notify","redirectUrl":"http://dev.goldenvision.co.id/user/report/deposit/log"}
+
+    // POST:/payment/v2/h5/createLink:9cffc712a4c2f908b38d3e4e9a1dd7e0408755100d6447611859f146af6866c9:2024-04-06T13:48:04.942495+07:00
+    // POST:/payment/v2/h5/createLink:9cffc712a4c2f908b38d3e4e9a1dd7e0408755100d6447611859f146af6866c9:2024-04-06T13:48:04.942495+07:00
 
     // nBD0k8k6d5cD6zvxynxih8GxvQ0auUDihct+Rsm4ojNO8h4QgroFxP3YPrwskzvz3sfB7Kpu3XY38MMTmuZOByWVNaw2Jjf+3gIZNpIryRMvOcplkjL17AvszYxJqkt08pKNKQAhn23/QZJ1Qpsaj+8MU9E2R0mk34+MFKv1lhbXsn/27VV7CYGSEGQHnv9KXo9M99ojK8GfU6tp99Ay2kqXsjCfyYaOiIFTpWTTM5H2nuiKQ6J/RQbs+YUnHStTil9dVyRkmNnr6hk8Vo3ZLRUvAdoCZSca0faIDJ6QWbaIdlOcOErR9jZPc4AdZhBlgwbVb9nv3LDdqxQ+z/FrjQ==
     // nBD0k8k6d5cD6zvxynxih8GxvQ0auUDihct+Rsm4ojNO8h4QgroFxP3YPrwskzvz3sfB7Kpu3XY38MMTmuZOByWVNaw2Jjf+3gIZNpIryRMvOcplkjL17AvszYxJqkt08pKNKQAhn23/QZJ1Qpsaj+8MU9E2R0mk34+MFKv1lhbXsn/27VV7CYGSEGQHnv9KXo9M99ojK8GfU6tp99Ay2kqXsjCfyYaOiIFTpWTTM5H2nuiKQ6J/RQbs+YUnHStTil9dVyRkmNnr6hk8Vo3ZLRUvAdoCZSca0faIDJ6QWbaIdlOcOErR9jZPc4AdZhBlgwbVb9nv3LDdqxQ+z/FrjQ==
