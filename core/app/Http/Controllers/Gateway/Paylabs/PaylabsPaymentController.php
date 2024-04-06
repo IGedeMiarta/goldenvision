@@ -136,8 +136,8 @@ class PaylabsPaymentController extends Controller
             echo    'stringContent: ' . $stringContent.'<br>';
             echo    'signature: ' . $signature .'<br>';
             // echo    'header: '. $header;
-            var_dump($header);
-            dd($response);
+            // var_dump($header);
+            dd($header,$response);
 
             // return false;
             addToLog('error payment gateway: ' . implode(", ", $response));
