@@ -61,17 +61,30 @@ class PaylabsPaymentController extends Controller
         $timestamp = '2024-04-06T13:48:04.942495+07:00';
         $mid = "010414";
         $trxid = $trx->id;
-        $body = array(
-            "merchantId"        => $mid,
-            "merchantTradeNo"   => $trx->trx,
-            "requestId"         => $trx->id,
-            "amount"            => number_format(intval($trx->final_amo),2,'.',''),
+        // $body = array(
+        //     "merchantId"        => $mid,
+        //     "merchantTradeNo"   => $trx->trx,
+        //     "requestId"         => $trx->id,
+        //     "amount"            => number_format(intval($trx->final_amo),2,'.',''),
+        //     "productName"       => "Goldenvision PIN Deposit",
+        //     "payer"             => $user->username, //User fullname,
+        //     "phoneNumber"       => $user->mobile, //user mobile
+        //     "notifyUrl"         => url('api/v1/notify'), //URL yang akan ditembak saat terjadi pembayaran. Untuk parameter-parameternya cek di bagian Inquiry Order
+        //     "redirectUrl"       => route('user.report.deposit'), //Baik saat sukses ataupun gagal, akan diarahkan ke URL tersebut
+        // );
+        
+         $body = array(
+            "merchantId"        => 010414,
+            "merchantTradeNo"   => 'TRX24040613340400009',
+            "requestId"         => '18',
+            "amount"            => 700000.00,
             "productName"       => "Goldenvision PIN Deposit",
-            "payer"             => $user->username, //User fullname,
-            "phoneNumber"       => $user->mobile, //user mobile
+            "payer"             => 'miarta', //User fullname,
+            "phoneNumber"       => '62081529963914', //user mobile
             "notifyUrl"         => url('api/v1/notify'), //URL yang akan ditembak saat terjadi pembayaran. Untuk parameter-parameternya cek di bagian Inquiry Order
             "redirectUrl"       => route('user.report.deposit'), //Baik saat sukses ataupun gagal, akan diarahkan ke URL tersebut
         );
+        
 
         $privateKeyPath = __DIR__ . "/private.pem";
         $privateKey     = file_get_contents($privateKeyPath);
@@ -88,7 +101,7 @@ class PaylabsPaymentController extends Controller
         $signature = createSignature($stringContent,$privateKey);
 
         $data_string = json_encode($body);
-        $data_string = '{"merchantId":"010414","merchantTradeNo":"TRX24040613340400009","requestId":18,"amount":"700000.00","productName":"GoldenvisionPINDeposit","payer":"miarta","phoneNumber":"62081529963914","notifyUrl":"http://dev.goldenvision.co.id/api/v1/notify","redirectUrl":"http://dev.goldenvision.co.id/user/report/deposit/log"}';
+        // $data_string = '{"merchantId":"010414","merchantTradeNo":"TRX24040613340400009","requestId":18,"amount":"700000.00","productName":"GoldenvisionPINDeposit","payer":"miarta","phoneNumber":"62081529963914","notifyUrl":"http://dev.goldenvision.co.id/api/v1/notify","redirectUrl":"http://dev.goldenvision.co.id/user/report/deposit/log"}';
 
         $url = 'https://sit-pay.paylabs.co.id' . $endpointURL;
 
