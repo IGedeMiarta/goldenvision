@@ -143,6 +143,8 @@ class PaylabsPaymentController extends Controller
     // nBD0k8k6d5cD6zvxynxih8GxvQ0auUDihct+Rsm4ojNO8h4QgroFxP3YPrwskzvz3sfB7Kpu3XY38MMTmuZOByWVNaw2Jjf+3gIZNpIryRMvOcplkjL17AvszYxJqkt08pKNKQAhn23/QZJ1Qpsaj+8MU9E2R0mk34+MFKv1lhbXsn/27VV7CYGSEGQHnv9KXo9M99ojK8GfU6tp99Ay2kqXsjCfyYaOiIFTpWTTM5H2nuiKQ6J/RQbs+YUnHStTil9dVyRkmNnr6hk8Vo3ZLRUvAdoCZSca0faIDJ6QWbaIdlOcOErR9jZPc4AdZhBlgwbVb9nv3LDdqxQ+z/FrjQ==
     // nBD0k8k6d5cD6zvxynxih8GxvQ0auUDihct+Rsm4ojNO8h4QgroFxP3YPrwskzvz3sfB7Kpu3XY38MMTmuZOByWVNaw2Jjf+3gIZNpIryRMvOcplkjL17AvszYxJqkt08pKNKQAhn23/QZJ1Qpsaj+8MU9E2R0mk34+MFKv1lhbXsn/27VV7CYGSEGQHnv9KXo9M99ojK8GfU6tp99Ay2kqXsjCfyYaOiIFTpWTTM5H2nuiKQ6J/RQbs+YUnHStTil9dVyRkmNnr6hk8Vo3ZLRUvAdoCZSca0faIDJ6QWbaIdlOcOErR9jZPc4AdZhBlgwbVb9nv3LDdqxQ+z/FrjQ==
 
+
+    
     public function notify(Request $request){
         $status = $request->status;
         $data = Deposit::where('trx',$request->merchantTradeNo)->first();
