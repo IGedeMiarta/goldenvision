@@ -591,5 +591,57 @@ class CronController extends Controller
         }
     }
 
+    public function convertBBalanceToBalance() {
+    $allBBalance = User::where('b_balance', '>', 0)->get();
+    $conversionDetails = [];
+
+    foreach ($allBBalance as $val) {
+        DB::beginTransaction();
+        try {
+            $user = User::find($val->id);
+
+            if ($user === null) {
+                throw new \Exception('User not found');
+            }
+
+            $transaction = new Transaction();
+            $transaction->user_id = $user->id;
+            $transaction->amount = $val->b_balance;
+            $transaction->post_balance = $user->balance + $val->b_balance; // Correct post_balance calculation
+            $transaction->charge = 0;
+            $transaction->trx_type = '+';
+            $transaction->details = 'Convert B-Wallet To Cash Wallet';
+            $transaction->remark = 'convert_balance';
+            $transaction->trx = getTrx();
+            $transaction->save();
+
+            $user->balance += $val->b_balance;
+            $user->b_balance -= $val->b_balance;
+            $user->save();
+
+            DB::commit();
+
+            // Collect user details
+            $conversionDetails[] = [
+                'user_id' => $user->id,
+                'username' => $user->username,
+                'status' => 'success'
+            ];
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            // Ensure user exists before adding to failed conversionDetails
+            $conversionDetails[] = [
+                'user_id' => $val->id, // Use $val->id since $user might be null
+                'username' => $user ? $user->username : 'unknown',
+                'status' => 'fails'
+            ];
+        }
+    }
+
+    return $conversionDetails;
+}
+
+
 }
 

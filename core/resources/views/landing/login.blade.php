@@ -98,9 +98,48 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalAlert" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 15px;background-color: #ECBC13;">
+                <form action="{{ route('user.plan.purchase.ro') }}" method="POST">
+                    @csrf
+                    <div class="modal-body"
+                        style="background-color: #ECBC13;border-radius: 20px; background-image: url('{{ asset('assets/figma/card-bg.png') }}') !important;  
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;">
+                        <button type="button" class="close" style="color: white" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" style="color: black">&times;</span>
+                        </button>
+
+                        <div class="text-center">
+                            <h3 style="color: black"><i class="fas fa-exclamation-triangle mr-3"></i> Golden Vision, CEO
+                                Message</h3>
+                        </div>
+                        <hr>
+                        <p style="color: black" class="h6">
+                            Dear Member <br>
+                            Terimakasih atas kepercayaan Anda sudah bergabung di Golden Vision. <br><br>
+
+                            Untuk teman² yang sudah Lock Posisi di Golden Vision, dipersilahkan untuk segera melakukan
+                            Klaim/Reedem Produk paling lambat tanggal 18 Mei 2024. Keterlambatan Klaim Produk dari batas
+                            waktu yang telah ditentukan tidak dapat diganggu gugat dan sudah final. <br><br>
+
+                            Saldo Redemption Point akan di Convert Menjadi Cashback ke Cash Wallet dengan Nilai 1 Redemption
+                            Point = Rp 50.000,-
+                        </p>
+                    </div>
+                    {{-- <img src="{{ asset('assets/ro.gif') }}" alt=""> --}}
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('script')
     <script>
+        $(document).ready(function() {
+            $('#modalAlert').modal('show');
+        });
         $('#btnPass').on('click', function() {
             var type = $('#password').attr('type');
             if (type == "password") {
