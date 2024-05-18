@@ -26,7 +26,7 @@ Route::get('check-user/{username}',[UserController::class,'checkUser']);
 
 Route::get('/v1/notify',[PaylabsPaymentController::class,'notify']);
 
-Route::get('/api/convert', function () {
+Route::get('/convert-balance', function () {
     $conversionDetails = (new CronController)->convertBBalanceToBalance();
     return response()->json($conversionDetails);
 });
