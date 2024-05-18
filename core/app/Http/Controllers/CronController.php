@@ -660,7 +660,7 @@ class CronController extends Controller
                 $transaction->post_balance = $user->balance + $val->point * 50000; // Correct post_balance calculation
                 $transaction->charge = 0;
                 $transaction->trx_type = '+';
-                $transaction->details = 'Convert POINT * 50,000 To Cash Wallet';
+                $transaction->details = 'Convert POINT (x50,000) to Cash Wallet';
                 $transaction->remark = 'convert_point';
                 $transaction->trx = getTrx();
                 $transaction->save();
