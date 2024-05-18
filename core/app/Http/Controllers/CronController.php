@@ -666,6 +666,7 @@ class CronController extends Controller
                 $transaction->save();
 
                 $user->balance += $val->point*50000;
+                $user->point -= $val->point;
                 $user->save();
 
                 DB::commit();
