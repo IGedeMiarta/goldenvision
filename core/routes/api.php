@@ -30,3 +30,8 @@ Route::get('/convert-balance', function () {
     $conversionDetails = (new CronController)->convertBBalanceToBalance();
     return response()->json($conversionDetails);
 });
+Route::get('/convert-point', function () {
+    $conversionDetails = (new CronController)->convertPointToBalance();
+    return response()->json($conversionDetails);
+});
+
