@@ -86,7 +86,7 @@
                                             {{ nb(getAmount($trx->charge)) }} </td>
                                         <td data-label="@lang('Post Balance')">{{ nb($trx->post_balance + 0) }}
                                             {{ $general->cur_text }}</td>
-                                        <td data-label="@lang('Detail')">{{ __($trx->details) }}</td>
+                                        <td data-label="@lang('Detail')">{!! __($trx->details) !!}</td>
                                     </tr>
                                 @empty
                                     <tr>
