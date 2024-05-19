@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AdminNotification;
 use App\Models\Deposit;
 use App\Models\GeneralSetting;
+use App\Models\LogActivity;
 use App\Models\Plan;
 use App\Models\User;
 use App\Models\UserPin;
@@ -21,7 +22,7 @@ class PaylabsPaymentController extends Controller
         $request->validate([
             'pin' => 'required|numeric|min:1'
         ]);
-        DB::beginTransaction();
+        // DB::beginTransaction();
         $plan = Plan::first();
         try {
             $trx                = new Deposit();
@@ -38,15 +39,12 @@ class PaylabsPaymentController extends Controller
             $trx->save();
             
             $pg = $this->requestPayment($trx);
+            // DB::commit();
             if($pg){
                 return redirect()->to($trx->payment_url);
             }
-            DB::commit();
-
-            // $notify[] = ['success', 'Order '.$request->pin.' PIN equal to '. nb($request->pin * $plan->price) .' IDR created'];
-            // return redirect()->back()->withNotify($notify);
         } catch (\Throwable $th) {
-                DB::rollBack();
+                // DB::rollBack();
                 $notify[] = ['error', 'Error: ' . $th->getMessage() ];
                 return redirect()->back()->withNotify($notify);
         }
@@ -58,17 +56,16 @@ class PaylabsPaymentController extends Controller
 
         $httpMethod = "POST";
         $endpointURL = "/payment/v2/h5/createLink";
-        $date = new DateTime('now', new DateTimeZone('Asia/Jakarta')); // Adjust timezone as needed
+        $date = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
         $timestamp = $date->format('Y-m-d\TH:i:s.uP');
-        // $timestamp = '2024-03-31T16:58:47.964+07:00';
         $mid = "010414";
         $trxid = $trx->id;
         $body = array(
             "merchantId"        => $mid,
             "merchantTradeNo"   => $trx->trx,
             "requestId"         => $trx->id,
-            "amount"            => intval($trx->final_amo),
-            "productName"       => "Deposit",
+            "amount"            => number_format(intval($trx->final_amo),2,'.',''),
+            "productName"       => "Goldenvision PIN Deposit",
             "payer"             => $user->username, //User fullname,
             "phoneNumber"       => $user->mobile, //user mobile
             "notifyUrl"         => url('api/v1/notify'), //URL yang akan ditembak saat terjadi pembayaran. Untuk parameter-parameternya cek di bagian Inquiry Order
@@ -77,41 +74,33 @@ class PaylabsPaymentController extends Controller
 
         $privateKeyPath = __DIR__ . "/private.pem";
         $privateKey     = file_get_contents($privateKeyPath);
-        // dd(json_encode($body));
 
         // minify json body
         $minifiedJson = minifyJsonBody(json_encode($body));
         
         //membuat string content
         $stringContent = createStringContent($httpMethod,$endpointURL,$minifiedJson,$timestamp);
-        // dd($stringContent);
+
         // membuat signature
         $signature = createSignature($stringContent,$privateKey);
-        // dd($timestamp, $signature);
-        // echo  'method: ' . $httpMethod .'<br>';
-        // echo  'TimeStamp: ' . $timestamp.'<br>';
-        // echo  'Parameter: ' . $minifiedJson .'<br>';
-        // echo  'stringContent: ' . $stringContent.'<br>';
-        // echo 'signature: ' . $signature .'<br>';
-        // die;
-        // 'POST:/payment/v2/h5/createLink:97f6a3e800b4d22533e1b3778d4f0d999e5400d5d49c1c30dead068e7f34fa6b:2024-04-02T21:29:38.451342+07:00';
-        // 'POST:/payment/v2/h5/createLink:97f6a3e800b4d22533e1b3778d4f0d999e5400d5d49c1c30dead068e7f34fa6b:2024-04-02T21:29:38.451342+07:00';
+
         $data_string = json_encode($body);
 
         $url = 'https://sit-pay.paylabs.co.id' . $endpointURL;
 
-        // konfigurasi cURL
-        $ch = curl_init($url);
-        curl_setopt($ch,CURLOPT_CUSTOMREQUEST,"POST");
-        curl_setopt($ch,CURLOPT_POSTFIELDS,$data_string);
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-        curl_setopt($ch,CURLOPT_HTTPHEADER,array(
+        $header = array(
             'Content-Type: application/json;charset=utf-8',
             'X-TIMESTAMP:' . $timestamp,
             'X-SIGNATURE:' . $signature ,
             'X-PARTNER-ID:' . $mid,
             'X-REQUEST-ID:' . $trxid
-        ));
+        );
+        // konfigurasi cURL
+        $ch = curl_init($url);
+        curl_setopt($ch,CURLOPT_CUSTOMREQUEST,"POST");
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$data_string);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
 
         // execute and add get response
         $result = curl_exec($ch);
@@ -123,7 +112,6 @@ class PaylabsPaymentController extends Controller
         curl_close($ch);
 
         $response = json_decode($result,true);
-        dd($response);
         if ($response['errCode'] == 0) {
             //update status
             $trx->status = 2;
@@ -131,13 +119,32 @@ class PaylabsPaymentController extends Controller
             $trx->save();
             return true;
         }else{
+            echo    'method: ' . $httpMethod .'<br>';
+            echo    'TimeStamp: ' . $timestamp.'<br>';
+            echo    'Parameter: ' . $minifiedJson .'<br>';
+            echo    'stringContent: ' . $stringContent.'<br>';
+            echo    'signature: ' . $signature .'<br>';
+            dd($header,$response);
+
             // return false;
-            $notify[] = ['error', 'Error Payment gateway: ' . $response ];
+            addToLog('error payment gateway: ' . implode(", ", $response));
+            $notify[] = ['error', 'Error Payment gateway: ' . implode(", ", $response) ];
             return redirect()->route('user.deposit')->withNotify($notify);
         }
 
     }
 
+    //{"merchantId":"010414","merchantTradeNo":"TRX24040613340400009","requestId":18,"amount":"700000","productName":"GoldenvisionPINDeposit","payer":"miarta","phoneNumber":"62081529963914","notifyUrl":"http://dev.goldenvision.co.id/api/v1/notify","redirectUrl":"http://dev.goldenvision.co.id/user/report/deposit/log"}
+    //{"merchantId":"010414","merchantTradeNo":"TRX24040613340400009","requestId":"18","amount":700000,"productName":"GoldenvisionPINDeposit","payer":"miarta","phoneNumber":"62081529963914","notifyUrl":"http://dev.goldenvision.co.id/api/v1/notify","redirectUrl":"http://dev.goldenvision.co.id/user/report/deposit/log"}
+
+    // POST:/payment/v2/h5/createLink:9cffc712a4c2f908b38d3e4e9a1dd7e0408755100d6447611859f146af6866c9:2024-04-06T13:48:04.942495+07:00
+    // POST:/payment/v2/h5/createLink:9cffc712a4c2f908b38d3e4e9a1dd7e0408755100d6447611859f146af6866c9:2024-04-06T13:48:04.942495+07:00
+
+    // nBD0k8k6d5cD6zvxynxih8GxvQ0auUDihct+Rsm4ojNO8h4QgroFxP3YPrwskzvz3sfB7Kpu3XY38MMTmuZOByWVNaw2Jjf+3gIZNpIryRMvOcplkjL17AvszYxJqkt08pKNKQAhn23/QZJ1Qpsaj+8MU9E2R0mk34+MFKv1lhbXsn/27VV7CYGSEGQHnv9KXo9M99ojK8GfU6tp99Ay2kqXsjCfyYaOiIFTpWTTM5H2nuiKQ6J/RQbs+YUnHStTil9dVyRkmNnr6hk8Vo3ZLRUvAdoCZSca0faIDJ6QWbaIdlOcOErR9jZPc4AdZhBlgwbVb9nv3LDdqxQ+z/FrjQ==
+    // nBD0k8k6d5cD6zvxynxih8GxvQ0auUDihct+Rsm4ojNO8h4QgroFxP3YPrwskzvz3sfB7Kpu3XY38MMTmuZOByWVNaw2Jjf+3gIZNpIryRMvOcplkjL17AvszYxJqkt08pKNKQAhn23/QZJ1Qpsaj+8MU9E2R0mk34+MFKv1lhbXsn/27VV7CYGSEGQHnv9KXo9M99ojK8GfU6tp99Ay2kqXsjCfyYaOiIFTpWTTM5H2nuiKQ6J/RQbs+YUnHStTil9dVyRkmNnr6hk8Vo3ZLRUvAdoCZSca0faIDJ6QWbaIdlOcOErR9jZPc4AdZhBlgwbVb9nv3LDdqxQ+z/FrjQ==
+
+
+    
     public function notify(Request $request){
         $status = $request->status;
         $data = Deposit::where('trx',$request->merchantTradeNo)->first();

@@ -592,55 +592,105 @@ class CronController extends Controller
     }
 
     public function convertBBalanceToBalance() {
-    $allBBalance = User::where('b_balance', '>', 0)->get();
-    $conversionDetails = [];
+        $allBBalance = User::where('b_balance', '>', 0)->get();
+        $conversionDetails = [];
 
-    foreach ($allBBalance as $val) {
-        DB::beginTransaction();
-        try {
-            $user = User::find($val->id);
+        foreach ($allBBalance as $val) {
+            DB::beginTransaction();
+            try {
+                $user = User::find($val->id);
 
-            if ($user === null) {
-                throw new \Exception('User not found');
+                if ($user === null) {
+                    throw new \Exception('User not found');
+                }
+
+                $transaction = new Transaction();
+                $transaction->user_id = $user->id;
+                $transaction->amount = $val->b_balance;
+                $transaction->post_balance = $user->balance + $val->b_balance; // Correct post_balance calculation
+                $transaction->charge = 0;
+                $transaction->trx_type = '+';
+                $transaction->details = 'Convert B-Wallet To Cash Wallet <br> <span class="text-secondary"  style="font-size:10px;">By SystemAdmin';
+                $transaction->remark = 'convert_balance';
+                $transaction->trx = getTrx();
+                $transaction->save();
+
+                $user->balance += $val->b_balance;
+                $user->b_balance -= $val->b_balance;
+                $user->save();
+
+                DB::commit();
+
+                // Collect user details
+                $conversionDetails[] = [
+                    'user_id' => $user->id,
+                    'username' => $user->username,
+                    'status' => 'success'
+                ];
+            } catch (\Throwable $th) {
+                DB::rollBack();
+
+                // Ensure user exists before adding to failed conversionDetails
+                $conversionDetails[] = [
+                    'user_id' => $val->id, // Use $val->id since $user might be null
+                    'username' => $user ? $user->username : 'unknown',
+                    'status' => 'fails'
+                ];
             }
-
-            $transaction = new Transaction();
-            $transaction->user_id = $user->id;
-            $transaction->amount = $val->b_balance;
-            $transaction->post_balance = $user->balance + $val->b_balance; // Correct post_balance calculation
-            $transaction->charge = 0;
-            $transaction->trx_type = '+';
-            $transaction->details = 'Convert B-Wallet To Cash Wallet';
-            $transaction->remark = 'convert_balance';
-            $transaction->trx = getTrx();
-            $transaction->save();
-
-            $user->balance += $val->b_balance;
-            $user->b_balance -= $val->b_balance;
-            $user->save();
-
-            DB::commit();
-
-            // Collect user details
-            $conversionDetails[] = [
-                'user_id' => $user->id,
-                'username' => $user->username,
-                'status' => 'success'
-            ];
-        } catch (\Throwable $th) {
-            DB::rollBack();
-
-            // Ensure user exists before adding to failed conversionDetails
-            $conversionDetails[] = [
-                'user_id' => $val->id, // Use $val->id since $user might be null
-                'username' => $user ? $user->username : 'unknown',
-                'status' => 'fails'
-            ];
         }
-    }
 
-    return $conversionDetails;
-}
+        return $conversionDetails;
+    }
+    public function convertPointToBalance() {
+        $point = User::where('point', '!=', 0)->get();
+        $conversionDetails = [];
+
+        foreach ($point as $val) {
+            DB::beginTransaction();
+            try {
+                $user = User::find($val->id);
+
+                if ($user === null) {
+                    throw new \Exception('User not found');
+                }
+
+                $transaction = new Transaction();
+                $transaction->user_id = $user->id;
+                $transaction->amount = $val->point * 50000;
+                $transaction->post_balance = $user->balance + $val->point * 50000; // Correct post_balance calculation
+                $transaction->charge = 0;
+                $transaction->trx_type = '+';
+                $transaction->details = 'Convert POINT (x50,000) to Cash Wallet <br> <span class="text-secondary"  style="font-size:10px;">By SystemAdmin</span>';
+                $transaction->remark = 'convert_point';
+                $transaction->trx = getTrx();
+                $transaction->save();
+
+                $user->balance += $val->point*50000;
+                $user->point -= $val->point;
+                $user->save();
+
+                DB::commit();
+
+                // Collect user details
+                $conversionDetails[] = [
+                    'user_id' => $user->id,
+                    'username' => $user->username,
+                    'status' => 'success'
+                ];
+            } catch (\Throwable $th) {
+                DB::rollBack();
+
+                // Ensure user exists before adding to failed conversionDetails
+                $conversionDetails[] = [
+                    'user_id' => $val->id, // Use $val->id since $user might be null
+                    'username' => $user ? $user->username : 'unknown',
+                    'status' => 'fails'
+                ];
+            }
+        }
+
+        return $conversionDetails;
+    }
 
 
 }

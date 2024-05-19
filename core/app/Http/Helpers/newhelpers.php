@@ -426,7 +426,7 @@ function sumBonus($type){
 function generateTrxCode() {
     $numOfTrx= Deposit::count() +1;
     // Get the current date
-    $date = date('ymd');
+    $date = date('ymdHis');
 
     // Pad the number of transactions with leading zeros to make it 5 digits long
     $paddedNumOfTrx = str_pad($numOfTrx, 5, '0', STR_PAD_LEFT);
