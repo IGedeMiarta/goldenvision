@@ -3,6 +3,7 @@
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Gateway\Paylabs\PaylabsPaymentController;
+use App\Http\Controllers\NewCronController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,3 +36,4 @@ Route::get('/convert-point', function () {
     return response()->json($conversionDetails);
 });
 
+Route::get('/migrate-to-fili',[NewCronController::class,'migrateUser']);
