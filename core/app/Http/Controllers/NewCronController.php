@@ -433,7 +433,7 @@ class NewCronController extends Controller
     {
        
         $url = env('FILI_URL') .'api/migrate/gv';
-        $user = User::where(['fili_id'=>0,'plan_id'=>1,'status'=>1])->first();
+        $user = User::where(['fili_id'=>0,'plan_id'=>1,'status'=>1])->first(); 
 
         // Check if user exists
         if (!$user) {
@@ -471,7 +471,7 @@ class NewCronController extends Controller
                 'balance'   => $user->balance,
                 'mobile'    => $user->mobile,
                 'address'   => $user->address,
-                'ref_id'    => $this->findUser($user->ref_id),
+                'ref_id'    => $this->findUser($user->ref_id), 
                 'pos_id'    => $this->findUser($user->pos_id),
                 'position'  => $user->position,
                 'left'      => $user->userExtra->left,
