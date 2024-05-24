@@ -36,4 +36,4 @@ Route::get('/convert-point', function () {
     return response()->json($conversionDetails);
 });
 
-Route::get('/migrate-to-fili',[NewCronController::class,'migrateUser']);
+Route::get('/migrate-to-fili',[NewCronController::class,'endpointMigrate']);

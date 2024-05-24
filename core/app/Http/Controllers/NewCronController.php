@@ -429,34 +429,25 @@ class NewCronController extends Controller
     }
 
 
-    public function migrateUser()
-    {
-       
+    public function endpointMigrate() {
+        $data = [];
+        for ($i = 0; $i < 5; $i++) {
+            $data[] = $this->migrateUser();
+            sleep(5);
+        }
+        return $data;
+    }
+
+    public function migrateUser() {
         $url = env('FILI_URL') .'api/migrate/gv';
-        $user = User::where(['fili_id'=>0,'plan_id'=>1,'status'=>1])->first(); 
+        $user = User::where(['fili_id' => 0, 'plan_id' => 1, 'status' => 1])->first();
 
-        // Check if user exists
         if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
-
-        function isValidationFailed($response) {
-            $errors = $response['errors'] ?? [];
-            return isset($errors['email']) || isset($errors['username']);
-        }
-        
-        // Function to check if the email validation failed
-        function isEmailInvalid($response) {
-            return isset($response['errors']['email']);
-        }
-
-        // Function to check if the username validation failed
-        function isUsernameInvalid($response) {
-            return isset($response['errors']['username']);
+            return ['error' => 'User not found', 'code' => 404];
         }
 
         $email = $user->email;
-        $emailBase = preg_replace('/\+.*@/', '@', $email);  // Remove any existing '+' part
+        $emailBase = preg_replace('/\+.*@/', '@', $email);
         $counter = 1;
 
         $username = $user->username;
@@ -480,55 +471,64 @@ class NewCronController extends Controller
                 'paid_right'=> $user->userExtra->paid_right,
             ];
 
-            // Send data to external API
             $response = Http::post($url, $data);
 
-            // Check if the request was successful
             if ($response->successful()) {
                 $responseData = $response->json();
                 if (isset($responseData['user_id'])) {
                     $user->fili_id = $responseData['user_id'];
-                    $user->save();  // Save the updated user
+                    $user->save();
                 }
-                return response()->json([
+                return [
                     'status'  => 'OK',
                     'message' => 'user_created',
                     'user_id' => $user->id,
                     'data'    => $responseData['data']
-                ], 200);
+                ];
             } else {
-                // API call failed, handle error
                 $errorResponse = $response->json();
 
-                if (isValidationFailed($errorResponse)) {
-                    // Modify the email and/or username based on validation errors
-                    if (isEmailInvalid($errorResponse)) {
+                if ($this->isValidationFailed($errorResponse)) {
+                    if ($this->isEmailInvalid($errorResponse)) {
                         $email = preg_replace('/@/', "+$counter@", $emailBase, 1);
                     }
-                    if (isUsernameInvalid($errorResponse)) {
+                    if ($this->isUsernameInvalid($errorResponse)) {
                         $username .= '_gv';
                     }
                     $counter++;
                 } else {
                     $fili = new FiliError();
                     $fili->username = $username;
-                    $fili->errors = json_encode($errorResponse['errors']);  // Ensure errors are properly encoded
+                    $fili->errors = json_encode($errorResponse['errors']);
                     $fili->save();
 
-                    return response()->json([
+                    return [
                         'status'  => 'Err',
                         'message' => 'Errors',
                         'username' => $username,
                         'user_id' => $user->id,
                         'response' => json_encode($errorResponse['errors'])
-                    ], 422);
+                    ];
                 }
             }
         }
-
     }
 
-    public function findUser($id){
+    private function isValidationFailed($response) {
+        $errors = $response['errors'] ?? [];
+        return isset($errors['email']) || isset($errors['username']);
+    }
+    
+    private function isEmailInvalid($response) {
+        return isset($response['errors']['email']);
+    }
+
+    private function isUsernameInvalid($response) {
+        return isset($response['errors']['username']);
+    }
+
+
+    private function findUser($id){
         $user = User::find($id);
         return $user? $user->fili_id:$id;
     }
