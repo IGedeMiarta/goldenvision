@@ -440,7 +440,7 @@ class NewCronController extends Controller
 
     public function migrateUser() {
         $url = env('FILI_URL') .'api/migrate/gv';
-        $user = User::where(['fili_id' => 0, 'plan_id' => 1, 'status' => 1])->first();
+        $user = User::where(['fili_id' => 0, 'plan_id' => 1])->first();
 
         if (!$user) {
             return ['error' => 'User not found', 'code' => 404];
@@ -465,6 +465,7 @@ class NewCronController extends Controller
                 'ref_id'    => $this->findUser($user->ref_id), 
                 'pos_id'    => $this->findUser($user->pos_id),
                 'position'  => $user->position,
+                'status'    => $user->status,
                 'left'      => $user->userExtra->left,
                 'right'     => $user->userExtra->right,
                 'paid_left' => $user->userExtra->paid_left,
